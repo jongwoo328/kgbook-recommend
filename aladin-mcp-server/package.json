@@ -1,0 +1,26 @@
+{
+	"name": "aladin-mcp-server",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"build": "tsup",
+		"format": "pnpm biome format --write .",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [],
+	"author": "",
+	"packageManager": "pnpm@10.11.0",
+	"devDependencies": {
+		"@biomejs/biome": "^1.9.4",
+		"@types/node": "^22.15.29",
+		"tsup": "^8.5.0",
+		"typescript": "^5.8.3"
+	},
+	"dependencies": {
+		"@modelcontextprotocol/sdk": "^1.12.1",
+		"@types/express": "^5.0.2",
+		"express": "^5.1.0",
+		"zod": "^3.25.48"
+	}
+}
