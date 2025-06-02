@@ -1,5 +1,5 @@
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp';
-import * as Express from 'express';
+import Express from 'express';
 import type { Request, Response } from 'express';
 import { server } from './mcp';
 
