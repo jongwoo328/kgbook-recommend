@@ -4,17 +4,19 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"build": "tsup",
+		"build": "node scripts/build.js",
+		"start": "node dist/index.cjs",
 		"format": "pnpm biome format --write .",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
+	"type": "module",
 	"keywords": [],
 	"author": "",
 	"packageManager": "pnpm@10.11.0",
 	"devDependencies": {
 		"@biomejs/biome": "^1.9.4",
 		"@types/node": "^22.15.29",
-		"tsup": "^8.5.0",
+		"esbuild": "^0.25.5",
 		"typescript": "^5.8.3"
 	},
 	"dependencies": {
