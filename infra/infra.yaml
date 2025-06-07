@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  postgres:
+    image: pgvector/pgvector:pg17
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: ''
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+    volumes:
+      - kgbook-pgdata:/var/lib/postgresql/data
+      - ./scripts/01-create-database.sql:/docker-entrypoint-initdb.d/01-create-database.sql
+      - ./scripts/02-init-database.sql:/docker-entrypoint-initdb.d/02-init-database.sql
+volumes:
+  kgbook-pgdata:
+
