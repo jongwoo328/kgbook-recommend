@@ -14,8 +14,6 @@ RUN pnpm build
 
 FROM node:22-slim
 
-RUN corepack enable && corepack prepare pnpm@latest --activate
-
 WORKDIR /app
 
 COPY --from=builder /app/dist ./dist
