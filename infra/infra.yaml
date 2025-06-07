@@ -1,4 +1,3 @@
-version: '3.8'
 services:
   postgres:
     image: pgvector/pgvector:pg17
@@ -13,6 +12,15 @@ services:
       - ./scripts/01-create-database.sql:/docker-entrypoint-initdb.d/01-create-database.sql
       - ./scripts/02-init-database.sql:/docker-entrypoint-initdb.d/02-init-database.sql
       - ./scripts/03-initial-data.sql:/docker-entrypoint-initdb.d/03-initial-data.sql
+  aladin-mcp-server:
+    build:
+      context: ../aladin-mcp-server
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+
 volumes:
   kgbook-pgdata:
 
