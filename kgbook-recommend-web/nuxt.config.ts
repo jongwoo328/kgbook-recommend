@@ -40,4 +40,19 @@ export default defineNuxtConfig({
       },
     },
   },
+  app: {
+    head: {
+      htmlAttrs: {
+        lang: "ko",
+      },
+      link: [
+        {
+          rel: "stylesheet",
+          type: "text/css",
+          href: "https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css",
+        },
+      ],
+    },
+  },
+  css: ["~/assets/css/reset.css", "~/assets/css/global.css"],
 });
