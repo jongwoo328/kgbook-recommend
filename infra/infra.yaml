@@ -20,6 +20,14 @@ services:
       - "3000:3000"
     depends_on:
       - postgres
+  web:
+    build:
+      context: ../kgbook-recommend-web
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
 
 volumes:
   kgbook-pgdata:
