@@ -1,7 +1,7 @@
-<script setup lang="ts"></script>
+<script lang="ts" setup></script>
 
 <template>
-  <main class="container mx-auto px-4">
+  <main class="container min-h-[100vh] mx-auto px-4">
     <slot />
   </main>
 </template>
