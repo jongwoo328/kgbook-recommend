@@ -40,6 +40,9 @@ export default defineNuxtConfig({
     },
   },
   app: {
+    rootAttrs: {
+      class: "h-full",
+    },
     head: {
       htmlAttrs: {
         lang: "ko",
