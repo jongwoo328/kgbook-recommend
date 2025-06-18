@@ -11,14 +11,18 @@
   },
   "dependencies": {
     "@nuxt/eslint": "^1.4.1",
-    "@nuxt/fonts": "^0.11.4",
     "@nuxt/icon": "^1.13.0",
+    "@primeuix/themes": "^1.1.1",
+    "@primevue/forms": "^4.3.5",
     "eslint": "^9.28.0",
     "nuxt": "^3.17.5",
+    "primevue": "^4.3.5",
     "vue": "^3.5.16",
     "vue-router": "^4.5.1"
   },
   "devDependencies": {
+    "@nuxtjs/tailwindcss": "^6.14.0",
+    "@primevue/nuxt-module": "^4.3.5",
     "prettier": "^3.5.3"
   }
 }
