@@ -5,6 +5,7 @@ import { SectionCategory } from "~/types/SectionCategory";
 import { mainPageChangeDummy, mainPageDummy } from "~/data/dummy";
 
 import { useRouter } from "vue-router";
+import BookEmptyComponet from "~/components/general/BookEmptyComponet.vue";
 
 const router = useRouter();
 
@@ -129,35 +130,40 @@ async function refreshPersonalizedBookList() {
       </div>
 
       <!-- 로딩 중이 아닐 때 또는 다른 섹션일 때 BookCard 표시 -->
-      <div
-        v-else
-        class="max-w-full min-h-[20rem] flex flex-wrap gap-4 mt-4 items-center justify-center"
-      >
-        <BookCard
-          v-for="(book, idx) in section.books"
-          :key="idx"
-          class="cursor-pointer max-w-[180px] min-w-[140px] h-[270px]"
-          @click="goToBookDetailPage(book)"
+      <div v-else>
+        <div v-if="section.books.length === 0">
+          <BookEmptyComponet />
+        </div>
+        <div
+          v-else
+          class="max-w-full min-h-[20rem] flex flex-wrap gap-4 mt-4 items-center justify-center"
         >
-          <template #image>
-            <img
-              :alt="book.title"
-              :src="book.coverUrl"
-              class="object-cover w-full h-full"
-            />
-          </template>
+          <BookCard
+            v-for="(book, idx) in section.books"
+            :key="idx"
+            class="cursor-pointer max-w-[180px] min-w-[140px] h-[270px]"
+            @click="goToBookDetailPage(book)"
+          >
+            <template #image>
+              <img
+                :alt="book.title"
+                :src="book.coverUrl"
+                class="object-cover w-full h-full"
+              />
+            </template>
 
-          <template #info>
-            <div class="text-center text-sm">
-              <p class="text text-gray-800">[{{ book.category }}]</p>
-              <span class="font-bold">{{ book.title }}</span>
-              /
-              <span class="text-sm text-gray-600">
-                {{ book.author }} ({{ book.price.toLocaleString() }}원)
-              </span>
-            </div>
-          </template>
-        </BookCard>
+            <template #info>
+              <div class="text-center text-sm">
+                <p class="text text-gray-800">[{{ book.category }}]</p>
+                <span class="font-bold">{{ book.title }}</span>
+                /
+                <span class="text-sm text-gray-600">
+                  {{ book.author }} ({{ book.price.toLocaleString() }}원)
+                </span>
+              </div>
+            </template>
+          </BookCard>
+        </div>
       </div>
     </div>
   </div>

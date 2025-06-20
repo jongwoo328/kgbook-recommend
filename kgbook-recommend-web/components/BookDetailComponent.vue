@@ -3,6 +3,7 @@ import { useRouter } from "vue-router";
 import BookCard from "~/components/general/BookCard.vue";
 import { dummyBookDetail, dummyBookList } from "~/data/dummy";
 import { useRoute } from "#vue-router";
+import BookEmptyComponet from "~/components/general/BookEmptyComponet.vue";
 
 const router = useRouter();
 
@@ -115,7 +116,8 @@ function goToBookDetailPage(book) {
 
           <div class="mt-3 flex items-center justify-end gap-2">
             <div v-if="bookInfo.bestRank" class="text-gray-600 text-sm italic">
-              이 책은 현재 베스트셀러 {{ bookInfo.bestRank }}위 입니다!
+              이 책은 현재 <u><a href="/best-sellers">베스트셀러</a></u>
+              {{ bookInfo.bestRank }}위 입니다!
             </div>
             <a
               href="https://naver.com"
@@ -137,7 +139,11 @@ function goToBookDetailPage(book) {
         이 작가의 다른 책 ({{ otherBooksByAuthor.length }})
       </div>
 
+      <div v-if="otherBooksByAuthor.length === 0">
+        <BookEmptyComponet />
+      </div>
       <div
+        v-else
         class="max-w-full min-h-[20rem] flex flex-wrap gap-4 mt-4 items-center justify-center"
       >
         <BookCard
@@ -184,7 +190,11 @@ function goToBookDetailPage(book) {
         </span>
       </div>
 
+      <div v-if="aiRecommendedBooks.length === 0">
+        <BookEmptyComponet />
+      </div>
       <div
+        v-else
         class="max-w-full min-h-[20rem] flex flex-wrap gap-4 mt-4 items-center justify-center"
       >
         <BookCard
