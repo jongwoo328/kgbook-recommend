@@ -2,7 +2,9 @@
 import IconField from "primevue/iconfield";
 
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const searchValue = ref<String>("");
 
 function searchBook() {
@@ -11,11 +13,20 @@ function searchBook() {
   }
   console.log(`@@ searchBook. name=(${searchValue.value})`);
 }
+
+function goToMainPage() {
+  router.push("/");
+}
 </script>
 
 <template>
   <div class="my-5 flex flex-col justify-center items-center">
-    <h1 class="page-title font-bold py-5 my-2 text-4xl">사이트 이름 뭐하징</h1>
+    <h1
+      class="page-title cursor-pointer font-bold py-5 my-2 text-4xl"
+      @click="goToMainPage"
+    >
+      사이트 이름 뭐하징
+    </h1>
     <IconField class="search-input-container my-2">
       <InputIcon>
         <Icon class="text-xl" name="mdi-light:magnify" />

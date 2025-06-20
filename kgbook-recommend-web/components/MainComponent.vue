@@ -1,14 +1,17 @@
 <script lang="ts" setup>
-// TODO MainPageBookCard 재사용을 위해 별도의 파일로 분리해서 Import 해서 쓰기
 import SectionHeader from "~/components/general/SectionHeader.vue";
 import BookCard from "~/components/general/BookCard.vue";
 import { SectionCategory } from "~/types/SectionCategory";
 import { mainPageChangeDummy, mainPageDummy } from "~/data/dummy";
 
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
 interface Book {
   id: number;
   title: string;
-  category: "소설";
+  category: string;
   author: string;
   price: number;
   coverUrl: string;
@@ -43,18 +46,26 @@ const bookCardSection = computed(() => [
   ...etcSectionData.value,
 ]);
 
-function goToBookListPage(category: string) {
-  console.log(`@@ goToBookListPage. category=(${category})`);
+function goToBookListPage(category: MainSectionCategory) {
+  switch (category) {
+    case "bestseller":
+      router.push("/best-sellers");
+      return;
+    case "remarkable":
+      router.push("/remakerable-new-books");
+      return;
+    default:
+      console.error(`unknown category. category=(${category})`);
+      return;
+  }
 }
 
 function goToBookDetailPage(book: Book) {
-  console.log(`@@ goToBookDetailPage. book=(${book.title})`);
+  router.push(`/book/${book.id}`);
 }
 
 const isLoadingPersonalized = ref(false);
 async function refreshPersonalizedBookList() {
-  console.log("@@ refreshPersonalizedBookList.");
-
   isLoadingPersonalized.value = true;
   try {
     // 3초 대기 (테스트용)
@@ -118,10 +129,13 @@ async function refreshPersonalizedBookList() {
       </div>
 
       <!-- 로딩 중이 아닐 때 또는 다른 섹션일 때 BookCard 표시 -->
-      <div v-else class="flex gap-5 mt-4 items-center justify-center">
+      <div
+        v-else
+        class="max-w-full min-h-[20rem] flex flex-wrap gap-5 mt-4 items-center justify-center"
+      >
         <BookCard
-          v-for="book in section.books"
-          :key="book.id"
+          v-for="(book, idx) in section.books"
+          :key="idx"
           class="cursor-pointer"
           @click="goToBookDetailPage(book)"
         >
