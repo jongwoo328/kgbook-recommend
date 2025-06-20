@@ -143,7 +143,7 @@ function goToBookDetailPage(book) {
         <BookCard
           v-for="(book, idx) in otherBooksByAuthor"
           :key="idx"
-          class="w-[40%] sm:w-[30%] md:w-[20%] xl:w-[15%] min-w-[140px] cursor-pointer"
+          class="max-w-[180px] min-w-[140px] h-[270px] cursor-pointer"
           @click="goToBookDetailPage(book)"
         >
           <template #image>
@@ -190,7 +190,7 @@ function goToBookDetailPage(book) {
         <BookCard
           v-for="(book, idx) in aiRecommendedBooks"
           :key="idx"
-          class="w-[40%] sm:w-[30%] md:w-[20%] xl:w-[15%] min-w-[140px] cursor-pointer"
+          class="max-w-[180px] min-w-[140px] h-[270px] cursor-pointer"
           @click="goToBookDetailPage(book)"
         >
           <template #image>

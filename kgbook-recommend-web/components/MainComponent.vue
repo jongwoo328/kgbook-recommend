@@ -136,7 +136,7 @@ async function refreshPersonalizedBookList() {
         <BookCard
           v-for="(book, idx) in section.books"
           :key="idx"
-          class="w-[15%] min-w-[140px] cursor-pointer"
+          class="cursor-pointer max-w-[180px] min-w-[140px] h-[270px]"
           @click="goToBookDetailPage(book)"
         >
           <template #image>

@@ -37,8 +37,9 @@ export const mainPageDummy = {
       {
         id: 1,
         category: "소설",
-        title: "인간 실격",
-        author: "다자이 오사무",
+        title:
+          "미국 연방자동차안전기준 202 승객용 차량을 위한 머리지지대 제정에 대한 입법평가 사례분석",
+        author: "Vityala Yethindra",
         price: 12000,
         coverUrl: "https://placehold.co/500x500",
       },
@@ -53,7 +54,8 @@ export const mainPageDummy = {
       {
         id: 1,
         category: "소설",
-        title: "인간 실격",
+        title:
+          "책 제목이 무진장 길어서 유감스럽지만 어떻게 표시될지 궁금해요 유감스럽지만 어떻게 표시될지 궁금해요 유감스럽지만 어떻게 표시될지 궁금해요",
         author: "다자이 오사무",
         price: 12000,
         coverUrl: "https://placehold.co/500x500",
@@ -61,8 +63,10 @@ export const mainPageDummy = {
       {
         id: 1,
         category: "소설",
-        title: "인간 실격",
-        author: "다자이 오사무",
+        title:
+          "책 제목이 무진장 길어서 유감스럽지만 어떻게 표시될지 궁금해요 유감스럽지만 어떻게 표시될지 궁금해요 유감스럽지만 어떻게 표시될지 궁금해요",
+        author:
+          "저자가 외국인이라 이름이 길다면... 저자가 외국인이라 이름이 길다면.... 저자가 외국인이라 이름이 길다면.....",
         price: 12000,
         coverUrl: "https://placehold.co/500x500",
       },
