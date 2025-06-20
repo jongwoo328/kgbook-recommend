@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import MainComponent from "~/components/MainComponent.vue";
+import BookListComponent from "~/components/BookListComponent.vue";
+import { SectionCategory } from "~/types/SectionCategory";
 
 definePageMeta({
   layout: "etc",
@@ -8,7 +9,7 @@ definePageMeta({
 
 <template>
   <div class="pt-5 mt-10">
-    <MainComponent />
+    <BookListComponent :category="SectionCategory.Bestseller" />
   </div>
 </template>
 
