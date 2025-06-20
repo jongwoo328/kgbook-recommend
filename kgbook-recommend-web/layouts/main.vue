@@ -13,7 +13,7 @@ import TextFooter from "~/components/footer/TextFooter.vue";
       <slot />
     </main>
     <footer class="mt-10 bg-black text-white">
-      <TestButton />
+      <TestButton :show-title="true" class="py-14" />
       <TextFooter />
     </footer>
   </div>

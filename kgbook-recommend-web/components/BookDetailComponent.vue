@@ -93,7 +93,7 @@ function goToBookDetailPage(book) {
             </div>
             <div class="flex items-baseline gap-2">
               <div class="w-20 text-gray-500">판매가</div>
-              <div class="text-primary text-xl font-semibold">
+              <div class="text-teal-600 text-xl font-semibold">
                 {{ bookInfo.priceSale }}
               </div>
             </div>
@@ -104,7 +104,7 @@ function goToBookDetailPage(book) {
           >
             <div class="flex items-baseline gap-2">
               <div class="w-20 text-gray-500">평점</div>
-              <div class="text-primary">
+              <div class="text-teal-600">
                 ★ {{ bookInfo.customerReviewRank }} / 10
               </div>
             </div>
