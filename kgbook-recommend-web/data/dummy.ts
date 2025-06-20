@@ -11,7 +11,8 @@ export const mainPageDummy = {
     category: SectionCategory.Personalized,
     showTooltip: true,
     tooltipInfo: {
-      message: "설정한 내용을 바탕으로 맞춤형 책을 추천해드려요!",
+      message:
+        "설정한 내용을 바탕으로 GPT 4.5를 이용하여 맞춤형 책을 추천해드려요!",
       icon: "line-md:question-circle",
     } as TooltipInfo,
     title: "Personalized Recommendations",
@@ -20,7 +21,7 @@ export const mainPageDummy = {
       {
         id: 1,
         category: "소설",
-        title: "인간 실격",
+        title: "행동하지 않으면 인생은 바뀌지 않는다",
         author: "다자이 오사무",
         price: 12000,
         coverUrl: "https://placehold.co/500x500",
@@ -44,8 +45,8 @@ export const mainPageDummy = {
       {
         id: 1,
         category: "소설",
-        title: "인간 실격",
-        author: "다자이 오사무",
+        title: "책 제목이 무진장 길어서 유감스럽지만 어떻게 표시될지 궁금해요",
+        author: "저자가 외국인이라 이름이 길다면",
         price: 12000,
         coverUrl: "https://placehold.co/500x500",
       },
@@ -245,3 +246,73 @@ export const mainPageChangeDummy = {
     ],
   },
 };
+
+export const dummyBookDetail = {
+  id: 1,
+  category: "소설",
+  title: "인간 실격",
+  author: "다자이 오사무",
+  publisher: "문학동네",
+  price: 12000,
+  priceSale: 10800,
+  coverUrl: "https://placehold.co/500x500",
+  publishedAt: "2023-10-01",
+  stockstatus: "재고 있음",
+  mallType: "국내도서",
+  description:
+    "인간 실격은 다자이 오사무의 대표작으로, 인간 존재의 고뇌와 절망을 그린 소설입니다.",
+  isbn: "9788954621234",
+  customerReviewRank: 9,
+  bestRank: 5,
+};
+
+export const dummyBookList = [
+  {
+    id: 155,
+    category: "소설",
+    title: "인간 실격",
+    author: "다자이 오사무",
+    price: 12000,
+    coverUrl: "https://placehold.co/500x500",
+  },
+  {
+    id: 123,
+    category: "소설",
+    title: "인간 최고",
+    author: "다자이 오사무",
+    price: 12000,
+    coverUrl: "https://placehold.co/500x500",
+  },
+  {
+    id: 11231,
+    category: "소설",
+    title: "인간 최고",
+    author: "다자이 오사무",
+    price: 12000,
+    coverUrl: "https://placehold.co/500x500",
+  },
+  {
+    id: 1222,
+    category: "소설",
+    title: "인간 최고",
+    author: "다자이 오사무",
+    price: 12000,
+    coverUrl: "https://placehold.co/500x500",
+  },
+  {
+    id: 1111,
+    category: "소설",
+    title: "인간 최고",
+    author: "다자이 오사무",
+    price: 12000,
+    coverUrl: "https://placehold.co/500x500",
+  },
+  {
+    id: 178,
+    category: "소설",
+    title: "인간 최고",
+    author: "다자이 오사무",
+    price: 12000,
+    coverUrl: "https://placehold.co/500x500",
+  },
+];

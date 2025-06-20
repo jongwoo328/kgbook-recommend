@@ -2,7 +2,7 @@
 import MainComponent from "~/components/MainComponent.vue";
 
 definePageMeta({
-  layout: "book-list",
+  layout: "etc",
 });
 </script>
 

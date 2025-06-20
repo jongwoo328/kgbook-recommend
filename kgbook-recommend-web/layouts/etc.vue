@@ -11,7 +11,7 @@ import TextFooter from "~/components/footer/TextFooter.vue";
     <main class="container min-h-[100vh] mx-auto px-4">
       <slot />
     </main>
-    <footer>
+    <footer class="mt-5">
       <TextFooter />
     </footer>
   </div>

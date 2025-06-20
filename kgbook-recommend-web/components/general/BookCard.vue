@@ -3,9 +3,7 @@
 <template>
   <div class="flex flex-col items-center">
     <!-- 이미지 영역 -->
-    <div
-      class="bg-gray-300 w-full aspect-square flex items-center justify-center"
-    >
+    <div class="w-full flex items-center justify-center">
       <slot name="image">Image Placeholder</slot>
     </div>
 

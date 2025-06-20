@@ -1,18 +1,14 @@
 <script lang="ts" setup>
-import { useRoute } from "vue-router";
-import MainComponent from "~/components/main/MainComponent.vue";
-
-const route = useRoute();
-const bookId = route.params.id;
+import BookDetailComponent from "~/components/BookDetailComponent.vue";
 
 definePageMeta({
-  layout: "book-list",
+  layout: "etc",
 });
 </script>
 
 <template>
   <div class="pt-5 mt-10">
-    <MainComponent />
+    <BookDetailComponent />
   </div>
 </template>
 
