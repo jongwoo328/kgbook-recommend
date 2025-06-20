@@ -1,0 +1,215 @@
+// TODO 추후에 삭제하기..
+import { SectionCategory } from "~/types/SectionCategory";
+
+interface TooltipInfo {
+  message: string;
+  icon: string;
+}
+
+export const mainPageDummy = {
+  personalized: {
+    category: SectionCategory.Personalized,
+    showTooltip: true,
+    tooltipInfo: {
+      message: "설정한 내용을 바탕으로 맞춤형 책을 추천해드려요!",
+      icon: "line-md:question-circle",
+    } as TooltipInfo,
+    title: "Personalized Recommendations",
+    icon: "line-md:rotate-270",
+    books: [
+      {
+        id: 1,
+        category: "소설",
+        title: "인간 실격",
+        author: "다자이 오사무",
+        price: 12000,
+        coverUrl: "http://placehold.it/500X500",
+      },
+      {
+        id: 1,
+        category: "소설",
+        title: "인간 실격",
+        author: "다자이 오사무",
+        price: 12000,
+        coverUrl: "http://placehold.it/500X500",
+      },
+      {
+        id: 1,
+        category: "소설",
+        title: "인간 실격",
+        author: "다자이 오사무",
+        price: 12000,
+        coverUrl: "http://placehold.it/500X500",
+      },
+      {
+        id: 1,
+        category: "소설",
+        title: "인간 실격",
+        author: "다자이 오사무",
+        price: 12000,
+        coverUrl: "http://placehold.it/500X500",
+      },
+      {
+        id: 1,
+        category: "소설",
+        title: "인간 실격",
+        author: "다자이 오사무",
+        price: 12000,
+        coverUrl: "http://placehold.it/500X500",
+      },
+    ],
+  },
+  etcList: [
+    {
+      category: SectionCategory.Bestseller,
+      showTooltip: false,
+      title: "Bestsellers",
+      icon: "line-md:chevron-small-right",
+      books: [
+        {
+          id: 1,
+          category: "소설",
+          title: "인간 실격",
+          author: "다자이 오사무",
+          price: 12000,
+          coverUrl: "http://placehold.it/500X500",
+        },
+        {
+          id: 1,
+          category: "소설",
+          title: "인간 실격",
+          author: "다자이 오사무",
+          price: 12000,
+          coverUrl: "http://placehold.it/500X500",
+        },
+        {
+          id: 1,
+          category: "소설",
+          title: "인간 실격",
+          author: "다자이 오사무",
+          price: 12000,
+          coverUrl: "http://placehold.it/500X500",
+        },
+        {
+          id: 1,
+          category: "소설",
+          title: "인간 실격",
+          author: "다자이 오사무",
+          price: 12000,
+          coverUrl: "http://placehold.it/500X500",
+        },
+        {
+          id: 1,
+          category: "소설",
+          title: "인간 실격",
+          author: "다자이 오사무",
+          price: 12000,
+          coverUrl: "http://placehold.it/500X500",
+        },
+      ],
+    },
+    {
+      category: SectionCategory.Remarkable,
+      showTooltip: false,
+      title: "Remarkable New Books",
+      icon: "line-md:chevron-small-right",
+      books: [
+        {
+          id: 1,
+          category: "소설",
+          title: "인간 실격",
+          author: "다자이 오사무",
+          price: 12000,
+          coverUrl: "http://placehold.it/500X500",
+        },
+        {
+          id: 1,
+          category: "소설",
+          title: "인간 실격",
+          author: "다자이 오사무",
+          price: 12000,
+          coverUrl: "http://placehold.it/500X500",
+        },
+        {
+          id: 1,
+          category: "소설",
+          title: "인간 실격",
+          author: "다자이 오사무",
+          price: 12000,
+          coverUrl: "http://placehold.it/500X500",
+        },
+        {
+          id: 1,
+          category: "소설",
+          title: "인간 실격",
+          author: "다자이 오사무",
+          price: 12000,
+          coverUrl: "http://placehold.it/500X500",
+        },
+        {
+          id: 1,
+          category: "소설",
+          title: "인간 실격",
+          author: "다자이 오사무",
+          price: 12000,
+          coverUrl: "http://placehold.it/500X500",
+        },
+      ],
+    },
+  ],
+};
+
+export const mainPageChangeDummy = {
+  personalized: {
+    category: SectionCategory.Personalized,
+    showTooltip: true,
+    tooltipInfo: {
+      message: "설정한 내용을 바탕으로 맞춤형 책을 추천해드려요!",
+      icon: "line-md:question-circle",
+    } as TooltipInfo,
+    title: "Personalized Recommendations",
+    icon: "line-md:rotate-270",
+    books: [
+      {
+        id: 1,
+        category: "소설",
+        title: "인간 최고",
+        author: "다자이 오사무",
+        price: 12000,
+        coverUrl: "http://placehold.it/500X500",
+      },
+      {
+        id: 1,
+        category: "소설",
+        title: "인간 최고",
+        author: "다자이 오사무",
+        price: 12000,
+        coverUrl: "http://placehold.it/500X500",
+      },
+      {
+        id: 1,
+        category: "소설",
+        title: "인간 최고",
+        author: "다자이 오사무",
+        price: 12000,
+        coverUrl: "http://placehold.it/500X500",
+      },
+      {
+        id: 1,
+        category: "소설",
+        title: "인간 최고",
+        author: "다자이 오사무",
+        price: 12000,
+        coverUrl: "http://placehold.it/500X500",
+      },
+      {
+        id: 1,
+        category: "소설",
+        title: "인간 최고",
+        author: "다자이 오사무",
+        price: 12000,
+        coverUrl: "http://placehold.it/500X500",
+      },
+    ],
+  },
+};
