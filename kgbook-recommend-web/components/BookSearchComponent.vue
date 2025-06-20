@@ -4,7 +4,7 @@ import { useRoute } from "#vue-router";
 import SectionHeader from "~/components/general/SectionHeader.vue";
 import BookCard from "~/components/general/BookCard.vue";
 import { dummyBookList } from "~/data/dummy";
-import SearchEmptyComponet from "~/components/general/SearchEmptyComponet.vue";
+import SearchEmptyComponent from "~/components/general/SearchEmptyComponent.vue";
 
 const router = useRouter();
 
@@ -47,7 +47,7 @@ function goToBookDetailPage(book) {
     </SectionHeader>
 
     <div v-if="searchResult.length === 0">
-      <SearchEmptyComponet />
+      <SearchEmptyComponent />
     </div>
     <div v-else>
       <div
