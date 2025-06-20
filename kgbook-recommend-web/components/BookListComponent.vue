@@ -4,7 +4,7 @@ import { useRoute } from "#vue-router";
 import { SectionCategory } from "~/types/SectionCategory";
 import SectionHeader from "~/components/general/SectionHeader.vue";
 import BookCard from "~/components/general/BookCard.vue";
-import BookEmptyComponet from "~/components/general/BookEmptyComponet.vue";
+import BookEmptyComponent from "~/components/general/BookEmptyComponent.vue";
 import { dummyBookList2 } from "~/data/dummy";
 
 const router = useRouter();
@@ -48,7 +48,7 @@ function goToBookDetailPage(book) {
     </SectionHeader>
 
     <div v-if="books.length === 0">
-      <BookEmptyComponet />
+      <BookEmptyComponent />
     </div>
     <div v-else>
       <div

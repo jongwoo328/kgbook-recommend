@@ -3,7 +3,7 @@ import { useRouter } from "vue-router";
 import BookCard from "~/components/general/BookCard.vue";
 import { dummyBookDetail, dummyBookList } from "~/data/dummy";
 import { useRoute } from "#vue-router";
-import BookEmptyComponet from "~/components/general/BookEmptyComponet.vue";
+import BookEmptyComponent from "~/components/general/BookEmptyComponent.vue";
 
 const router = useRouter();
 
@@ -140,7 +140,7 @@ function goToBookDetailPage(book) {
       </div>
 
       <div v-if="otherBooksByAuthor.length === 0">
-        <BookEmptyComponet />
+        <BookEmptyComponent />
       </div>
       <div
         v-else
@@ -191,7 +191,7 @@ function goToBookDetailPage(book) {
       </div>
 
       <div v-if="aiRecommendedBooks.length === 0">
-        <BookEmptyComponet />
+        <BookEmptyComponent />
       </div>
       <div
         v-else

@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import SectionHeader from "~/components/general/SectionHeader.vue";
 import BookCard from "~/components/general/BookCard.vue";
+import BookEmptyComponent from "~/components/general/BookEmptyComponent.vue";
 import { SectionCategory } from "~/types/SectionCategory";
 import { mainPageChangeDummy, mainPageDummy } from "~/data/dummy";
 
 import { useRouter } from "vue-router";
-import BookEmptyComponet from "~/components/general/BookEmptyComponet.vue";
 
 const router = useRouter();
 
@@ -132,7 +132,7 @@ async function refreshPersonalizedBookList() {
       <!-- 로딩 중이 아닐 때 또는 다른 섹션일 때 BookCard 표시 -->
       <div v-else>
         <div v-if="section.books.length === 0">
-          <BookEmptyComponet />
+          <BookEmptyComponent />
         </div>
         <div
           v-else
