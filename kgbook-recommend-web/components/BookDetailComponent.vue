@@ -180,7 +180,7 @@ function goToBookDetailPage(book) {
           </span>
         </div>
         <span class="italic text-sm text-gray-400">
-          GPT 4.5 기반으로 추천이 이뤄져요!
+          GPT 4.0 기반의 AI가 분석한 추천 목록입니다.
         </span>
       </div>
 
