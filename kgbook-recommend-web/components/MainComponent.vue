@@ -131,12 +131,12 @@ async function refreshPersonalizedBookList() {
       <!-- 로딩 중이 아닐 때 또는 다른 섹션일 때 BookCard 표시 -->
       <div
         v-else
-        class="max-w-full min-h-[20rem] flex flex-wrap gap-5 mt-4 items-center justify-center"
+        class="max-w-full min-h-[20rem] flex flex-wrap gap-4 mt-4 items-center justify-center"
       >
         <BookCard
           v-for="(book, idx) in section.books"
           :key="idx"
-          class="cursor-pointer"
+          class="w-[15%] min-w-[140px] cursor-pointer"
           @click="goToBookDetailPage(book)"
         >
           <template #image>
