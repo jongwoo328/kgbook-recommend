@@ -50,10 +50,10 @@ const bookCardSection = computed(() => [
 function goToBookListPage(category: MainSectionCategory) {
   switch (category) {
     case "bestseller":
-      router.push("/best-sellers");
+      router.push("/best-sellers?page=1");
       return;
     case "remarkable":
-      router.push("/remakerable-new-books");
+      router.push("/remakerable-new-books?page=1");
       return;
     default:
       console.error(`unknown category. category=(${category})`);
