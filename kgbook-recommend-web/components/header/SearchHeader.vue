@@ -8,10 +8,13 @@ const router = useRouter();
 const searchValue = ref<String>("");
 
 function searchBook() {
-  if (searchValue.value === "" || !searchValue.value) {
-    return;
-  }
-  console.log(`@@ searchBook. name=(${searchValue.value})`);
+  router.push({
+    path: "/search",
+    query: {
+      text: searchValue.value,
+    },
+  });
+  console.log(`@@ searchBook search value=(${searchValue.value})`);
 }
 
 function goToMainPage() {
@@ -34,7 +37,7 @@ function goToMainPage() {
       <InputText
         v-model="searchValue"
         class="search-input"
-        placeholder="책 이름을 검색해보세요."
+        placeholder="검색하여 책을 찾아보세요."
         @keydown.enter="searchBook"
       />
     </IconField>
