@@ -27,6 +27,11 @@ function onEnter(e: KeyboardEvent) {
     return;
   } // 줄바꿈 허용
   e.preventDefault();
+
+  submit();
+}
+
+function submit() {
   if (!inputMessage.value.trim()) {
     return;
   } // 빈값 방지
@@ -127,7 +132,7 @@ function onEnter(e: KeyboardEvent) {
                 @keydown.enter="onEnter"
               />
               <div class="flex justify-end">
-                <Button class="p-0" rounded size="small">
+                <Button class="p-0" rounded size="small" @click="submit">
                   <template #icon>
                     <Icon name="iconoir:arrow-up" />
                   </template>
