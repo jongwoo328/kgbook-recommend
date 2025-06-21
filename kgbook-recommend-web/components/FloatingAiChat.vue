@@ -18,6 +18,10 @@ const messages = ref([
   },
 ]);
 const inputMessage = ref("");
+const messagesContainer = ref<HTMLElement | null>(null);
+const spacer = ref<HTMLElement | null>(null);
+const messageElements = ref<ComponentPublicInstance[]>([]);
+
 function onEnter(e: KeyboardEvent) {
   if (e.shiftKey || e.isComposing) {
     return;
@@ -31,10 +35,28 @@ function onEnter(e: KeyboardEvent) {
     content: inputMessage.value,
   });
   messages.value.push({
-    role: "ai",
     content: "아직 책 추천 기능은 구현되지 않았어요. 곧 추가할게요!",
+    role: "ai",
   });
   inputMessage.value = "";
+
+  requestAnimationFrame(() => {
+    if (messagesContainer.value) {
+      if (spacer.value) {
+        spacer.value.style.minHeight = `${messagesContainer.value.clientHeight}px`;
+      }
+
+      // 최근 유저입력을 맨 위로 스크롤
+      const lastHumanIdx = messages.value
+        .map((m) => m.role)
+        .lastIndexOf("human");
+      if (lastHumanIdx !== -1 && messageElements.value[lastHumanIdx]?.$el) {
+        messageElements.value[lastHumanIdx].$el.scrollIntoView({
+          behavior: "smooth",
+        });
+      }
+    }
+  });
 }
 </script>
 
@@ -74,17 +96,24 @@ function onEnter(e: KeyboardEvent) {
           </div>
         </template>
         <template #content>
-          <div class="flex flex-col gap-6 overflow-auto h-[100%]">
+          <div
+            ref="messagesContainer"
+            class="flex flex-col gap-6 overflow-auto h-[100%] min-h-0"
+          >
             <template v-for="message in messages" :key="message.content">
+              <!--TODO key 수정할 것 -->
               <FloatingAiChatAiMessage
                 v-if="message.role === 'ai'"
+                ref="messageElements"
                 :message="message"
               />
               <FloatingAiChatHumanMessage
                 v-else-if="message.role === 'human'"
+                ref="messageElements"
                 :message="message"
               />
             </template>
+            <div ref="spacer" />
           </div>
         </template>
         <template #footer>
