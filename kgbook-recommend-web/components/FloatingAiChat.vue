@@ -4,6 +4,11 @@ import FloatingAiChatAiMessage from "~/components/FloatingAiChatAiMessage.vue";
 const showCard = ref(false);
 function toggleChatCard() {
   showCard.value = !showCard.value;
+  if (showCard.value) {
+    nextTick(() => {
+      scrollToBottom();
+    });
+  }
 }
 
 function onCloseClick() {
@@ -14,6 +19,22 @@ const messages = ref([
   {
     role: "ai",
     content:
+      "# h1 제목\n" +
+      "## h2 제목\n" +
+      "### h3 제목\n" +
+      "**굵은 글씨**\n" +
+      "*기울임 글씨*\n" +
+      "`인라인 코드`\n" +
+      "```javascript\n" +
+      "console.log('Hello, world!');\n" +
+      "```\n" +
+      "- 리스트 아이템 1\n" +
+      "- 리스트 아이템 2\n\n" +
+      "[링크 텍스트](https://example.com)\n" +
+      "![이미지 설명](https://via.placeholder.com/150)\n" +
+      "> 인용문\n" +
+      "1. 순서 있는 리스트 아이템 1\n" +
+      "2. 순서 있는 리스트 아이템 2\n\n" +
       "안녕하세요! 책 추천을 도와드릴게요. 어떤 종류의 책을 찾고 계신가요?\n예를 들어, 소설, 비소설, 자기계발서 등 다양한 장르가 있습니다.",
   },
 ]);
@@ -51,17 +72,28 @@ function submit() {
         spacer.value.style.minHeight = `${messagesContainer.value.clientHeight}px`;
       }
 
-      // 최근 유저입력을 맨 위로 스크롤
-      const lastHumanIdx = messages.value
-        .map((m) => m.role)
-        .lastIndexOf("human");
-      if (lastHumanIdx !== -1 && messageElements.value[lastHumanIdx]?.$el) {
-        messageElements.value[lastHumanIdx].$el.scrollIntoView({
-          behavior: "smooth",
-        });
-      }
+      scrollToBottom();
     }
   });
+}
+
+function scrollToBottom() {
+  const lastHumanIdx = messages.value.map((m) => m.role).lastIndexOf("human");
+
+  if (lastHumanIdx !== -1 && messageElements.value[lastHumanIdx]?.$el) {
+    // 사용자 메시지가 있으면 거기로 스크롤
+    messageElements.value[lastHumanIdx].$el.scrollIntoView({
+      behavior: "smooth",
+    });
+  } else {
+    // 사용자 메시지가 없으면 전체 컨테이너의 맨 아래로 스크롤
+    if (messagesContainer.value) {
+      messagesContainer.value.scrollTo({
+        top: messagesContainer.value.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+  }
 }
 </script>
 
@@ -122,7 +154,7 @@ function submit() {
           </div>
         </template>
         <template #footer>
-          <div class="rounded p-2 bg-gray-100">
+          <div class="rounded p-2 bg-gray-50">
             <div class="flex flex-col w-100 gap-2">
               <Textarea
                 v-model="inputMessage"

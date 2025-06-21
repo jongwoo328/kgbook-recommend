@@ -9,9 +9,9 @@ defineProps<{
 <template>
   <div>
     <div class="flex">
-      <Icon class="text-2xl mr-2" name="hugeicons:ai-chat-02" />
+      <Icon class="text-2xl mr-2 mt-2" name="hugeicons:ai-chat-02" />
       <div class="flex-1">
-        <pre class="text-gray-800">{{ message.content }}</pre>
+        <MarkdownView :content="message.content" />
       </div>
     </div>
   </div>
