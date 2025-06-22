@@ -105,12 +105,10 @@ async function refreshPersonalizedBookList() {
         <template #title>
           {{ section.title }}
           <Icon
-            v-if="section.showTooltip"
-            v-tooltip.top="{
-              value: section.tooltipInfo.message,
-            }"
-            :name="section.tooltipInfo.icon"
-            class="text-2xl"
+            v-if="section.category === SectionCategory.Personalized"
+            class="text-3xl cursor-pointer"
+            name="line-md:cog-filled"
+            @click="showPreferenceModal = true"
           />
         </template>
 
@@ -150,6 +148,12 @@ async function refreshPersonalizedBookList() {
           v-else
           class="max-w-full min-h-[20rem] flex flex-wrap gap-4 mt-4 items-center justify-center"
         >
+          <div
+            v-if="section.category === SectionCategory.Personalized"
+            class="px-4 py-0 w-full italic text-sm text-gray-600"
+          >
+            GPT 4.5 기반으로 당신의 취향을 반영한 책 추천입니다.
+          </div>
           <BookCard
             v-for="(book, idx) in section.books"
             :key="idx"
