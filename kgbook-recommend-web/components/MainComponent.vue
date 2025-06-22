@@ -6,8 +6,20 @@ import { SectionCategory } from "~/types/SectionCategory";
 import { mainPageChangeDummy, mainPageDummy } from "~/data/dummy";
 
 import { useRouter } from "vue-router";
+import BookPreferenceModal from "~/components/modal/BookPreferenceModal.vue";
 
 const router = useRouter();
+
+const showPreferenceModal = ref(false);
+onMounted(() => {
+  const userPreference = JSON.parse(
+    localStorage.getItem("userPreference") || "{}",
+  );
+  console.log(userPreference);
+  if (!userPreference || !userPreference.isSubmitted) {
+    showPreferenceModal.value = true;
+  }
+});
 
 interface Book {
   id: number;
@@ -166,6 +178,7 @@ async function refreshPersonalizedBookList() {
         </div>
       </div>
     </div>
+    <BookPreferenceModal v-model:visible="showPreferenceModal" /> />
   </div>
 </template>
 
