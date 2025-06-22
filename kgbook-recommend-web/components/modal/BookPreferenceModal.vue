@@ -71,6 +71,22 @@ function submitPreferences() {
 
   visible.value = false;
 }
+
+function hideModal() {
+  localStorage.setItem(
+    "userPreference",
+    JSON.stringify({
+      isSubmitted: false,
+      user: {
+        job: selectedJob.value,
+        interests: selectedInterests.value,
+        readTime: selectedReadTime.value,
+        style: selectedStyle.value,
+        recentBook: recentBook.value,
+      },
+    }),
+  );
+}
 </script>
 
 <template>
@@ -80,6 +96,7 @@ function submitPreferences() {
     :style="{ width: '60rem' }"
     header="당신을 위한 책을 추천해 드려요."
     modal
+    @hide="hideModal"
   >
     <p class="text-sm pb-4 text-gray-500">
       해당 정보는 추천을 위해 사용되며 영구적으로 저장하지 않습니다.

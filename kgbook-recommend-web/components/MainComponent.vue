@@ -11,12 +11,14 @@ import BookPreferenceModal from "~/components/modal/BookPreferenceModal.vue";
 const router = useRouter();
 
 const showPreferenceModal = ref(false);
+const userPreference = computed(() => {
+  if (!localStorage.getItem("userPreference")) {
+    return null;
+  }
+  return JSON.parse(localStorage.getItem("userPreference") as string);
+});
 onMounted(() => {
-  const userPreference = JSON.parse(
-    localStorage.getItem("userPreference") || "{}",
-  );
-  console.log(userPreference);
-  if (!userPreference || !userPreference.isSubmitted) {
+  if (!userPreference.value) {
     showPreferenceModal.value = true;
   }
 });
