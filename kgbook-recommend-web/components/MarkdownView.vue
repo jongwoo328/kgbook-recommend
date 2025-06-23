@@ -6,6 +6,7 @@ import "md-editor-v3/lib/preview.css";
 
 defineProps<{ content: string }>();
 const id = useId();
+const isDark = usePreferredDark();
 
 config({
   editorConfig: {
@@ -24,7 +25,13 @@ config({
 </script>
 
 <template>
-  <MdPreview :id="id" :model-value="content" class="md-view" language="ko-KR" />
+  <MdPreview
+    :id="id"
+    :model-value="content"
+    :theme="isDark ? 'dark' : 'light'"
+    class="md-view"
+    language="ko-KR"
+  />
 </template>
 
 <style>

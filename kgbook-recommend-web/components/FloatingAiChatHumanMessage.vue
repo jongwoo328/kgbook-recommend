@@ -7,8 +7,8 @@ defineProps<{
 </script>
 
 <template>
-  <div class="flex flex-end bg-gray-50 ml-10 p-4">
-    <pre class="text-gray-800">{{ message.content }}</pre>
+  <div class="flex flex-end bg-gray-50 dark:bg-gray-700 ml-10 p-4 rounded-lg">
+    <pre class="text-gray-800 dark:text-slate-200">{{ message.content }}</pre>
   </div>
 </template>
 

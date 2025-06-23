@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import FloatingAiChatAiMessage from "~/components/FloatingAiChatAiMessage.vue";
+import FloatingAiChatTemplateButton from "~/components/FloatingAiChatTemplateButton.vue";
 
 const showCard = ref(false);
 function toggleChatCard() {
@@ -100,7 +101,7 @@ function scrollToBottom() {
 <template>
   <Teleport to="#__nuxt">
     <Button
-      class="absolute bottom-10 right-10 px-5 py-3 text-xl"
+      class="absolute bottom-10 right-10 px-5 py-3 text-xl dark:text-slate-100"
       rounded
       size="large"
       @click="toggleChatCard"
@@ -155,7 +156,7 @@ function scrollToBottom() {
           </div>
         </template>
         <template #footer>
-          <div class="rounded p-2 bg-gray-50">
+          <div class="rounded p-2 bg-gray-50 dark:bg-gray-800">
             <div class="flex flex-col w-100 gap-2">
               <Textarea
                 v-model="inputMessage"
@@ -164,10 +165,13 @@ function scrollToBottom() {
                 rows="1"
                 @keydown.enter="onEnter"
               />
-              <div class="flex justify-end">
+              <div class="flex justify-between items-center">
+                <div class="flex">
+                  <FloatingAiChatTemplateButton label="어쩌구" />
+                </div>
                 <Button class="p-0" rounded size="small" @click="submit">
                   <template #icon>
-                    <Icon name="iconoir:arrow-up" />
+                    <Icon class="dark:text-slate-200" name="iconoir:arrow-up" />
                   </template>
                 </Button>
               </div>
