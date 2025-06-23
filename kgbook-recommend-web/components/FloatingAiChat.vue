@@ -100,7 +100,8 @@ function scrollToBottom() {
 <template>
   <Teleport to="#__nuxt">
     <Button
-      class="absolute bottom-10 right-10"
+      class="absolute bottom-10 right-10 px-5 py-3 text-xl"
+      rounded
       size="large"
       @click="toggleChatCard"
     >
