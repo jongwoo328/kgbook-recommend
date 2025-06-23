@@ -115,7 +115,7 @@ function scrollToBottom() {
           body: { class: 'flex-1 flex flex-col min-h-0' },
           content: { class: 'flex-1 min-h-0' },
         }"
-        class="absolute bottom-28 right-10 w-[60vw] max-w-[55rem] h-[55rem] max-h-[85vh]"
+        class="absolute bottom-28 right-10 w-[60vw] max-w-[55rem] h-[55rem] max-h-[85vh] border border-slate-100 shadow-lg shadow-slate-300"
       >
         <template #header>
           <div class="p-2 flex justify-end">
