@@ -96,6 +96,10 @@ function scrollToBottom() {
     }
   }
 }
+
+function onClickTemplate(content: string) {
+  inputMessage.value = content;
+}
 </script>
 
 <template>
@@ -166,8 +170,15 @@ function scrollToBottom() {
                 @keydown.enter="onEnter"
               />
               <div class="flex justify-between items-center">
-                <div class="flex">
-                  <FloatingAiChatTemplateButton label="어쩌구" />
+                <div class="flex gap-2">
+                  <FloatingAiChatTemplateButton
+                    label="어쩌구"
+                    @click="onClickTemplate('예시 내용')"
+                  />
+                  <FloatingAiChatTemplateButton
+                    label="어쩌구"
+                    @click="onClickTemplate('예시 내용2')"
+                  />
                 </div>
                 <Button class="p-0" rounded size="small" @click="submit">
                   <template #icon>
