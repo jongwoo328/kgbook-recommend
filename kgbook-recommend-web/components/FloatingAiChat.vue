@@ -172,11 +172,11 @@ function onClickTemplate(content: string) {
               <div class="flex justify-between items-center">
                 <div class="flex gap-2">
                   <FloatingAiChatTemplateButton
-                    label="어쩌구"
+                    label="최근 읽은책으로 추천받기"
                     @click="onClickTemplate('예시 내용')"
                   />
                   <FloatingAiChatTemplateButton
-                    label="어쩌구"
+                    label="나의 직무 기반으로 추천받기"
                     @click="onClickTemplate('예시 내용2')"
                   />
                 </div>
