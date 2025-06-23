@@ -101,7 +101,7 @@ function scrollToBottom() {
   <Teleport to="#__nuxt">
     <Button
       class="absolute bottom-10 right-10"
-      size="small"
+      size="large"
       @click="toggleChatCard"
     >
       <Icon name="hugeicons:ai-chat-02" />
@@ -114,7 +114,7 @@ function scrollToBottom() {
           body: { class: 'flex-1 flex flex-col min-h-0' },
           content: { class: 'flex-1 min-h-0' },
         }"
-        class="absolute bottom-20 right-10 w-[50vw] max-w-[40rem] h-[55rem] max-h-[80vh]"
+        class="absolute bottom-28 right-10 w-[60vw] max-w-[55rem] h-[55rem] max-h-[85vh]"
       >
         <template #header>
           <div class="p-2 flex justify-end">
