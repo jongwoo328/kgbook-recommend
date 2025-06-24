@@ -136,7 +136,7 @@ async function refreshPersonalizedBookList() {
         </div>
         <div
           v-else
-          class="max-w-full min-h-[20rem] flex flex-wrap gap-4 mt-4 items-center justify-center"
+          class="max-w-full min-h-[20rem] flex flex-wrap gap-3 mt-4 items-center justify-around"
         >
           <BookCard
             v-for="(book, idx) in section.books"

@@ -51,12 +51,13 @@ function goToBookDetailPage(book) {
     </div>
     <div v-else>
       <div
-        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4"
+          class="max-w-full min-h-[20rem] flex flex-wrap gap-3 mt-4 items-center justify-around"
       >
         <BookCard
           v-for="(book, idx) in searchResult"
           :key="idx"
           :book="book"
+          class="cursor-pointer max-w-[180px] min-w-[140px] h-[270px]"
           @click.native="goToBookDetailPage(book)"
         >
           <template #image>
