@@ -41,8 +41,16 @@ const aiRecommendedBooks = ref(dummyBookList);
   <div>
     <!-- 책의 정보 -->
     <div
-      class="flex items-center justify-around font-bold border-t-2 border-b-2 border-black px-2 py-3"
+      class="flex flex-col font-bold border-t-2 border-b-2 border-black px-2 py-3"
     >
+      <div
+        class="my-2 px-5 text-2xl flex items-center justify-between font-semibold"
+      >
+        <div class="flex items-center">
+          <span> 책 정보 </span>
+        </div>
+      </div>
+
       <div class="px-5 flex-1 flex items-center gap-10">
         <div class="w-[350px] h-[350px] flex-shrink-0 bg-gray-200">
           <img
