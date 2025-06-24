@@ -1,9 +1,5 @@
 <script lang="ts" setup>
 import BookDetailComponent from "~/components/BookDetailComponent.vue";
-
-definePageMeta({
-  layout: "etc",
-});
 </script>
 
 <template>

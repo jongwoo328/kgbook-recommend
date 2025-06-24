@@ -1,11 +1,8 @@
 <script lang="ts" setup>
-import { useRouter } from "vue-router";
 import BookCard from "~/components/general/BookCard.vue";
 import { dummyBookDetail, dummyBookList } from "~/data/dummy";
 import { useRoute } from "#vue-router";
 import BookEmptyComponent from "~/components/general/BookEmptyComponent.vue";
-
-const router = useRouter();
 
 const route = useRoute();
 const bookId = route.params.id;
@@ -38,10 +35,6 @@ const bookInfo = ref(dummyBookDetail);
 
 const otherBooksByAuthor = ref(dummyBookList);
 const aiRecommendedBooks = ref(dummyBookList);
-
-function goToBookDetailPage(book) {
-  router.push(`/book/${book.id}`);
-}
 </script>
 
 <template>
@@ -146,31 +139,33 @@ function goToBookDetailPage(book) {
         v-else
         class="max-w-full min-h-[20rem] flex flex-wrap gap-4 mt-4 items-center justify-center"
       >
-        <BookCard
+        <NuxtLink
           v-for="(book, idx) in otherBooksByAuthor"
           :key="idx"
+          :to="`/book/${book.id}`"
           class="max-w-[180px] min-w-[140px] h-[270px] cursor-pointer"
-          @click="goToBookDetailPage(book)"
         >
-          <template #image>
-            <img
-              :alt="book.title"
-              :src="book.coverUrl"
-              class="object-cover w-full h-full"
-            />
-          </template>
+          <BookCard>
+            <template #image>
+              <img
+                :alt="book.title"
+                :src="book.coverUrl"
+                class="object-cover w-full h-full"
+              />
+            </template>
 
-          <template #info>
-            <div class="text-center text-sm">
-              <p class="text text-gray-800">[{{ book.category }}]</p>
-              <span class="font-bold">{{ book.title }}</span>
-              /
-              <span class="text-sm text-gray-600">
-                {{ book.author }} ({{ book.price.toLocaleString() }}원)
-              </span>
-            </div>
-          </template>
-        </BookCard>
+            <template #info>
+              <div class="text-center text-sm">
+                <p class="text text-gray-800">[{{ book.category }}]</p>
+                <span class="font-bold">{{ book.title }}</span>
+                /
+                <span class="text-sm text-gray-600">
+                  {{ book.author }} ({{ book.price.toLocaleString() }}원)
+                </span>
+              </div>
+            </template>
+          </BookCard>
+        </NuxtLink>
       </div>
     </div>
 
@@ -197,31 +192,33 @@ function goToBookDetailPage(book) {
         v-else
         class="max-w-full min-h-[20rem] flex flex-wrap gap-4 mt-4 items-center justify-center"
       >
-        <BookCard
+        <NuxtLink
           v-for="(book, idx) in aiRecommendedBooks"
           :key="idx"
+          :to="`/book/${book.id}`"
           class="max-w-[180px] min-w-[140px] h-[270px] cursor-pointer"
-          @click="goToBookDetailPage(book)"
         >
-          <template #image>
-            <img
-              :alt="book.title"
-              :src="book.coverUrl"
-              class="object-cover w-full h-full"
-            />
-          </template>
+          <BookCard>
+            <template #image>
+              <img
+                :alt="book.title"
+                :src="book.coverUrl"
+                class="object-cover w-full h-full"
+              />
+            </template>
 
-          <template #info>
-            <div class="text-center text-sm">
-              <p class="text text-gray-800">[{{ book.category }}]</p>
-              <span class="font-bold">{{ book.title }}</span>
-              /
-              <span class="text-sm text-gray-600">
-                {{ book.author }} ({{ book.price.toLocaleString() }}원)
-              </span>
-            </div>
-          </template>
-        </BookCard>
+            <template #info>
+              <div class="text-center text-sm">
+                <p class="text text-gray-800">[{{ book.category }}]</p>
+                <span class="font-bold">{{ book.title }}</span>
+                /
+                <span class="text-sm text-gray-600">
+                  {{ book.author }} ({{ book.price.toLocaleString() }}원)
+                </span>
+              </div>
+            </template>
+          </BookCard>
+        </NuxtLink>
       </div>
     </div>
   </div>

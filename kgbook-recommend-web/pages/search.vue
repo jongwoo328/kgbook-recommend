@@ -1,9 +1,5 @@
 <script lang="ts" setup>
 import BookSearchComponent from "~/components/BookSearchComponent.vue";
-
-definePageMeta({
-  layout: "etc",
-});
 </script>
 
 <template>

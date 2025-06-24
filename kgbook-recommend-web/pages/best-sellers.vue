@@ -1,10 +1,6 @@
 <script lang="ts" setup>
 import BookListComponent from "~/components/BookListComponent.vue";
 import { SectionCategory } from "~/types/SectionCategory";
-
-definePageMeta({
-  layout: "etc",
-});
 </script>
 
 <template>

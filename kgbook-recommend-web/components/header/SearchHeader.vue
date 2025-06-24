@@ -24,12 +24,11 @@ function goToMainPage() {
 
 <template>
   <div class="my-5 flex flex-col justify-center items-center">
-    <h1
-      class="page-title cursor-pointer font-bold py-5 my-2 text-4xl"
-      @click="goToMainPage"
-    >
-      사이트 이름 뭐하징
-    </h1>
+    <NuxtLink to="/">
+      <h1 class="page-title cursor-pointer font-bold py-5 my-2 text-4xl">
+        사이트 이름 뭐하징
+      </h1>
+    </NuxtLink>
     <IconField class="search-input-container my-2">
       <InputIcon>
         <Icon class="text-xl" name="mdi-light:magnify" />

@@ -5,10 +5,6 @@ import BookEmptyComponent from "~/components/general/BookEmptyComponent.vue";
 import { SectionCategory } from "~/types/SectionCategory";
 import { mainPageChangeDummy, mainPageDummy } from "~/data/dummy";
 
-import { useRouter } from "vue-router";
-
-const router = useRouter();
-
 interface Book {
   id: number;
   title: string;
@@ -47,22 +43,16 @@ const bookCardSection = computed(() => [
   ...etcSectionData.value,
 ]);
 
-function goToBookListPage(category: MainSectionCategory) {
+function getCategoryRoute(category: MainSectionCategory) {
   switch (category) {
     case "bestseller":
-      router.push("/best-sellers?page=1");
-      return;
+      return "/best-sellers?page=1";
     case "remarkable":
-      router.push("/remakerable-new-books?page=1");
-      return;
+      return "/remakerable-new-books?page=1";
     default:
       console.error(`unknown category. category=(${category})`);
-      return;
+      return "";
   }
-}
-
-function goToBookDetailPage(book: Book) {
-  router.push(`/book/${book.id}`);
 }
 
 const isLoadingPersonalized = ref(false);
@@ -109,12 +99,13 @@ async function refreshPersonalizedBookList() {
             class="text-4xl cursor-pointer"
             @click="refreshPersonalizedBookList"
           />
-          <Icon
+          <NuxtLink
             v-else
-            :name="section.icon"
+            :to="getCategoryRoute(section.category)"
             class="text-4xl cursor-pointer"
-            @click="goToBookListPage(section.category)"
-          />
+          >
+            <Icon :name="section.icon" />
+          </NuxtLink>
         </template>
       </SectionHeader>
 
@@ -138,31 +129,33 @@ async function refreshPersonalizedBookList() {
           v-else
           class="max-w-full min-h-[20rem] flex flex-wrap gap-3 mt-4 items-center justify-around"
         >
-          <BookCard
+          <NuxtLink
             v-for="(book, idx) in section.books"
             :key="idx"
-            class="cursor-pointer max-w-[180px] min-w-[140px] h-[270px]"
-            @click="goToBookDetailPage(book)"
+            :to="`/book/${book.id}`"
+            class="cursor-pointer max-w-[180px] min-w-[140px] h-[270px] no-underline"
           >
-            <template #image>
-              <img
-                :alt="book.title"
-                :src="book.coverUrl"
-                class="object-cover w-full h-full"
-              />
-            </template>
+            <BookCard>
+              <template #image>
+                <img
+                  :alt="book.title"
+                  :src="book.coverUrl"
+                  class="object-cover w-full h-full"
+                />
+              </template>
 
-            <template #info>
-              <div class="text-center text-sm">
-                <p class="text text-gray-800">[{{ book.category }}]</p>
-                <span class="font-bold">{{ book.title }}</span>
-                /
-                <span class="text-sm text-gray-600">
-                  {{ book.author }} ({{ book.price.toLocaleString() }}원)
-                </span>
-              </div>
-            </template>
-          </BookCard>
+              <template #info>
+                <div class="text-center text-sm">
+                  <p class="text text-gray-800">[{{ book.category }}]</p>
+                  <span class="font-bold">{{ book.title }}</span>
+                  /
+                  <span class="text-sm text-gray-600">
+                    {{ book.author }} ({{ book.price.toLocaleString() }}원)
+                  </span>
+                </div>
+              </template>
+            </BookCard>
+          </NuxtLink>
         </div>
       </div>
     </div>
