@@ -58,7 +58,7 @@ const books = ref(dummyBookList2);
                 :alt="book.title"
                 :src="book.coverUrl"
                 class="object-cover w-full h-full"
-              />
+              >
             </template>
             <template #info>
               <div class="text-center text-sm">
@@ -79,8 +79,8 @@ const books = ref(dummyBookList2);
         <Paginator
           v-model:first="currentPage"
           :rows="10"
-          :rowsPerPageOptions="perPageOptions"
-          :totalRecords="books.length"
+          :rows-per-page-options="perPageOptions"
+          :total-records="books.length"
         />
       </div>
     </div>

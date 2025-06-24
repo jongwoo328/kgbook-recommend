@@ -58,7 +58,7 @@ const perPageOptions = ref<number[]>([10, 20, 30, 50, 100]);
                 :alt="book.title"
                 :src="book.coverUrl"
                 class="object-cover w-full h-full"
-              />
+              >
             </template>
 
             <template #info>
@@ -80,8 +80,8 @@ const perPageOptions = ref<number[]>([10, 20, 30, 50, 100]);
         <Paginator
           v-model:first="currentPage"
           :rows="10"
-          :rowsPerPageOptions="perPageOptions"
-          :totalRecords="searchResult.length"
+          :rows-per-page-options="perPageOptions"
+          :total-records="searchResult.length"
         />
       </div>
     </div>

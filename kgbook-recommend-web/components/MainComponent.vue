@@ -130,8 +130,8 @@ async function refreshPersonalizedBookList() {
           class="max-w-full min-h-[20rem] flex flex-wrap gap-3 mt-4 items-center justify-around"
         >
           <NuxtLink
-            v-for="(book, idx) in section.books"
-            :key="idx"
+            v-for="(book, bookIdx) in section.books"
+            :key="bookIdx"
             :to="`/book/${book.id}`"
             class="cursor-pointer max-w-[180px] min-w-[140px] h-[270px] no-underline"
           >
@@ -141,7 +141,7 @@ async function refreshPersonalizedBookList() {
                   :alt="book.title"
                   :src="book.coverUrl"
                   class="object-cover w-full h-full"
-                />
+                >
               </template>
 
               <template #info>

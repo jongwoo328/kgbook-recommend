@@ -7,7 +7,7 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 const route = useRoute();
 
-const searchValue = ref<String>("");
+const searchValue = ref<string>("");
 
 function searchBook() {
   router.push({

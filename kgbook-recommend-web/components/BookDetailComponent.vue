@@ -11,7 +11,8 @@ onMounted(() => {
   console.log(bookId);
 });
 
-interface bookInfo {
+// TODO 현재 타입 미정 api 구현 시 고치기!
+interface BookInfo {
   id: number;
   title: string;
   category: string;
