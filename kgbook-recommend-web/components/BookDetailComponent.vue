@@ -124,15 +124,23 @@ const aiRecommendedBooks = ref(dummyBookList);
       </div>
     </div>
 
-    <!-- 이 작가의 다른 책 추천 -->
+    <!-- 비슷한 분야의 책 추천 (ai) -->
     <div class="border-b-2 border-black px-2 py-3">
       <div
         class="my-2 px-5 text-2xl flex items-center justify-between font-semibold"
       >
-        이 작가의 다른 책 ({{ otherBooksByAuthor.length }})
+        <div class="flex items-center">
+          <Icon class="text-2xl mr-2 text-teal-600" name="hugeicons:robotic" />
+          <span class="text-teal-600">
+            AI 기반의 비슷한 책 추천 ({{ aiRecommendedBooks.length }})
+          </span>
+        </div>
+        <span class="italic text-sm text-gray-400">
+          GPT 4.0 기반의 AI가 분석한 추천 목록입니다.
+        </span>
       </div>
 
-      <div v-if="otherBooksByAuthor.length === 0">
+      <div v-if="aiRecommendedBooks.length === 0">
         <BookEmptyComponent />
       </div>
       <div
@@ -140,7 +148,7 @@ const aiRecommendedBooks = ref(dummyBookList);
         class="max-w-full min-h-[20rem] flex flex-wrap gap-4 mt-4 items-center justify-center"
       >
         <NuxtLink
-          v-for="(book, idx) in otherBooksByAuthor"
+          v-for="(book, idx) in aiRecommendedBooks"
           :key="idx"
           :to="`/book/${book.id}`"
           class="max-w-[180px] min-w-[140px] h-[270px] cursor-pointer"
@@ -172,23 +180,15 @@ const aiRecommendedBooks = ref(dummyBookList);
       </div>
     </div>
 
-    <!-- 비슷한 분야의 책 추천 (ai) -->
+    <!-- 이 작가의 다른 책 추천 -->
     <div class="border-b-2 border-black px-2 py-3">
       <div
         class="my-2 px-5 text-2xl flex items-center justify-between font-semibold"
       >
-        <div class="flex items-center">
-          <Icon class="text-2xl mr-2 text-teal-600" name="hugeicons:robotic" />
-          <span class="text-teal-600">
-            AI 기반의 비슷한 책 추천 ({{ aiRecommendedBooks.length }})
-          </span>
-        </div>
-        <span class="italic text-sm text-gray-400">
-          GPT 4.0 기반의 AI가 분석한 추천 목록입니다.
-        </span>
+        이 작가의 다른 책 ({{ otherBooksByAuthor.length }})
       </div>
 
-      <div v-if="aiRecommendedBooks.length === 0">
+      <div v-if="otherBooksByAuthor.length === 0">
         <BookEmptyComponent />
       </div>
       <div
@@ -196,7 +196,7 @@ const aiRecommendedBooks = ref(dummyBookList);
         class="max-w-full min-h-[20rem] flex flex-wrap gap-4 mt-4 items-center justify-center"
       >
         <NuxtLink
-          v-for="(book, idx) in aiRecommendedBooks"
+          v-for="(book, idx) in otherBooksByAuthor"
           :key="idx"
           :to="`/book/${book.id}`"
           class="max-w-[180px] min-w-[140px] h-[270px] cursor-pointer"
