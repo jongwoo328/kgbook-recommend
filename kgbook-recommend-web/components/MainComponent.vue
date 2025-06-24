@@ -147,14 +147,14 @@ async function refreshPersonalizedBookList() {
               <template #info>
                 <div class="text-center text-sm">
                   <p class="text text-gray-800">[{{ book.category }}]</p>
-                  <span class="font-bold">{{ book.title }}</span>
-                  /
-                  <span class="text-sm text-gray-600">
+                  <p class="text text-gray-800">[{{ book.category }}]</p>
+                  <p class="font-bold truncate">{{ book.title }}</p>
+                  <p class="text-sm text-gray-600 truncate">
                     {{ book.author }}
-                  </span>
-                  <span class="text-sm text-gray-600">
-                    ({{ book.price.toLocaleString() }}원)
-                  </span>
+                  </p>
+                  <p class="text-sm text-gray-600 truncate">
+                    {{ book.price.toLocaleString() }}원
+                  </p>
                 </div>
               </template>
             </BookCard>
