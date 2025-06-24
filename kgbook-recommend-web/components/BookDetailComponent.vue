@@ -160,7 +160,10 @@ const aiRecommendedBooks = ref(dummyBookList);
                 <span class="font-bold">{{ book.title }}</span>
                 /
                 <span class="text-sm text-gray-600">
-                  {{ book.author }} ({{ book.price.toLocaleString() }}원)
+                  {{ book.author }}
+                </span>
+                <span class="text-sm text-gray-600">
+                  ({{ book.price.toLocaleString() }}원)
                 </span>
               </div>
             </template>
@@ -213,7 +216,10 @@ const aiRecommendedBooks = ref(dummyBookList);
                 <span class="font-bold">{{ book.title }}</span>
                 /
                 <span class="text-sm text-gray-600">
-                  {{ book.author }} ({{ book.price.toLocaleString() }}원)
+                  {{ book.author }}
+                </span>
+                <span class="text-sm text-gray-600">
+                  ({{ book.price.toLocaleString() }}원)
                 </span>
               </div>
             </template>
