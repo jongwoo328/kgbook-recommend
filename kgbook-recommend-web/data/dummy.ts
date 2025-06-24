@@ -15,7 +15,7 @@ export const mainPageDummy = {
         "설정한 내용을 바탕으로 GPT 4.5를 이용하여 맞춤형 책을 추천해드려요!",
       icon: "line-md:question-circle",
     } as TooltipInfo,
-    title: "Personalized Recommendations",
+    title: "개인 맞춤 추천 책",
     icon: "line-md:rotate-270",
     books: [
       {
@@ -76,7 +76,7 @@ export const mainPageDummy = {
     {
       category: SectionCategory.Bestseller,
       showTooltip: false,
-      title: "Bestsellers",
+      title: "베스트셀러",
       icon: "line-md:chevron-small-right",
       books: [
         {
@@ -132,7 +132,7 @@ export const mainPageDummy = {
     {
       category: SectionCategory.Remarkable,
       showTooltip: false,
-      title: "Remarkable New Books",
+      title: "주목할 만한 신간",
       icon: "line-md:chevron-small-right",
       books: [
         {
@@ -196,7 +196,7 @@ export const mainPageChangeDummy = {
       message: "설정한 내용을 바탕으로 맞춤형 책을 추천해드려요!",
       icon: "line-md:question-circle",
     } as TooltipInfo,
-    title: "Personalized Recommendations",
+    title: "개인 맞춤 추천 책",
     icon: "line-md:rotate-270",
     books: [
       {

@@ -16,9 +16,9 @@ const props = defineProps<{
 const pageTitle = computed(() => {
   switch (props.category) {
     case SectionCategory.Bestseller:
-      return "BestSellers";
+      return "베스트셀러";
     case SectionCategory.Remarkable:
-      return "Remarkable New Books";
+      return "주목할 만한 신간";
     default:
       console.error(`Unknown category: ${props.category}`);
       return "Book List";
