@@ -61,12 +61,14 @@ const books = ref(dummyBookList2);
             </template>
             <template #info>
               <div class="text-center text-sm">
-                <p class="text text-gray-800">[{{ book.category }}]</p>
-                <p class="font-bold">{{ book.title }}</p>
-                <p class="text-sm text-gray-600">
+                <p class="text text-gray-800 dark:text-gray-300">
+                  [{{ book.category }}]
+                </p>
+                <p class="font-bold truncate">{{ book.title }}</p>
+                <p class="text-sm text-gray-600 dark:text-gray-500 truncate">
                   {{ book.author }}
                 </p>
-                <p class="text-sm text-gray-600">
+                <p class="text-sm text-gray-600 dark:text-gray-500 truncate">
                   {{ book.price.toLocaleString() }}원
                 </p>
               </div>

@@ -41,7 +41,7 @@ const aiRecommendedBooks = ref(dummyBookList);
   <div>
     <!-- 책의 정보 -->
     <div
-      class="flex flex-col font-bold border-t-2 border-b-2 border-black px-2 py-3"
+      class="flex flex-col font-bold border-t-2 border-b-2 border-black dark:border-white px-2 py-3"
     >
       <div
         class="my-2 px-5 text-2xl flex items-center justify-between font-semibold"
@@ -66,7 +66,9 @@ const aiRecommendedBooks = ref(dummyBookList);
             </span>
           </div>
           <h1 class="text-2xl">{{ bookInfo.title }}</h1>
-          <div class="flex gap-x-1.5 py-2 border-b-2 border-gray-100">
+          <div
+            class="flex gap-x-1.5 py-2 border-b-2 border-gray-100 dark:border-gray-600 text-gray-800 dark:text-gray-300"
+          >
             <span>{{ bookInfo.author }}(지은이)</span>
             |
             <span>{{ bookInfo.publisher }}</span>
@@ -76,21 +78,23 @@ const aiRecommendedBooks = ref(dummyBookList);
 
           <div
             v-if="bookInfo.description"
-            class="text-sm py-2 border-b-2 border-gray-100 text-gray-800"
+            class="text-sm py-2 border-b-2 border-gray-100 dark:border-gray-600 text-gray-800 dark:text-gray-300"
           >
             {{ bookInfo.description }}
           </div>
 
           <div
-            class="mb-1 pt-2 space-y-2 text-sm text-gray-800 leading-relaxed"
+            class="mb-1 pt-2 space-y-2 text-sm border-gray-100 dark:border-gray-600 text-gray-800 dark:text-gray-300leading-relaxed"
           >
             <div class="flex items-baseline gap-2">
               <div class="w-20 text-gray-500">재고</div>
-              <div>{{ bookInfo.stockstatus }}</div>
+              <div class="dark:text-gray-200">{{ bookInfo.stockstatus }}</div>
             </div>
             <div class="flex items-baseline gap-2">
               <div class="w-20 text-gray-500">정가</div>
-              <div class="line-through">{{ bookInfo.price }}</div>
+              <div class="line-through dark:text-gray-200">
+                {{ bookInfo.price }}
+              </div>
             </div>
             <div class="flex items-baseline gap-2">
               <div class="w-20 text-gray-500">판매가</div>
@@ -111,7 +115,7 @@ const aiRecommendedBooks = ref(dummyBookList);
             </div>
             <div class="flex items-baseline gap-2">
               <div class="w-20 text-gray-500">ISBN</div>
-              <div>{{ bookInfo.isbn }}</div>
+              <div class="dark:text-gray-200">{{ bookInfo.isbn }}</div>
             </div>
           </div>
 
@@ -133,7 +137,7 @@ const aiRecommendedBooks = ref(dummyBookList);
     </div>
 
     <!-- 비슷한 분야의 책 추천 (ai) -->
-    <div class="border-b-2 border-black px-2 py-3">
+    <div class="border-b-2 border-black dark:border-white px-2 py-3">
       <div
         class="my-2 px-5 text-2xl flex items-center justify-between font-semibold"
       >
@@ -172,12 +176,14 @@ const aiRecommendedBooks = ref(dummyBookList);
 
             <template #info>
               <div class="text-center text-sm">
-                <p class="text text-gray-800">[{{ book.category }}]</p>
-                <p class="font-bold">{{ book.title }}</p>
-                <p class="text-sm text-gray-600">
+                <p class="text text-gray-800 dark:text-gray-300">
+                  [{{ book.category }}]
+                </p>
+                <p class="font-bold truncate">{{ book.title }}</p>
+                <p class="text-sm text-gray-600 dark:text-gray-500 truncate">
                   {{ book.author }}
                 </p>
-                <p class="text-sm text-gray-600">
+                <p class="text-sm text-gray-600 dark:text-gray-500 truncate">
                   {{ book.price.toLocaleString() }}원
                 </p>
               </div>
@@ -188,7 +194,7 @@ const aiRecommendedBooks = ref(dummyBookList);
     </div>
 
     <!-- 이 작가의 다른 책 추천 -->
-    <div class="border-b-2 border-black px-2 py-3">
+    <div class="border-b-2 border-black dark:border-white px-2 py-3">
       <div
         class="my-2 px-5 text-2xl flex items-center justify-between font-semibold"
       >
@@ -219,12 +225,14 @@ const aiRecommendedBooks = ref(dummyBookList);
 
             <template #info>
               <div class="text-center text-sm">
-                <p class="text text-gray-800">[{{ book.category }}]</p>
+                <p class="text text-gray-800 dark:text-gray-300">
+                  [{{ book.category }}]
+                </p>
                 <p class="font-bold truncate">{{ book.title }}</p>
-                <p class="text-sm text-gray-600 truncate">
+                <p class="text-sm text-gray-600 dark:text-gray-500 truncate">
                   {{ book.author }}
                 </p>
-                <p class="text-sm text-gray-600 truncate">
+                <p class="text-sm text-gray-600 dark:text-gray-500 truncate">
                   {{ book.price.toLocaleString() }}원
                 </p>
               </div>

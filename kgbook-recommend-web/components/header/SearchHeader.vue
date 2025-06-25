@@ -17,10 +17,6 @@ function searchBook() {
   });
   console.log(`@@ searchBook search value=(${searchValue.value})`);
 }
-
-function isActiveLink(path: string) {
-  return route.path === path;
-}
 </script>
 
 <template>
@@ -33,7 +29,7 @@ function isActiveLink(path: string) {
     <div class="nav-bar-links text mb-2">
       <NuxtLink
         class="nav-bar-link text-gray-500"
-        exact-active-class="!text-black"
+        exact-active-class="!text-black dark:!text-white"
         to="/"
       >
         홈
@@ -41,7 +37,7 @@ function isActiveLink(path: string) {
       |
       <NuxtLink
         class="nav-bar-link text-gray-500"
-        exact-active-class="!text-black"
+        exact-active-class="!text-black dark:!text-white"
         to="/best-sellers?page=1"
       >
         베스트셀러
@@ -49,36 +45,22 @@ function isActiveLink(path: string) {
       |
       <NuxtLink
         class="nav-bar-link text-gray-500"
-        exact-active-class="!text-black"
+        exact-active-class="!text-black dark:!text-white"
         to="/remakerable-new-books?page=1"
       >
         주목할 만한 신간
       </NuxtLink>
     </div>
-    <IconField class="search-input-container my-2">
+    <IconField class="w-[70%] my-2">
       <InputIcon>
         <Icon class="text-xl" name="mdi-light:magnify" />
       </InputIcon>
       <InputText
         v-model="searchValue"
-        class="search-input"
+        class="w-full rounded-3xl px-8 py-4 border-2 border-black dark:border-white"
         placeholder="검색하여 책을 찾아보세요."
         @keydown.enter="searchBook"
       />
     </IconField>
   </div>
 </template>
-
-<style scoped>
-.search-input-container {
-  width: 70%;
-
-  .search-input {
-    width: 100%;
-    border-radius: 1.5rem;
-    padding: 1rem 2rem;
-    border-width: 2px;
-    border-color: black;
-  }
-}
-</style>
