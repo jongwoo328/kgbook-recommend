@@ -74,6 +74,13 @@ const blurPx = computed(() => `${props.blur}px`);
   z-index: 0;
 }
 
+@media (prefers-color-scheme: dark) {
+  .btn-content {
+    background-color: #333;
+    color: #bbb;
+  }
+}
+
 @keyframes rotate-rainbow {
   0% {
     transform: rotate(0deg);

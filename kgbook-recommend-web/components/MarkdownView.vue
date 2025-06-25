@@ -36,6 +36,7 @@ config({
 
 <style>
 .md-view {
+  padding: 0;
   ul {
     list-style: disc;
   }

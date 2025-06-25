@@ -1,8 +1,8 @@
 import animate from "tailwindcss-animate";
 import { setupInspiraUI } from "@inspira-ui/plugins";
 
+/** @type {import('tailwindcss').Config} */
 export default {
-  darkMode: "selector",
   safelist: ["dark"],
   prefix: "",
   content: [
