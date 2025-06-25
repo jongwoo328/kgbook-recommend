@@ -32,32 +32,24 @@ function isActiveLink(path: string) {
     </NuxtLink>
     <div class="nav-bar-links text mb-2">
       <NuxtLink
-        :class="[
-          'nav-bar-link',
-          isActiveLink('/') ? 'text-black' : 'text-gray-500',
-        ]"
+        class="nav-bar-link text-gray-500"
+        exact-active-class="!text-black"
         to="/"
       >
         홈
       </NuxtLink>
       |
       <NuxtLink
-        :class="[
-          'nav-bar-link',
-          isActiveLink('/best-sellers') ? 'text-black' : 'text-gray-500',
-        ]"
+        class="nav-bar-link text-gray-500"
+        exact-active-class="!text-black"
         to="/best-sellers?page=1"
       >
         베스트셀러
       </NuxtLink>
       |
       <NuxtLink
-        :class="[
-          'nav-bar-link',
-          isActiveLink('/remakerable-new-books')
-            ? 'text-black'
-            : 'text-gray-500',
-        ]"
+        class="nav-bar-link text-gray-500"
+        exact-active-class="!text-black"
         to="/remakerable-new-books?page=1"
       >
         주목할 만한 신간
