@@ -154,7 +154,7 @@ const aiRecommendedBooks = ref(dummyBookList);
       </div>
       <div
         v-else
-        class="max-w-full min-h-[20rem] flex flex-wrap gap-4 mt-4 items-center justify-center"
+        class="max-w-full min-h-[20rem] flex flex-wrap gap-4 mt-4 items-center justify-around"
       >
         <NuxtLink
           v-for="(book, idx) in aiRecommendedBooks"
@@ -201,7 +201,7 @@ const aiRecommendedBooks = ref(dummyBookList);
       </div>
       <div
         v-else
-        class="max-w-full min-h-[20rem] flex flex-wrap gap-4 mt-4 items-center justify-center"
+        class="max-w-full min-h-[20rem] flex flex-wrap gap-4 mt-4 items-center justify-around"
       >
         <NuxtLink
           v-for="(book, idx) in otherBooksByAuthor"
