@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import BookCard from "~/components/general/BookCard.vue";
 import { dummyBookDetail, dummyBookList } from "~/data/dummy";
-import { useRoute } from "#vue-router";
 import BookEmptyComponent from "~/components/general/BookEmptyComponent.vue";
 
 const route = useRoute();

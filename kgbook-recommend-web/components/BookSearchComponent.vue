@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { useRoute } from "#vue-router";
 import SectionHeader from "~/components/general/SectionHeader.vue";
 import BookCard from "~/components/general/BookCard.vue";
 import { dummyBookList } from "~/data/dummy";
@@ -58,7 +57,7 @@ const perPageOptions = ref<number[]>([10, 20, 30, 50, 100]);
                 :alt="book.title"
                 :src="book.coverUrl"
                 class="object-cover w-full h-full"
-              >
+              />
             </template>
 
             <template #info>
