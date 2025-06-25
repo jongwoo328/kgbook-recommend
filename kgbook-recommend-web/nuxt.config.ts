@@ -29,6 +29,7 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "@primevue/nuxt-module",
     "@vueuse/nuxt",
+    "motion-v/nuxt",
   ],
   devServer: {
     port: 8000,

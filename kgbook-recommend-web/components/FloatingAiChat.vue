@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import FloatingAiChatAiMessage from "~/components/FloatingAiChatAiMessage.vue";
 import FloatingAiChatTemplateButton from "~/components/FloatingAiChatTemplateButton.vue";
+import GradientButton from "~/components/GradientButton.vue";
 
 const showCard = ref(false);
 function toggleChatCard() {
@@ -104,15 +105,16 @@ function onClickTemplate(content: string) {
 
 <template>
   <Teleport to="#__nuxt">
-    <Button
+    <GradientButton
+      :border-radius="16"
+      :border-width="1"
+      bg-color="#FFF"
       class="absolute bottom-10 right-10 px-5 py-3 text-xl dark:text-slate-100"
-      rounded
-      size="large"
       @click="toggleChatCard"
     >
-      <Icon name="hugeicons:ai-chat-02" />
+      <Icon class="mr-2" name="humbleicons:ai" />
       책 추천받기
-    </Button>
+    </GradientButton>
     <ClientOnly>
       <Card
         v-show="showCard"
