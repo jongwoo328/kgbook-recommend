@@ -84,7 +84,7 @@ const aiRecommendedBooks = ref(dummyBookList);
           </div>
 
           <div
-            class="mb-1 pt-2 space-y-2 text-sm border-gray-100 dark:border-gray-600 text-gray-800 dark:text-gray-300leading-relaxed"
+            class="mb-1 pt-2 space-y-2 text-sm border-gray-100 dark:border-gray-600 text-gray-800 dark:text-gray-300 leading-relaxed"
           >
             <div class="flex items-baseline gap-2">
               <div class="w-20 text-gray-500">재고</div>
