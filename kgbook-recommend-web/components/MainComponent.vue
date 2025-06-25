@@ -196,7 +196,7 @@ async function refreshPersonalizedBookList() {
         </div>
       </div>
     </div>
-    <BookPreferenceModal v-model:visible="showPreferenceModal" /> />
+    <BookPreferenceModal v-model:visible="showPreferenceModal" />
   </div>
 </template>
 
