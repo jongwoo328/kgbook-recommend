@@ -1,9 +1,10 @@
 <script lang="ts" setup>
-import { computed, ref } from "vue";
+import { useLocalStorage } from "@vueuse/core";
+import type { Preference, UserPreference } from "~/types/Preference";
 
 const visible = defineModel<boolean>("visible");
 
-const userContextOptions = computed(() => [
+const userContextOptions = [
   "개발자 (Software Engineer)",
   "기획자 (Product Manager)",
   "디자이너 (UX/UI Designer)",
@@ -14,7 +15,7 @@ const userContextOptions = computed(() => [
   "취업 준비생",
   "직장인 (업무 관련 독서 위주)",
   "자기계발 중인 일반 독자",
-]);
+];
 
 const bookInterestOptions = [
   "인문/철학",
@@ -48,44 +49,44 @@ const bookStylePreferenceOptions = [
   "가볍게 웃으며 읽을 수 있는 유쾌한 책",
 ];
 
-const selectedJob = ref("");
-const selectedInterests = ref([]);
-const selectedReadTime = ref("");
-const selectedStyle = ref([]);
-const recentBook = ref("");
+// Default values for user preference
+const defaultUserPreference: UserPreference = {
+  job: "",
+  interests: [],
+  readTime: "",
+  style: [],
+  recentBook: "",
+};
+
+const defaultPreference: Preference = {
+  isSubmitted: false,
+  user: defaultUserPreference,
+};
+
+const userPreference = useLocalStorage<Preference>(
+  "userPreference",
+  defaultPreference,
+);
+
+const selected = ref<UserPreference>(defaultUserPreference);
+
+watch(
+  () => visible.value,
+  (opened) => {
+    if (opened && userPreference.value?.user) {
+      selected.value = structuredClone(toRaw(userPreference.value.user));
+    }
+  },
+);
 
 function submitPreferences() {
-  localStorage.setItem(
-    "userPreference",
-    JSON.stringify({
-      isSubmitted: true,
-      user: {
-        job: selectedJob.value,
-        interests: selectedInterests.value,
-        readTime: selectedReadTime.value,
-        style: selectedStyle.value,
-        recentBook: recentBook.value,
-      },
-    }),
-  );
-
+  userPreference.value.isSubmitted = true;
+  userPreference.value.user = structuredClone(toRaw(selected.value));
   visible.value = false;
 }
 
 function hideModal() {
-  localStorage.setItem(
-    "userPreference",
-    JSON.stringify({
-      isSubmitted: false,
-      user: {
-        job: selectedJob.value,
-        interests: selectedInterests.value,
-        readTime: selectedReadTime.value,
-        style: selectedStyle.value,
-        recentBook: recentBook.value,
-      },
-    }),
-  );
+  visible.value = false;
 }
 </script>
 
@@ -103,13 +104,13 @@ function hideModal() {
     </p>
     <div class="flex flex-col gap-4">
       <Dropdown
-        v-model="selectedJob"
+        v-model="selected.job"
         :options="userContextOptions"
         filter
         placeholder="직무를 선택하세요"
       />
       <MultiSelect
-        v-model="selectedInterests"
+        v-model="selected.interests"
         :options="bookInterestOptions"
         filter
         placeholder="관심 있는 분야"
@@ -119,7 +120,7 @@ function hideModal() {
         <div class="flex gap-2">
           <div v-for="option in readingHabitOptions" :key="option">
             <RadioButton
-              v-model="selectedReadTime"
+              v-model="selected.readTime"
               :input-id="option"
               :value="option"
             />
@@ -128,12 +129,15 @@ function hideModal() {
         </div>
       </div>
       <MultiSelect
-        v-model="selectedStyle"
+        v-model="selected.style"
         :options="bookStylePreferenceOptions"
         filter
         placeholder="선호하는 스타일"
       />
-      <InputText v-model="recentBook" placeholder="최근 읽은 책 (선택 사항)" />
+      <InputText
+        v-model="selected.recentBook"
+        placeholder="최근 읽은 책 (선택 사항)"
+      />
 
       <div class="flex justify-end gap-2">
         <Button label="Save" type="button" @click="submitPreferences" />

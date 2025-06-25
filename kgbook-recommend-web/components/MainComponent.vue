@@ -7,18 +7,30 @@ import { mainPageChangeDummy, mainPageDummy } from "~/data/dummy";
 
 import { useRouter } from "vue-router";
 import BookPreferenceModal from "~/components/modal/BookPreferenceModal.vue";
+import type { Preference } from "~/types/Preference";
+import { useLocalStorage } from "@vueuse/core";
 
 const router = useRouter();
 
+const defaultPreference: Preference = {
+  isSubmitted: false,
+  user: {
+    job: "",
+    interests: [],
+    readTime: "",
+    style: [],
+    recentBook: "",
+  },
+};
+
+const userPreference = useLocalStorage<Preference>(
+  "userPreference",
+  defaultPreference,
+);
 const showPreferenceModal = ref(false);
-const userPreference = computed(() => {
-  if (!localStorage.getItem("userPreference")) {
-    return null;
-  }
-  return JSON.parse(localStorage.getItem("userPreference") as string);
-});
+
 onMounted(() => {
-  if (!userPreference.value) {
+  if (!userPreference.value.isSubmitted) {
     showPreferenceModal.value = true;
   }
 });
