@@ -77,7 +77,7 @@ const blurPx = computed(() => `${props.blur}px`);
 @media (prefers-color-scheme: dark) {
   .btn-content {
     background-color: #333;
-    color: #bbb;
+    color: #eee;
   }
 }
 
