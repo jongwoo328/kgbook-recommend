@@ -16,7 +16,7 @@ const userContextOptions = computed(() => [
   "자기계발 중인 일반 독자",
 ]);
 
-const bookInterestOptions = computed(() => [
+const bookInterestOptions = [
   "인문/철학",
   "심리학",
   "사회/정치",
@@ -29,24 +29,24 @@ const bookInterestOptions = computed(() => [
   "과학 일반",
   "여행/에세이",
   "예술/디자인",
-]);
+];
 
-const readingHabitOptions = computed(() => [
+const readingHabitOptions = [
   "거의 안 읽는다",
   "하루 30분 미만",
   "하루 30분 ~ 1시간",
   "하루 1시간 이상",
   "주말에 몰아서 읽는다",
-]);
+];
 
-const bookStylePreferenceOptions = computed(() => [
+const bookStylePreferenceOptions = [
   "짧고 간결한 글을 선호함",
   "스토리텔링이 있는 흥미로운 책",
   "사실 위주의 정보성 콘텐츠",
   "감정에 울림을 주는 감동적인 내용",
   "생각할 거리를 던지는 깊이 있는 내용",
   "가볍게 웃으며 읽을 수 있는 유쾌한 책",
-]);
+];
 
 const selectedJob = ref("");
 const selectedInterests = ref([]);
