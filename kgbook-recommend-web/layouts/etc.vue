@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import FloatingAiChat from "~/components/FloatingAiChat.vue";
 import SearchHeader from "~/components/header/SearchHeader.vue";
 import TextFooter from "~/components/footer/TextFooter.vue";
 </script>
@@ -11,8 +10,7 @@ import TextFooter from "~/components/footer/TextFooter.vue";
     </header>
     <main class="container min-h-[100vh] mx-auto px-4">
       <slot />
-    <FloatingAiChat />
-  </main>
+    </main>
     <footer class="mt-5">
       <TextFooter />
     </footer>

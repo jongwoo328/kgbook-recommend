@@ -1,7 +1,15 @@
-<script setup lang="ts"></script>
+<script lang="ts" setup>
+import MainComponent from "~/components/MainComponent.vue";
+
+definePageMeta({
+  layout: "main",
+});
+</script>
 
 <template>
-  <h1>index page</h1>
+  <div class="pt-5 mt-10">
+    <MainComponent />
+  </div>
 </template>
 
 <style scoped></style>

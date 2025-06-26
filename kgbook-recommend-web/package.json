@@ -16,7 +16,7 @@
     "@primevue/forms": "^4.3.5",
     "@vavt/cm-extension": "^1.10.1",
     "@vueuse/core": "^13.4.0",
-    "@vueuse/nuxt": "13.4.0",
+    "@vueuse/nuxt": "^13.4.0",
     "eslint": "^9.28.0",
     "markdown-it-link-attributes": "^4.0.1",
     "md-editor-v3": "^5.7.0",
