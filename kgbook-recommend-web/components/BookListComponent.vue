@@ -1,9 +1,13 @@
 <script lang="ts" setup>
+import { useRouter } from "vue-router";
+import { useRoute } from "#vue-router";
 import { SectionCategory } from "~/types/SectionCategory";
 import SectionHeader from "~/components/general/SectionHeader.vue";
 import BookCard from "~/components/general/BookCard.vue";
 import BookEmptyComponent from "~/components/general/BookEmptyComponent.vue";
 import { dummyBookList2 } from "~/data/dummy";
+
+const router = useRouter();
 
 const route = useRoute();
 
@@ -29,7 +33,12 @@ const currentPage = ref<number>(Number(route.query.page) || 1);
 const perPageOptions = ref<number[]>([10, 20, 30, 50, 100]);
 
 // TODO 현재는 더미데이터. 추후 통신으로 가져오게 변경
+// const books = ref([]);
 const books = ref(dummyBookList2);
+
+function goToBookDetailPage(book) {
+  router.push(`/book/${book.id}`);
+}
 </script>
 
 <template>

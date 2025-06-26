@@ -5,6 +5,35 @@ import BookEmptyComponent from "~/components/general/BookEmptyComponent.vue";
 import { SectionCategory } from "~/types/SectionCategory";
 import { mainPageChangeDummy, mainPageDummy } from "~/data/dummy";
 
+import BookPreferenceModal from "~/components/modal/BookPreferenceModal.vue";
+import type { Preference } from "~/types/Preference";
+import { useLocalStorage } from "@vueuse/core";
+
+const router = useRouter();
+
+const defaultPreference: Preference = {
+  isSubmitted: false,
+  user: {
+    job: "",
+    interests: [],
+    readTime: "",
+    style: [],
+    recentBook: "",
+  },
+};
+
+const userPreference = useLocalStorage<Preference>(
+  "userPreference",
+  defaultPreference,
+);
+const showPreferenceModal = ref(false);
+
+onMounted(() => {
+  if (!userPreference.value.isSubmitted) {
+    showPreferenceModal.value = true;
+  }
+});
+
 interface Book {
   id: number;
   title: string;
@@ -83,12 +112,10 @@ async function refreshPersonalizedBookList() {
         <template #title>
           {{ section.title }}
           <Icon
-            v-if="section.showTooltip"
-            v-tooltip.top="{
-              value: section.tooltipInfo.message,
-            }"
-            :name="section.tooltipInfo.icon"
-            class="text-2xl"
+            v-if="section.category === SectionCategory.Personalized"
+            class="text-3xl cursor-pointer"
+            name="line-md:cog-filled"
+            @click="showPreferenceModal = true"
           />
         </template>
 
@@ -163,6 +190,7 @@ async function refreshPersonalizedBookList() {
         </div>
       </div>
     </div>
+    <BookPreferenceModal v-model:visible="showPreferenceModal" />
   </div>
 </template>
 

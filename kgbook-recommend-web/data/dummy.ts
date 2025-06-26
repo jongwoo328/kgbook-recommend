@@ -10,11 +10,6 @@ export const mainPageDummy = {
   personalized: {
     category: SectionCategory.Personalized,
     showTooltip: true,
-    tooltipInfo: {
-      message:
-        "설정한 내용을 바탕으로 GPT 4.5를 이용하여 맞춤형 책을 추천해드려요!",
-      icon: "line-md:question-circle",
-    } as TooltipInfo,
     title: "개인 맞춤 추천 책",
     icon: "line-md:rotate-270",
     books: [
@@ -192,10 +187,6 @@ export const mainPageChangeDummy = {
   personalized: {
     category: SectionCategory.Personalized,
     showTooltip: true,
-    tooltipInfo: {
-      message: "설정한 내용을 바탕으로 맞춤형 책을 추천해드려요!",
-      icon: "line-md:question-circle",
-    } as TooltipInfo,
     title: "개인 맞춤 추천 책",
     icon: "line-md:rotate-270",
     books: [
