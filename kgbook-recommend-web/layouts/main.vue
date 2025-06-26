@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import SearchHeader from "~/components/header/SearchHeader.vue";
+import TestButton from "~/components/footer/TestButton.vue";
 import TextFooter from "~/components/footer/TextFooter.vue";
 </script>
 
@@ -11,7 +12,8 @@ import TextFooter from "~/components/footer/TextFooter.vue";
     <main class="container min-h-[100vh] mx-auto px-4">
       <slot />
     </main>
-    <footer class="mt-5">
+    <footer class="mt-10 bg-black text-white">
+      <TestButton :show-title="true" class="py-14" />
       <TextFooter />
     </footer>
   </div>
