@@ -11,8 +11,9 @@ import TextFooter from "~/components/footer/TextFooter.vue";
     </header>
     <main class="container min-h-[100vh] mx-auto px-4">
       <slot />
+      <FloatingAiChat />
     </main>
-    <footer class="mt-10 bg-black text-white">
+    <footer class="mt-10 bg-black text-white dark:bg-[#333]">
       <TestButton :show-title="true" class="py-14" />
       <TextFooter />
     </footer>
