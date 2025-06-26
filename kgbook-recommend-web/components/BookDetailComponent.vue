@@ -57,7 +57,7 @@ const aiRecommendedBooks = ref(dummyBookList);
             :alt="bookInfo.title"
             :src="bookInfo.coverUrl"
             class="object-cover w-full h-full rounded"
-          />
+          >
         </div>
         <div class="flex-1 py-2">
           <div class="mb-1">
@@ -171,7 +171,7 @@ const aiRecommendedBooks = ref(dummyBookList);
                 :alt="book.title"
                 :src="book.coverUrl"
                 class="object-cover w-full h-full"
-              />
+              >
             </template>
 
             <template #info>
@@ -220,7 +220,7 @@ const aiRecommendedBooks = ref(dummyBookList);
                 :alt="book.title"
                 :src="book.coverUrl"
                 class="object-cover w-full h-full"
-              />
+              >
             </template>
 
             <template #info>

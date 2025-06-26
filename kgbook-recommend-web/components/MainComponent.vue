@@ -9,8 +9,6 @@ import BookPreferenceModal from "~/components/modal/BookPreferenceModal.vue";
 import type { Preference } from "~/types/Preference";
 import { useLocalStorage } from "@vueuse/core";
 
-const router = useRouter();
-
 const defaultPreference: Preference = {
   isSubmitted: false,
   user: {
@@ -168,7 +166,7 @@ async function refreshPersonalizedBookList() {
                   :alt="book.title"
                   :src="book.coverUrl"
                   class="object-cover w-full h-full"
-                />
+                >
               </template>
 
               <template #info>

@@ -57,7 +57,7 @@ const perPageOptions = ref<number[]>([10, 20, 30, 50, 100]);
                 :alt="book.title"
                 :src="book.coverUrl"
                 class="object-cover w-full h-full"
-              />
+              >
             </template>
 
             <template #info>

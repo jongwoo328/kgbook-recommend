@@ -40,6 +40,7 @@ const props = withDefaults(defineProps<GradientButtonProps>(), {
     "#EE82EE",
     "#FF0000",
   ],
+  class: "",
   duration: 2500,
   borderWidth: 2,
   borderRadius: 8,

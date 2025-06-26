@@ -4,8 +4,6 @@ import IconField from "primevue/iconfield";
 import { ref } from "vue";
 
 const router = useRouter();
-const route = useRoute();
-
 const searchValue = ref<string>("");
 
 function searchBook() {

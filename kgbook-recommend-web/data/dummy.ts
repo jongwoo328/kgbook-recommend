@@ -1,11 +1,6 @@
 // TODO 추후에 삭제하기..
 import { SectionCategory } from "~/types/SectionCategory";
 
-interface TooltipInfo {
-  message: string;
-  icon: string;
-}
-
 export const mainPageDummy = {
   personalized: {
     category: SectionCategory.Personalized,
