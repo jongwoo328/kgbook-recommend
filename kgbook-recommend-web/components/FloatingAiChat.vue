@@ -106,10 +106,10 @@ function onClickTemplate(content: string) {
 <template>
   <Teleport to="#__nuxt">
     <GradientButton
-      :border-radius="16"
-      :border-width="1"
+      :border-radius="24"
+      :border-width="2"
       bg-color="#FFF"
-      class="absolute bottom-10 right-10 px-5 py-3 text-xl dark:text-slate-100"
+      class="fixed bottom-10 w-48 h-16 right-10 px-5 py-3 text-2xl dark:text-slate-100"
       @click="toggleChatCard"
     >
       <Icon class="mr-2" name="humbleicons:ai" />
@@ -122,12 +122,13 @@ function onClickTemplate(content: string) {
           body: { class: 'flex-1 flex flex-col min-h-0' },
           content: { class: 'flex-1 min-h-0' },
         }"
-        class="absolute bottom-28 right-10 w-[60vw] max-w-[55rem] h-[55rem] max-h-[85vh] border border-slate-100 shadow-lg shadow-slate-300"
+        class="fixed bottom-28 right-10 w-[60vw] max-w-[55rem] h-[55rem] max-h-[85vh] border border-slate-400 shadow-lg shadow-slate-300"
       >
         <template #header>
           <div class="p-2 flex justify-end">
             <Button
               aria-label="Close"
+              class="border-none"
               rounded
               severity="secondary"
               size="small"
