@@ -19,9 +19,9 @@ const props = defineProps<{
 const pageTitle = computed(() => {
   switch (props.category) {
     case SectionCategory.Bestseller:
-      return "BestSellers";
+      return "베스트셀러";
     case SectionCategory.Remarkable:
-      return "Remarkable New Books";
+      return "주목할 만한 신간";
     default:
       console.error(`Unknown category: ${props.category}`);
       return "Book List";
@@ -52,40 +52,45 @@ function goToBookDetailPage(book) {
     </div>
     <div v-else>
       <div
-        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4"
+        class="max-w-full min-h-[20rem] flex flex-wrap gap-3 mt-4 items-center justify-around"
       >
-        <BookCard
+        <NuxtLink
           v-for="(book, idx) in books"
           :key="idx"
-          :book="book"
-          @click.native="goToBookDetailPage(book)"
+          :to="`/book/${book.id}`"
+          class="cursor-pointer max-w-[320px] min-w-[200px] h-[450px]"
         >
-          <template #image>
-            <img
-              :alt="book.title"
-              :src="book.coverUrl"
-              class="object-cover w-full h-full"
-            />
-          </template>
-
-          <template #info>
-            <div class="text-center text-sm">
-              <p class="text text-gray-800">[{{ book.category }}]</p>
-              <span class="font-bold">{{ book.title }}</span>
-              /
-              <span class="text-sm text-gray-600">
-                {{ book.author }} ({{ book.price.toLocaleString() }}원)
-              </span>
-            </div>
-          </template>
-        </BookCard>
+          <BookCard>
+            <template #image>
+              <img
+                :alt="book.title"
+                :src="book.coverUrl"
+                class="object-cover w-full h-full"
+              />
+            </template>
+            <template #info>
+              <div class="text-center text-sm">
+                <p class="text text-gray-800 dark:text-gray-300">
+                  [{{ book.category }}]
+                </p>
+                <p class="font-bold truncate">{{ book.title }}</p>
+                <p class="text-sm text-gray-600 dark:text-gray-500 truncate">
+                  {{ book.author }}
+                </p>
+                <p class="text-sm text-gray-600 dark:text-gray-500 truncate">
+                  {{ book.price.toLocaleString() }}원
+                </p>
+              </div>
+            </template>
+          </BookCard>
+        </NuxtLink>
       </div>
       <div class="card mt-2">
         <Paginator
           v-model:first="currentPage"
           :rows="10"
-          :rowsPerPageOptions="perPageOptions"
-          :totalRecords="books.length"
+          :rows-per-page-options="perPageOptions"
+          :total-records="books.length"
         />
       </div>
     </div>

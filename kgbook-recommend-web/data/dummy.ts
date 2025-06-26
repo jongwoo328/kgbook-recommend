@@ -1,11 +1,16 @@
 // TODO 추후에 삭제하기..
 import { SectionCategory } from "~/types/SectionCategory";
 
+interface TooltipInfo {
+  message: string;
+  icon: string;
+}
+
 export const mainPageDummy = {
   personalized: {
     category: SectionCategory.Personalized,
     showTooltip: true,
-    title: "Personalized Recommendations",
+    title: "개인 맞춤 추천 책",
     icon: "line-md:rotate-270",
     books: [
       {
@@ -66,7 +71,7 @@ export const mainPageDummy = {
     {
       category: SectionCategory.Bestseller,
       showTooltip: false,
-      title: "Bestsellers",
+      title: "베스트셀러",
       icon: "line-md:chevron-small-right",
       books: [
         {
@@ -122,7 +127,7 @@ export const mainPageDummy = {
     {
       category: SectionCategory.Remarkable,
       showTooltip: false,
-      title: "Remarkable New Books",
+      title: "주목할 만한 신간",
       icon: "line-md:chevron-small-right",
       books: [
         {
@@ -182,7 +187,7 @@ export const mainPageChangeDummy = {
   personalized: {
     category: SectionCategory.Personalized,
     showTooltip: true,
-    title: "Personalized Recommendations",
+    title: "개인 맞춤 추천 책",
     icon: "line-md:rotate-270",
     books: [
       {

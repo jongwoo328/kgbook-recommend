@@ -5,7 +5,6 @@ import BookEmptyComponent from "~/components/general/BookEmptyComponent.vue";
 import { SectionCategory } from "~/types/SectionCategory";
 import { mainPageChangeDummy, mainPageDummy } from "~/data/dummy";
 
-import { useRouter } from "vue-router";
 import BookPreferenceModal from "~/components/modal/BookPreferenceModal.vue";
 import type { Preference } from "~/types/Preference";
 import { useLocalStorage } from "@vueuse/core";
@@ -73,22 +72,16 @@ const bookCardSection = computed(() => [
   ...etcSectionData.value,
 ]);
 
-function goToBookListPage(category: MainSectionCategory) {
+function getCategoryRoute(category: MainSectionCategory) {
   switch (category) {
     case "bestseller":
-      router.push("/best-sellers?page=1");
-      return;
+      return "/best-sellers?page=1";
     case "remarkable":
-      router.push("/remakerable-new-books?page=1");
-      return;
+      return "/remakerable-new-books?page=1";
     default:
       console.error(`unknown category. category=(${category})`);
-      return;
+      return "";
   }
-}
-
-function goToBookDetailPage(book: Book) {
-  router.push(`/book/${book.id}`);
 }
 
 const isLoadingPersonalized = ref(false);
@@ -133,12 +126,13 @@ async function refreshPersonalizedBookList() {
             class="text-4xl cursor-pointer"
             @click="refreshPersonalizedBookList"
           />
-          <Icon
+          <NuxtLink
             v-else
-            :name="section.icon"
+            :to="getCategoryRoute(section.category)"
             class="text-4xl cursor-pointer"
-            @click="goToBookListPage(section.category)"
-          />
+          >
+            <Icon :name="section.icon" />
+          </NuxtLink>
         </template>
       </SectionHeader>
 
@@ -160,39 +154,39 @@ async function refreshPersonalizedBookList() {
         </div>
         <div
           v-else
-          class="max-w-full min-h-[20rem] flex flex-wrap gap-4 mt-4 items-center justify-center"
+          class="max-w-full min-h-[20rem] flex flex-wrap gap-3 mt-4 items-center justify-around"
         >
-          <div
-            v-if="section.category === SectionCategory.Personalized"
-            class="px-4 py-0 w-full italic text-sm text-gray-600"
+          <NuxtLink
+            v-for="(book, bookIdx) in section.books"
+            :key="bookIdx"
+            :to="`/book/${book.id}`"
+            class="cursor-pointer max-w-[180px] min-w-[140px] h-[270px] no-underline"
           >
-            GPT 4.5 기반으로 당신의 취향을 반영한 책 추천입니다.
-          </div>
-          <BookCard
-            v-for="(book, idx) in section.books"
-            :key="idx"
-            class="cursor-pointer max-w-[180px] min-w-[140px] h-[270px]"
-            @click="goToBookDetailPage(book)"
-          >
-            <template #image>
-              <img
-                :alt="book.title"
-                :src="book.coverUrl"
-                class="object-cover w-full h-full"
-              />
-            </template>
+            <BookCard>
+              <template #image>
+                <img
+                  :alt="book.title"
+                  :src="book.coverUrl"
+                  class="object-cover w-full h-full"
+                />
+              </template>
 
-            <template #info>
-              <div class="text-center text-sm">
-                <p class="text text-gray-800">[{{ book.category }}]</p>
-                <span class="font-bold">{{ book.title }}</span>
-                /
-                <span class="text-sm text-gray-600">
-                  {{ book.author }} ({{ book.price.toLocaleString() }}원)
-                </span>
-              </div>
-            </template>
-          </BookCard>
+              <template #info>
+                <div class="text-center text-sm">
+                  <p class="text text-gray-800 dark:text-gray-300">
+                    [{{ book.category }}]
+                  </p>
+                  <p class="font-bold truncate">{{ book.title }}</p>
+                  <p class="text-sm text-gray-600 dark:text-gray-500 truncate">
+                    {{ book.author }}
+                  </p>
+                  <p class="text-sm text-gray-600 dark:text-gray-500 truncate">
+                    {{ book.price.toLocaleString() }}원
+                  </p>
+                </div>
+              </template>
+            </BookCard>
+          </NuxtLink>
         </div>
       </div>
     </div>
