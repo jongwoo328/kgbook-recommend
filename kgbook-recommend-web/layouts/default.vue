@@ -1,7 +1,9 @@
 <script lang="ts" setup>
-import FloatingAiChat from "~/components/FloatingAiChat.vue";
 import SearchHeader from "~/components/header/SearchHeader.vue";
 import TextFooter from "~/components/footer/TextFooter.vue";
+import TestButton from "~/components/footer/TestButton.vue";
+
+const route = useRoute();
 </script>
 
 <template>
@@ -13,6 +15,13 @@ import TextFooter from "~/components/footer/TextFooter.vue";
       <slot />
       <FloatingAiChat />
     </main>
+    <footer
+      v-if="route.path === '/'"
+      class="mt-10 bg-black text-white dark:bg-[#333]"
+    >
+      <TestButton :show-title="true" class="py-14" />
+      <TextFooter />
+    </footer>
     <footer class="mt-5">
       <TextFooter />
     </footer>
