@@ -1,9 +1,5 @@
 <script lang="ts" setup>
 import MainComponent from "~/components/MainComponent.vue";
-
-definePageMeta({
-  layout: "main",
-});
 </script>
 
 <template>
