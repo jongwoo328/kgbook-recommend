@@ -9,9 +9,7 @@ services:
       - "5432:5432"
     volumes:
       - kgbook-pgdata:/var/lib/postgresql/data
-      - ./scripts/01-create-database.sql:/docker-entrypoint-initdb.d/01-create-database.sql
-      - ./scripts/02-init-database.sql:/docker-entrypoint-initdb.d/02-init-database.sql
-      - ./scripts/03-initial-data.sql:/docker-entrypoint-initdb.d/03-initial-data.sql
+      - ./scripts:/docker-entrypoint-initdb.d
   aladin-mcp-server:
     build:
       context: ../aladin-mcp-server
