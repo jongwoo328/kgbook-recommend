@@ -1,5 +1,7 @@
 import { Pool } from 'pg';
 
+console.debug('Connecting to PostgreSQL database...');
+
 const pool = new Pool({
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
@@ -11,5 +13,7 @@ const pool = new Pool({
   idleTimeoutMillis: 150000,
   connectionTimeoutMillis: 2000,
 });
+
+console.debug('Connected to PostgreSQL !!');
 
 export const db = pool;
