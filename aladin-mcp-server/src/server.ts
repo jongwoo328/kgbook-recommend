@@ -10,7 +10,7 @@ export function createServer() {
   });
   const aladin = new Aladin({ ttbKey: process.env.TTB_KEY ?? '' });
 
-  server.tool('get_new_books_by_month', async () => {
+  server.tool('get_new_books_by_monthly', async () => {
     const date = new Date();
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
@@ -78,7 +78,7 @@ export function createServer() {
     },
   );
 
-  server.tool('get_new_books_special_by_month', async () => {
+  server.tool('get_new_books_special_by_monthly', async () => {
     const date = new Date();
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
