@@ -68,6 +68,61 @@ export function createServer() {
       };
     },
   );
+
+  server.tool('get_new_books_special', { cid: z.number() }, async ({ cid }) => {
+    const results = await aladin.listItems({
+      queryType: 'ItemNewSpecial',
+    });
+
+    if (!results.success) {
+      return {
+        content: [
+          {
+            type: 'text',
+            text: results.error.message,
+          },
+        ],
+        isError: true,
+      };
+    }
+    return {
+      content: results.data.item.map((item) => {
+        return {
+          type: 'text',
+          text: JSON.stringify(item),
+          mimeType: 'application/json',
+        };
+      }),
+    };
+  });
+
+  server.tool('get_bestsellers', { cid: z.number() }, async ({ cid }) => {
+    const results = await aladin.listItems({
+      queryType: 'Bestseller',
+    });
+
+    if (!results.success) {
+      return {
+        content: [
+          {
+            type: 'text',
+            text: results.error.message,
+          },
+        ],
+        isError: true,
+      };
+    }
+    return {
+      content: results.data.item.map((item) => {
+        return {
+          type: 'text',
+          text: JSON.stringify(item),
+          mimeType: 'application/json',
+        };
+      }),
+    };
+  });
+
   server.tool(
     'get_bestsellers_by_category_id',
     { cid: z.number() },
