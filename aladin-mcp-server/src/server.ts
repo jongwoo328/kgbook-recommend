@@ -202,5 +202,122 @@ export function createServer() {
       }
     },
   );
+
+  server.tool(
+    'search_books_by_title_and_author',
+    { query: z.string() },
+    async ({ query }) => {
+      const results = await aladin.searchItems({
+        query: query,
+        queryType: 'Keyword',
+      });
+
+      if (!results.success) {
+        return {
+          content: [
+            {
+              type: 'text',
+              text: results.error.message,
+            },
+          ],
+          isError: true,
+        };
+      }
+      return {
+        content: results.data.item.map((item) => {
+          return {
+            type: 'text',
+            text: JSON.stringify(item),
+            mimeType: 'application/json',
+          };
+        }),
+      };
+    },
+  );
+
+  server.tool('get_book_by_item_id', { id: z.number() }, async ({ id }) => {
+    const results = await aladin.lookupItem({
+      itemId: id,
+      itemIdType: 'ItemId',
+    });
+
+    if (!results.success) {
+      return {
+        content: [
+          {
+            type: 'text',
+            text: results.error.message,
+          },
+        ],
+        isError: true,
+      };
+    }
+    return {
+      content: results.data.item.map((item) => {
+        return {
+          type: 'text',
+          text: JSON.stringify(item),
+          mimeType: 'application/json',
+        };
+      }),
+    };
+  });
+
+  server.tool('get_book_by_isbn', { id: z.number() }, async ({ id }) => {
+    const results = await aladin.lookupItem({
+      itemId: id,
+      itemIdType: 'ISBN',
+    });
+
+    if (!results.success) {
+      return {
+        content: [
+          {
+            type: 'text',
+            text: results.error.message,
+          },
+        ],
+        isError: true,
+      };
+    }
+    return {
+      content: results.data.item.map((item) => {
+        return {
+          type: 'text',
+          text: JSON.stringify(item),
+          mimeType: 'application/json',
+        };
+      }),
+    };
+  });
+
+  server.tool('get_book_by_isbn13', { id: z.number() }, async ({ id }) => {
+    const results = await aladin.lookupItem({
+      itemId: id,
+      itemIdType: 'ISBN13',
+    });
+
+    if (!results.success) {
+      return {
+        content: [
+          {
+            type: 'text',
+            text: results.error.message,
+          },
+        ],
+        isError: true,
+      };
+    }
+    return {
+      content: results.data.item.map((item) => {
+        return {
+          type: 'text',
+          text: JSON.stringify(item),
+          mimeType: 'application/json',
+        };
+      }),
+    };
+  });
+
   return server;
 }
