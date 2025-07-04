@@ -9,6 +9,34 @@ export function createServer() {
     version: '1.0.0',
   });
   const aladin = new Aladin({ ttbKey: process.env.TTB_KEY ?? '' });
+
+  server.tool('get_new_books', { cid: z.number() }, async ({ cid }) => {
+    const results = await aladin.listItems({
+      queryType: 'ItemNewAll',
+    });
+
+    if (!results.success) {
+      return {
+        content: [
+          {
+            type: 'text',
+            text: results.error.message,
+          },
+        ],
+        isError: true,
+      };
+    }
+    return {
+      content: results.data.item.map((item) => {
+        return {
+          type: 'text',
+          text: JSON.stringify(item),
+          mimeType: 'application/json',
+        };
+      }),
+    };
+  });
+
   server.tool(
     'get_new_books_by_category_id',
     { cid: z.number() },
