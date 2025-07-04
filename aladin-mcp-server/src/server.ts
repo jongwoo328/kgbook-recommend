@@ -10,9 +10,17 @@ export function createServer() {
   });
   const aladin = new Aladin({ ttbKey: process.env.TTB_KEY ?? '' });
 
-  server.tool('get_new_books', { cid: z.number() }, async ({ cid }) => {
+  server.tool('get_new_books_by_month', async () => {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+
     const results = await aladin.listItems({
       queryType: 'ItemNewAll',
+      searchTarget: 'Book',
+      year: year,
+      month: month,
+      cover: 'Big',
     });
 
     if (!results.success) {
@@ -44,6 +52,7 @@ export function createServer() {
       const results = await aladin.listItems({
         queryType: 'ItemNewAll',
         categoryId: cid,
+        cover: 'Big',
       });
 
       if (!results.success) {
@@ -69,9 +78,17 @@ export function createServer() {
     },
   );
 
-  server.tool('get_new_books_special', { cid: z.number() }, async ({ cid }) => {
+  server.tool('get_new_books_special_by_month', async () => {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+
     const results = await aladin.listItems({
       queryType: 'ItemNewSpecial',
+      searchTarget: 'Book',
+      year: year,
+      month: month,
+      cover: 'Big',
     });
 
     if (!results.success) {
@@ -96,9 +113,11 @@ export function createServer() {
     };
   });
 
-  server.tool('get_bestsellers', { cid: z.number() }, async ({ cid }) => {
+  server.tool('get_bestsellers', async () => {
     const results = await aladin.listItems({
       queryType: 'Bestseller',
+      searchTarget: 'Book',
+      cover: 'Big',
     });
 
     if (!results.success) {
@@ -130,6 +149,7 @@ export function createServer() {
       const results = await aladin.listItems({
         queryType: 'Bestseller',
         categoryId: cid,
+        cover: 'Big',
       });
 
       if (!results.success) {
@@ -154,6 +174,7 @@ export function createServer() {
       };
     },
   );
+
   server.tool(
     'search_book_categories',
     { query: z.string() },
@@ -186,6 +207,7 @@ export function createServer() {
           })),
         };
       } catch (err: unknown) {
+        console.error(err);
         const message =
           err && typeof err === 'object' && 'message' in err
             ? err.message
@@ -210,6 +232,7 @@ export function createServer() {
       const results = await aladin.searchItems({
         query: query,
         queryType: 'Keyword',
+        cover: 'Big',
       });
 
       if (!results.success) {
@@ -239,6 +262,7 @@ export function createServer() {
     const results = await aladin.lookupItem({
       itemId: id,
       itemIdType: 'ItemId',
+      cover: 'Big',
     });
 
     if (!results.success) {
@@ -263,38 +287,9 @@ export function createServer() {
     };
   });
 
-  server.tool('get_book_by_isbn', { id: z.number() }, async ({ id }) => {
+  server.tool('get_book_by_isbn', { isbn: z.string() }, async ({ isbn }) => {
     const results = await aladin.lookupItem({
-      itemId: id,
-      itemIdType: 'ISBN',
-    });
-
-    if (!results.success) {
-      return {
-        content: [
-          {
-            type: 'text',
-            text: results.error.message,
-          },
-        ],
-        isError: true,
-      };
-    }
-    return {
-      content: results.data.item.map((item) => {
-        return {
-          type: 'text',
-          text: JSON.stringify(item),
-          mimeType: 'application/json',
-        };
-      }),
-    };
-  });
-
-  server.tool('get_book_by_isbn13', { id: z.number() }, async ({ id }) => {
-    const results = await aladin.lookupItem({
-      itemId: id,
-      itemIdType: 'ISBN13',
+      itemId: isbn,
     });
 
     if (!results.success) {
