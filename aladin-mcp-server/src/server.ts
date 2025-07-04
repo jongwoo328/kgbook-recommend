@@ -76,6 +76,7 @@ export function createServer() {
     { query: z.string() },
     async ({ query }) => {
       try {
+        // TODO 시멘틱 서치 구현 issue#23
         const result = await db.query(
           `SELECT cid,
 							category,
