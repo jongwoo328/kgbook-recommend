@@ -1,0 +1,3 @@
+type ChatResponse = {
+  response: string;
+};
