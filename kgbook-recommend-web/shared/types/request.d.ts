@@ -1,4 +1,6 @@
+import type { ChatMessage } from "@langchain/core/messages";
+
 type ChatRequest = {
   message: string;
-  messagesBefore: { role: "ai" | "user"; content: string }[];
+  messagesBefore: ChatMessage[];
 };

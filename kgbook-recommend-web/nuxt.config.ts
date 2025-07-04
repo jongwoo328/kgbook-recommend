@@ -34,6 +34,13 @@ export default defineNuxtConfig({
   devServer: {
     port: 8000,
   },
+  nitro: {
+    esbuild: {
+      options: {
+        target: "esnext",
+      },
+    },
+  },
   primevue: {
     options: {
       theme: {
