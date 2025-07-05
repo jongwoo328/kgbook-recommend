@@ -185,7 +185,7 @@ export function createServer() {
         const vectorLiteral = `[${embeddedQuery.join(',')}]`;
         const result = await db.query(
           `
-            SELECT cid, category, mall, depth1, depth2, depth3, depth4, depth5, cosine_similarity
+            SELECT cid, category, mall, depth1, depth2, depth3, depth4, depth5
             FROM (
                 SELECT cid, category, mall, depth1, depth2, depth3, depth4, depth5,
                         1 - (category_vector <=> $1) AS cosine_similarity
