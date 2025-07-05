@@ -73,10 +73,6 @@ function submit() {
       loading.value = false;
     });
   messages.value.push(userMessage);
-  // messages.value.push({
-  //   content: "아직 책 추천 기능은 구현되지 않았어요. 곧 추가할게요!",
-  //   role: "ai",
-  // });
   inputMessage.value = "";
 
   requestAnimationFrame(() => {
@@ -169,7 +165,7 @@ function onClickTemplate(content: string) {
                 :message="message"
               />
             </template>
-            <FloatingAiChatAiLoading v-if="true" />
+            <FloatingAiChatAiLoading v-if="loading" />
             <div ref="spacer" />
           </div>
         </template>
