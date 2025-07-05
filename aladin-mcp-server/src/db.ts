@@ -1,4 +1,5 @@
-import { Pool } from 'pg';
+import { Client, Pool } from 'pg';
+import pgvector from 'pgvector/pg';
 
 console.debug('Connecting to PostgreSQL database...');
 
@@ -15,5 +16,26 @@ const pool = new Pool({
 });
 
 console.debug('Connected to PostgreSQL !!');
+
+pool.on('connect', async (client) => {
+  console.debug('Connected to PostgreSQL !!');
+  await pgvector.registerTypes(client);
+});
+
+pool.on('release', (err, client) => {
+  if (err) {
+    console.error('Error releasing PostgreSQL client:', err);
+  } else {
+    console.debug('pool connection released');
+  }
+});
+
+pool.on('acquire', (client) => {
+  console.debug('pool connection acquired');
+});
+
+pool.on('remove', (client) => {
+  console.debug('pool connection removed');
+});
 
 export const db = pool;
