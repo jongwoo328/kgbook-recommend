@@ -1,12 +1,14 @@
 import { agent } from "~/server/ai";
-import type { ChatRequest } from "~/shared/types/request";
 
 export default defineEventHandler(async (event): Promise<ChatResponse> => {
   const body = await readBody<ChatRequest>(event);
   const messageHistory = body.messagesBefore;
 
   const r = await agent.invoke({
-    messages: messageHistory,
+    messages: messageHistory.concat({
+      role: "human",
+      content: body.message,
+    }),
   });
   if (r.messages.length == 0) {
     throw createError({
