@@ -2,6 +2,7 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { Aladin } from 'aladin-client';
 import { z } from 'zod';
 import { db } from './db';
+import { createEmbedding } from './service/openAiService';
 
 export function createServer() {
   const server = new McpServer({
@@ -180,24 +181,21 @@ export function createServer() {
     { query: z.string() },
     async ({ query }) => {
       try {
-        // TODO 시멘틱 서치 구현 issue#23
+        const embeddedQuery = await createEmbedding(query);
+        const vectorLiteral = `[${embeddedQuery.join(',')}]`;
         const result = await db.query(
-          `SELECT cid,
-							category,
-							mall,
-							depth1,
-							depth2,
-							depth3,
-							depth4,
-							depth5
-					 FROM kgbook.public.category
-					 WHERE category LIKE $1::text
-						OR depth1 LIKE $1::text
-						OR depth2 LIKE $1::text
-						OR depth3 LIKE $1::text
-						OR depth4 LIKE $1::text
-						OR depth5 LIKE $1::text`,
-          [`%${query}%`],
+          `
+            SELECT cid, category, mall, depth1, depth2, depth3, depth4, depth5, cosine_similarity
+            FROM (
+                SELECT cid, category, mall, depth1, depth2, depth3, depth4, depth5,
+                        1 - (category_vector <=> $1) AS cosine_similarity
+                FROM kgbook.public.category
+                ORDER BY cosine_similarity DESC
+                LIMIT 1000 -- TODO 몇 건까지 제한을 할지 논의 필요?!
+            ) AS kgbook
+            ORDER BY cosine_similarity DESC;
+        `,
+          [vectorLiteral],
         );
         return {
           content: result.rows.map((row) => ({
