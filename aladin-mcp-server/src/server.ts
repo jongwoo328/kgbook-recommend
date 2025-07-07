@@ -178,9 +178,18 @@ export function createServer() {
 
   server.tool(
     'search_book_categories',
-    { query: z.string() },
-    async ({ query }) => {
+    {
+      query: z.string(),
+      page: z.number().optional(),
+      size: z.number().optional(),
+    },
+    async ({ query, page = 1, size = 20 }) => {
       try {
+        const sortField = 'category_vector';
+        const sortOrder = 'desc';
+
+        const offset = (page - 1) * size;
+
         const embeddedQuery = await createEmbedding(query);
         const result = await db.query(
           `
@@ -189,12 +198,11 @@ export function createServer() {
                 SELECT cid, category, mall, depth1, depth2, depth3, depth4, depth5,
                         1 - (category_vector <=> $1) AS cosine_similarity
                 FROM kgbook.public.category
-                ORDER BY cosine_similarity DESC
-                LIMIT 1000 -- TODO 몇 건까지 제한을 할지 논의 필요?!
+                ORDER BY ${sortField} ${sortOrder}
+                LIMIT $2 OFFSET $3
             ) AS kgbook
-            ORDER BY cosine_similarity DESC;
         `,
-          [JSON.stringify(embeddedQuery)],
+          [JSON.stringify(embeddedQuery), size, offset],
         );
         return {
           content: result.rows.map((row) => ({
