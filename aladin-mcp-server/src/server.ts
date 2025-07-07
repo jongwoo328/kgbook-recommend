@@ -182,7 +182,6 @@ export function createServer() {
     async ({ query }) => {
       try {
         const embeddedQuery = await createEmbedding(query);
-        const vectorLiteral = `[${embeddedQuery.join(',')}]`;
         const result = await db.query(
           `
             SELECT cid, category, mall, depth1, depth2, depth3, depth4, depth5
@@ -195,7 +194,7 @@ export function createServer() {
             ) AS kgbook
             ORDER BY cosine_similarity DESC;
         `,
-          [vectorLiteral],
+          [JSON.stringify(embeddedQuery)],
         );
         return {
           content: result.rows.map((row) => ({
