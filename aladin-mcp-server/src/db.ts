@@ -1,5 +1,4 @@
-import { Client, Pool } from 'pg';
-import pgvector from 'pgvector/pg';
+import { Pool } from 'pg';
 
 console.debug('Connecting to PostgreSQL database...');
 
@@ -19,7 +18,6 @@ console.debug('Connected to PostgreSQL !!');
 
 pool.on('connect', async (client) => {
   console.debug('Connected to PostgreSQL !!');
-  await pgvector.registerTypes(client);
 });
 
 pool.on('release', (err, client) => {
