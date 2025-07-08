@@ -11,16 +11,10 @@ export function createServer() {
   });
   const aladin = new Aladin({ ttbKey: process.env.TTB_KEY ?? '' });
 
-  server.tool('get_new_books_by_monthly', async () => {
-    const date = new Date();
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-
+  server.tool('get_new_books', async () => {
     const results = await aladin.listItems({
       queryType: 'ItemNewAll',
       searchTarget: 'Book',
-      year: year,
-      month: month,
       cover: 'Big',
     });
 
@@ -79,16 +73,10 @@ export function createServer() {
     },
   );
 
-  server.tool('get_new_books_special_by_monthly', async () => {
-    const date = new Date();
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-
+  server.tool('get_new_books_special', async () => {
     const results = await aladin.listItems({
       queryType: 'ItemNewSpecial',
       searchTarget: 'Book',
-      year: year,
-      month: month,
       cover: 'Big',
     });
 
@@ -114,7 +102,7 @@ export function createServer() {
     };
   });
 
-  server.tool('get_bestsellers', async () => {
+  server.tool('get_bestsellers_by_latest', async () => {
     const results = await aladin.listItems({
       queryType: 'Bestseller',
       searchTarget: 'Book',
