@@ -2,6 +2,7 @@
 import FloatingAiChatAiMessage from "~/components/FloatingAiChatAiMessage.vue";
 import FloatingAiChatTemplateButton from "~/components/FloatingAiChatTemplateButton.vue";
 import GradientButton from "~/components/GradientButton.vue";
+import api from "~/api";
 
 const showCard = ref(false);
 function toggleChatCard() {
@@ -21,23 +22,7 @@ const messages = ref([
   {
     role: "ai",
     content:
-      "# h1 제목\n" +
-      "## h2 제목\n" +
-      "### h3 제목\n" +
-      "**굵은 글씨**\n" +
-      "*기울임 글씨*\n" +
-      "`인라인 코드`\n" +
-      "```javascript\n" +
-      "console.log('Hello, world!');\n" +
-      "```\n" +
-      "- 리스트 아이템 1\n" +
-      "- 리스트 아이템 2\n\n" +
-      "[링크 텍스트](https://example.com)\n" +
-      "![이미지 설명](https://via.placeholder.com/150)\n" +
-      "> 인용문\n" +
-      "1. 순서 있는 리스트 아이템 1\n" +
-      "2. 순서 있는 리스트 아이템 2\n\n" +
-      "안녕하세요! 책 추천을 도와드릴게요. 어떤 종류의 책을 찾고 계신가요?\n예를 들어, 소설, 비소설, 자기계발서 등 다양한 장르가 있습니다.",
+      "안녕하세요! 책 추천을 도와드릴게요. 어떤 종류의 책을 찾고 계신가요?",
   },
 ]);
 const inputMessage = ref("");
@@ -54,18 +39,40 @@ function onEnter(e: KeyboardEvent) {
   submit();
 }
 
+const loading = ref(false);
 function submit() {
   if (!inputMessage.value.trim()) {
     return;
   } // 빈값 방지
-  messages.value.push({
+
+  const userMessage = {
     role: "human",
     content: inputMessage.value,
-  });
-  messages.value.push({
-    content: "아직 책 추천 기능은 구현되지 않았어요. 곧 추가할게요!",
-    role: "ai",
-  });
+  };
+
+  loading.value = true;
+  api
+    .chat({
+      message: inputMessage.value,
+      messagesBefore: messages.value,
+    })
+    .then((r) => {
+      messages.value.push({
+        role: "ai",
+        content: r.response,
+      });
+      loading.value = false;
+    })
+    .catch((e) => {
+      console.error("Error during chat API call:", e);
+      messages.value.push({
+        role: "ai",
+        content:
+          "죄송합니다. 책 추천 기능에 문제가 발생했어요. 나중에 다시 시도해주세요.",
+      });
+      loading.value = false;
+    });
+  messages.value.push(userMessage);
   inputMessage.value = "";
 
   requestAnimationFrame(() => {
@@ -146,8 +153,7 @@ function onClickTemplate(content: string) {
             ref="messagesContainer"
             class="flex flex-col gap-6 overflow-auto h-[100%] min-h-0"
           >
-            <template v-for="message in messages" :key="message.content">
-              <!--TODO key 수정할 것 -->
+            <template v-for="(message, idx) in messages" :key="idx">
               <FloatingAiChatAiMessage
                 v-if="message.role === 'ai'"
                 ref="messageElements"
@@ -159,6 +165,7 @@ function onClickTemplate(content: string) {
                 :message="message"
               />
             </template>
+            <FloatingAiChatAiLoading v-if="loading" />
             <div ref="spacer" />
           </div>
         </template>
@@ -185,7 +192,13 @@ function onClickTemplate(content: string) {
                     @click="onClickTemplate('예시 내용2')"
                   />
                 </div>
-                <Button class="p-0" rounded size="small" @click="submit">
+                <Button
+                  :disabled="loading"
+                  class="p-0"
+                  rounded
+                  size="small"
+                  @click="submit"
+                >
                   <template #icon>
                     <Icon class="dark:text-slate-200" name="iconoir:arrow-up" />
                   </template>
