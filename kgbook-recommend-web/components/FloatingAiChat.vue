@@ -4,6 +4,8 @@ import FloatingAiChatTemplateButton from "~/components/FloatingAiChatTemplateBut
 import GradientButton from "~/components/GradientButton.vue";
 import api from "~/api";
 
+const { userPreference } = usePreference();
+
 const showCard = ref(false);
 function toggleChatCard() {
   showCard.value = !showCard.value;
@@ -119,6 +121,30 @@ function startNewChat() {
   inputMessage.value = "";
   loading.value = false;
 }
+
+const templateDataList = ref([
+  {
+    id: 1,
+    iconLeft: "tabler:book",
+    label: "최근 읽은책으로 추천받기",
+    content: () => `최근 읽은 책을 보고 새로운 책을 추천해 주세요.
+최근 읽은 책: ${userPreference.value.user.recentBook}`,
+  },
+  {
+    id: 2,
+    iconLeft: "hugeicons:job-search",
+    label: "나의 직무 기반으로 추천받기",
+    content: () => `제 직무에 맞는 책을 추천받고 싶어요.
+직무: ${userPreference.value.user.job}`,
+  },
+  {
+    id: 3,
+    iconLeft: "uil:favorite",
+    label: "나의 관심사 기반으로 추천받기",
+    content: () => `제 관심사에 맞는 책을 추천해 주세요.
+관심사: ${userPreference.value.user.interests.join(", ")}`,
+  },
+]);
 </script>
 
 <template>
@@ -200,21 +226,18 @@ function startNewChat() {
                 @keydown.enter="onEnter"
               />
               <div class="flex justify-between items-center">
-                <div class="flex gap-2">
+                <div class="flex gap-2 flex-wrap">
                   <FloatingAiChatTemplateButton
-                    icon-left="tabler:book"
-                    label="최근 읽은책으로 추천받기"
-                    @click="onClickTemplate('예시 내용')"
-                  />
-                  <FloatingAiChatTemplateButton
-                    icon-left="hugeicons:job-search"
-                    label="나의 직무 기반으로 추천받기"
-                    @click="onClickTemplate('예시 내용2')"
+                    v-for="templateData in templateDataList"
+                    :key="templateData.id"
+                    :icon-left="templateData.iconLeft"
+                    :label="templateData.label"
+                    @click="onClickTemplate(templateData.content())"
                   />
                 </div>
                 <Button
                   :disabled="loading"
-                  class="p-0"
+                  class="p-0 flex-shrink-0 self-start"
                   rounded
                   size="small"
                   @click="submit"
