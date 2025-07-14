@@ -18,13 +18,18 @@ function onCloseClick() {
   showCard.value = false;
 }
 
-const messages = ref([
-  {
-    role: "ai",
-    content:
-      "안녕하세요! 책 추천을 도와드릴게요. 어떤 종류의 책을 찾고 계신가요?",
-  },
-]);
+const messages = ref<{ role: string; content: string }[]>([]);
+function resetMessages() {
+  messages.value = [
+    {
+      role: "ai",
+      content:
+        "안녕하세요! 책 추천을 도와드릴게요. 어떤 종류의 책을 찾고 계신가요?",
+    },
+  ];
+}
+
+resetMessages();
 const inputMessage = ref("");
 const messagesContainer = ref<HTMLElement | null>(null);
 const spacer = ref<HTMLElement | null>(null);
@@ -108,6 +113,12 @@ function scrollToBottom() {
 function onClickTemplate(content: string) {
   inputMessage.value = content;
 }
+
+function startNewChat() {
+  resetMessages();
+  inputMessage.value = "";
+  loading.value = false;
+}
 </script>
 
 <template>
@@ -132,7 +143,16 @@ function onClickTemplate(content: string) {
         class="fixed bottom-28 right-10 w-[60vw] max-w-[55rem] h-[55rem] max-h-[85vh] border border-slate-400 shadow-lg shadow-slate-300"
       >
         <template #header>
-          <div class="p-2 flex justify-end">
+          <div class="p-2 flex justify-between items-center">
+            <Button
+              rounded
+              severity="primary"
+              size="small"
+              variant="outlined"
+              @click="startNewChat"
+            >
+              새 채팅 시작
+            </Button>
             <Button
               aria-label="Close"
               class="border-none"
