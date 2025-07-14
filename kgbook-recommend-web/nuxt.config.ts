@@ -30,6 +30,7 @@ export default defineNuxtConfig({
     "@primevue/nuxt-module",
     "@vueuse/nuxt",
     "motion-v/nuxt",
+    "@pinia/nuxt",
   ],
   devServer: {
     port: 8000,

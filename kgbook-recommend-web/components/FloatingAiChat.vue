@@ -5,6 +5,7 @@ import GradientButton from "~/components/GradientButton.vue";
 import api from "~/api";
 
 const { userPreference } = usePreference();
+const contextStore = useContextStore();
 
 const showCard = ref(false);
 function toggleChatCard() {
@@ -62,6 +63,10 @@ function submit() {
     .chat({
       message: inputMessage.value,
       messagesBefore: messages.value,
+      context: {
+        ...contextStore.context,
+        userPreferences: userPreference.value.user,
+      },
     })
     .then((r) => {
       messages.value.push({
