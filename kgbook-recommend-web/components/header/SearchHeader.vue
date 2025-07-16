@@ -5,6 +5,14 @@ import { ref } from "vue";
 
 const router = useRouter();
 const searchValue = ref<string>("");
+const selectedCategory = ref<string>("카테고리");
+
+const categoryOptions = [
+  "카테고리",
+  "제목+저자",
+  "제목",
+  "저자"
+];
 
 function searchBook() {
   if (!searchValue.value.trim()) {
@@ -14,9 +22,10 @@ function searchBook() {
     path: "/search",
     query: {
       text: searchValue.value.trim(),
+      category: selectedCategory.value === "카테고리" ? "all" : selectedCategory.value,
     },
   });
-  console.log(`@@ searchBook search value=(${searchValue.value.trim()})`);
+  console.log(`@@ searchBook search value=(${searchValue.value.trim()}), category=(${selectedCategory.value})`);
 }
 </script>
 
@@ -52,24 +61,37 @@ function searchBook() {
         주목할 만한 신간
       </NuxtLink>
     </div>
-    <div class="flex items-center justify-center w-[70%] my-2 gap-2">
-      <IconField class="flex-1">
-        <InputIcon>
-          <Icon class="text-xl" name="mdi-light:magnify" />
-        </InputIcon>
+    <div class="flex items-center justify-center w-[70%] my-2 gap-0">
+      <Dropdown
+        v-model="selectedCategory"
+        :options="categoryOptions"
+        class="border-2 border-black dark:border-white rounded-l-full"
+        style="min-width: 150px"
+        :pt="{
+          root: { class: 'rounded-l-full border-r-0' },
+          trigger: { class: 'rounded-l-full px-4 py-4' },
+          dropdown: { class: 'rounded-l-full' }
+        }"
+      />
+      <IconField class="flex-1 relative">
         <InputText
           v-model="searchValue"
-          class="w-full rounded-3xl px-8 py-4 border-2 border-black dark:border-white"
+          class="w-full px-8 py-4 border-2 border-l-0 border-r-0 border-black dark:border-white"
           placeholder="검색하여 책을 찾아보세요."
+          style="border-radius: 0"
           @keydown.enter="searchBook"
         />
       </IconField>
       <Button
-        class="rounded-3xl px-6 py-4 min-w-[100px] font-semibold"
+        class="rounded-r-full px-4 py-4 min-w-[60px] border-2 border-black dark:border-white border-l-0"
         :disabled="!searchValue.trim()"
-        label="검색"
+        :pt="{
+          root: { class: 'rounded-r-full' }
+        }"
         @click="searchBook"
-      />
+      >
+        <Icon class="text-xl" name="mdi-light:magnify" />
+      </Button>
     </div>
   </div>
 </template>
