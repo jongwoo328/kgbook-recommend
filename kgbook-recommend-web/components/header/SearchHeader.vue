@@ -7,13 +7,16 @@ const router = useRouter();
 const searchValue = ref<string>("");
 
 function searchBook() {
+  if (!searchValue.value.trim()) {
+    return;
+  }
   router.push({
     path: "/search",
     query: {
-      text: searchValue.value,
+      text: searchValue.value.trim(),
     },
   });
-  console.log(`@@ searchBook search value=(${searchValue.value})`);
+  console.log(`@@ searchBook search value=(${searchValue.value.trim()})`);
 }
 </script>
 
@@ -49,16 +52,24 @@ function searchBook() {
         주목할 만한 신간
       </NuxtLink>
     </div>
-    <IconField class="w-[70%] my-2">
-      <InputIcon>
-        <Icon class="text-xl" name="mdi-light:magnify" />
-      </InputIcon>
-      <InputText
-        v-model="searchValue"
-        class="w-full rounded-3xl px-8 py-4 border-2 border-black dark:border-white"
-        placeholder="검색하여 책을 찾아보세요."
-        @keydown.enter="searchBook"
+    <div class="flex items-center justify-center w-[70%] my-2 gap-2">
+      <IconField class="flex-1">
+        <InputIcon>
+          <Icon class="text-xl" name="mdi-light:magnify" />
+        </InputIcon>
+        <InputText
+          v-model="searchValue"
+          class="w-full rounded-3xl px-8 py-4 border-2 border-black dark:border-white"
+          placeholder="검색하여 책을 찾아보세요."
+          @keydown.enter="searchBook"
+        />
+      </IconField>
+      <Button
+        class="rounded-3xl px-6 py-4 min-w-[100px] font-semibold"
+        :disabled="!searchValue.trim()"
+        label="검색"
+        @click="searchBook"
       />
-    </IconField>
+    </div>
   </div>
 </template>
