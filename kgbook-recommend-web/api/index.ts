@@ -13,4 +13,21 @@ export default {
       },
     });
   },
+  getBookDetail: (itemId: number) => {
+    return $fetch<BookDetailResponse>(`/api/book/${itemId}`, {
+      method: "GET",
+      headers: {
+        ...commonHeaders,
+      },
+    });
+  },
+  searchBooks: (body: BookSearchRequest) => {
+    return $fetch<BookSearchResponse>("/api/search", {
+      method: "POST",
+      body: body,
+      headers: {
+        ...commonHeaders,
+      },
+    });
+  },
 };

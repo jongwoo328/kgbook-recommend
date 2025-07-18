@@ -1,40 +1,115 @@
 <script lang="ts" setup>
 import BookCard from "~/components/general/BookCard.vue";
-import { dummyBookDetail, dummyBookList } from "~/data/dummy";
 import BookEmptyComponent from "~/components/general/BookEmptyComponent.vue";
+import api from "~/api";
 
 const route = useRoute();
 const bookId = route.params.id;
 
-onMounted(() => {
-  console.log(bookId);
+type BookInfo = {
+  title: string;
+  author: string;
+  publisher: string;
+  pubDate: string;
+  description: string;
+  category: string;
+  cover: string;
+  price: number;
+  priceSale: number;
+  stockstatus: string;
+  customerReviewRank: number;
+  id: number;
+  isbn: string;
+  link: string;
+};
+
+const bookInfo = ref<BookInfo>({
+  title: "",
+  author: "",
+  publisher: "",
+  pubDate: "",
+  description: "",
+  category: "",
+  cover: "",
+  price: 0,
+  priceSale: 0,
+  stockstatus: "",
+  customerReviewRank: 0,
+  isbn: "",
+  link: "",
+  id: 0,
 });
 
-// TODO 현재 타입 미정 api 구현 시 고치기!
-interface BookInfo {
-  id: number;
-  title: string;
-  category: string;
-  author: string;
-  price: number;
-  priceSale: 10800;
-  coverUrl: string;
-  publisher: string;
-  publishedAt: string;
-  stockstatus: string;
-  mallType: string;
-  description: string;
-  isbn: string;
-  isbn13?: string;
-  customerReviewRank: number;
-  bestRank: number;
+const otherBooksByAuthor = ref<BookInfo[]>([]);
+const aiRecommendedBooks = ref<BookInfo[]>([]);
+
+const isBookInfoLoading = ref<boolean>(true);
+const isOtherBooksByAuthorLoading = ref<boolean>(true);
+const isAiRecommendedBooksLoading = ref<boolean>(true);
+
+onMounted(async () => {
+  await getBookDetailInfo(Number(bookId)).then(async () => {
+    await Promise.all([getOtherBooksByAuthor(bookInfo.value.author)]);
+  });
+});
+
+async function getBookDetailInfo(bookId: number) {
+  try {
+    isBookInfoLoading.value = true;
+
+    const result = await api.getBookDetail(bookId);
+    const book = result.response.item[0];
+
+    bookInfo.value = {
+      title: book.title,
+      author: book.author,
+      publisher: book.publisher,
+      pubDate: book.pubDate,
+      description: book.description,
+      category: book.categoryName.trim(),
+      cover: book.cover,
+      price: book.priceStandard,
+      priceSale: book.priceSales,
+      stockstatus: book.stockStatus,
+      customerReviewRank: book.customerReviewRank,
+      id: book.itemId,
+      isbn: book.isbn,
+      link: book.link,
+    };
+    isBookInfoLoading.value = false;
+  } catch (error) {
+    console.error("Failed to fetch book details:", error);
+  }
 }
 
-// TODO 현재는 더미데이터. 추후 통신으로 가져오게 변경
-const bookInfo = ref(dummyBookDetail);
+async function getOtherBooksByAuthor(author: string) {
+  if (!author || author.trim().length === 0) {
+    return;
+  }
 
-const otherBooksByAuthor = ref(dummyBookList);
-const aiRecommendedBooks = ref(dummyBookList);
+  try {
+    isOtherBooksByAuthorLoading.value = true;
+
+    const result = await api.searchBooks({
+      query: author.replace("외", "").replace("지음", "").trim(),
+      queryType: "Author",
+    });
+    const bookList = await result.response;
+
+    otherBooksByAuthor.value = bookList.map((book) => ({
+      id: book.itemId,
+      title: book.title,
+      author: book.author,
+      category: book.categoryName.split(">").reverse()[0],
+      price: book.priceStandard,
+      cover: book.cover,
+    }));
+
+    isOtherBooksByAuthorLoading.value = false;
+  } catch (error) {
+    console.error("Failed to fetch book details:", error);
+  }
+}
 </script>
 
 <template>
@@ -51,18 +126,21 @@ const aiRecommendedBooks = ref(dummyBookList);
         </div>
       </div>
 
-      <div class="px-5 flex-1 flex items-center gap-10">
+      <div v-if="isBookInfoLoading" class="mt-4">
+        <Skeleton height="25rem" width="100%" />
+      </div>
+      <div v-else class="px-5 flex-1 flex items-center gap-10">
         <div class="w-[350px] h-[350px] flex-shrink-0 bg-gray-200">
           <img
             :alt="bookInfo.title"
-            :src="bookInfo.coverUrl"
+            :src="bookInfo.cover"
             class="object-cover w-full h-full rounded"
-          >
+          />
         </div>
         <div class="flex-1 py-2">
           <div class="mb-1">
             <span class="px-2 py-0.5 bg-teal-300 text-sm text-gray-600 rounded">
-              소설
+              {{ bookInfo.category }}
             </span>
           </div>
           <h1 class="text-2xl">{{ bookInfo.title }}</h1>
@@ -73,7 +151,7 @@ const aiRecommendedBooks = ref(dummyBookList);
             |
             <span>{{ bookInfo.publisher }}</span>
             |
-            <span> {{ bookInfo.publishedAt }}</span>
+            <span> {{ bookInfo.pubDate }}</span>
           </div>
 
           <div
@@ -88,7 +166,10 @@ const aiRecommendedBooks = ref(dummyBookList);
           >
             <div class="flex items-baseline gap-2">
               <div class="w-20 text-gray-500">재고</div>
-              <div class="dark:text-gray-200">{{ bookInfo.stockstatus }}</div>
+              <div class="dark:text-gray-200">
+                <span v-if="bookInfo.stockstatus === ''">-</span>
+                <span v-else>{{ bookInfo.stockstatus }}</span>
+              </div>
             </div>
             <div class="flex items-baseline gap-2">
               <div class="w-20 text-gray-500">정가</div>
@@ -109,7 +190,7 @@ const aiRecommendedBooks = ref(dummyBookList);
           >
             <div class="flex items-baseline gap-2">
               <div class="w-20 text-gray-500">평점</div>
-              <div class="text-teal-600">
+              <div class="text-teal-600 text-xl font-semibold">
                 ★ {{ bookInfo.customerReviewRank }} / 10
               </div>
             </div>
@@ -120,15 +201,7 @@ const aiRecommendedBooks = ref(dummyBookList);
           </div>
 
           <div class="mt-3 flex items-center justify-end gap-2">
-            <div v-if="bookInfo.bestRank" class="text-gray-600 text-sm italic">
-              이 책은 현재 <u><a href="/best-sellers">베스트셀러</a></u>
-              {{ bookInfo.bestRank }}위 입니다!
-            </div>
-            <a
-              href="https://naver.com"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
+            <a :href="bookInfo.link" rel="noopener noreferrer" target="_blank">
               <Button label="책 구매 링크" size="small" />
             </a>
           </div>
@@ -152,44 +225,49 @@ const aiRecommendedBooks = ref(dummyBookList);
         </span>
       </div>
 
-      <div v-if="aiRecommendedBooks.length === 0">
-        <BookEmptyComponent />
+      <div v-if="isAiRecommendedBooksLoading" class="mt-4">
+        <Skeleton height="15rem" width="100%" />
       </div>
-      <div
-        v-else
-        class="max-w-full min-h-[20rem] flex flex-wrap gap-4 mt-4 items-center justify-around"
-      >
-        <NuxtLink
-          v-for="(book, idx) in aiRecommendedBooks"
-          :key="idx"
-          :to="`/book/${book.id}`"
-          class="max-w-[180px] min-w-[140px] h-[270px] cursor-pointer"
+      <div v-else>
+        <div v-if="aiRecommendedBooks.length === 0">
+          <BookEmptyComponent />
+        </div>
+        <div
+          v-else
+          class="max-w-full min-h-[20rem] flex flex-wrap gap-4 mt-4 items-center justify-around"
         >
-          <BookCard>
-            <template #image>
-              <img
-                :alt="book.title"
-                :src="book.coverUrl"
-                class="object-cover w-full h-full"
-              >
-            </template>
+          <NuxtLink
+            v-for="(book, idx) in aiRecommendedBooks"
+            :key="idx"
+            :to="`/book/${book.id}`"
+            class="max-w-[180px] min-w-[140px] h-[270px] cursor-pointer"
+          >
+            <BookCard>
+              <template #image>
+                <img
+                  :alt="book.title"
+                  :src="book.cover"
+                  class="object-cover w-full h-full"
+                />
+              </template>
 
-            <template #info>
-              <div class="text-center text-sm">
-                <p class="text text-gray-800 dark:text-gray-300">
-                  [{{ book.category }}]
-                </p>
-                <p class="font-bold truncate">{{ book.title }}</p>
-                <p class="text-sm text-gray-600 dark:text-gray-500 truncate">
-                  {{ book.author }}
-                </p>
-                <p class="text-sm text-gray-600 dark:text-gray-500 truncate">
-                  {{ book.price.toLocaleString() }}원
-                </p>
-              </div>
-            </template>
-          </BookCard>
-        </NuxtLink>
+              <template #info>
+                <div class="text-center text-sm">
+                  <p class="text text-gray-800 dark:text-gray-300">
+                    [{{ book.category }}]
+                  </p>
+                  <p class="font-bold truncate">{{ book.title }}</p>
+                  <p class="text-sm text-gray-600 dark:text-gray-500 truncate">
+                    {{ book.author }}
+                  </p>
+                  <p class="text-sm text-gray-600 dark:text-gray-500 truncate">
+                    {{ book.price.toLocaleString() }}원
+                  </p>
+                </div>
+              </template>
+            </BookCard>
+          </NuxtLink>
+        </div>
       </div>
     </div>
 
@@ -201,44 +279,49 @@ const aiRecommendedBooks = ref(dummyBookList);
         이 작가의 다른 책 ({{ otherBooksByAuthor.length }})
       </div>
 
-      <div v-if="otherBooksByAuthor.length === 0">
-        <BookEmptyComponent />
+      <div v-if="isOtherBooksByAuthorLoading" class="mt-4">
+        <Skeleton height="15rem" width="100%" />
       </div>
-      <div
-        v-else
-        class="max-w-full min-h-[20rem] flex flex-wrap gap-4 mt-4 items-center justify-around"
-      >
-        <NuxtLink
-          v-for="(book, idx) in otherBooksByAuthor"
-          :key="idx"
-          :to="`/book/${book.id}`"
-          class="max-w-[180px] min-w-[140px] h-[270px] cursor-pointer"
+      <div v-else>
+        <div v-if="otherBooksByAuthor.length === 0">
+          <BookEmptyComponent />
+        </div>
+        <div
+          v-else
+          class="max-w-full min-h-[20rem] flex flex-wrap gap-4 mt-4 items-center justify-around"
         >
-          <BookCard>
-            <template #image>
-              <img
-                :alt="book.title"
-                :src="book.coverUrl"
-                class="object-cover w-full h-full"
-              >
-            </template>
+          <NuxtLink
+            v-for="(book, idx) in otherBooksByAuthor"
+            :key="idx"
+            :to="`/book/${book.id}`"
+            class="max-w-[180px] min-w-[140px] h-[270px] cursor-pointer"
+          >
+            <BookCard>
+              <template #image>
+                <img
+                  :alt="book.title"
+                  :src="book.cover"
+                  class="object-cover w-full h-full"
+                />
+              </template>
 
-            <template #info>
-              <div class="text-center text-sm">
-                <p class="text text-gray-800 dark:text-gray-300">
-                  [{{ book.category }}]
-                </p>
-                <p class="font-bold truncate">{{ book.title }}</p>
-                <p class="text-sm text-gray-600 dark:text-gray-500 truncate">
-                  {{ book.author }}
-                </p>
-                <p class="text-sm text-gray-600 dark:text-gray-500 truncate">
-                  {{ book.price.toLocaleString() }}원
-                </p>
-              </div>
-            </template>
-          </BookCard>
-        </NuxtLink>
+              <template #info>
+                <div class="text-center text-sm">
+                  <p class="text text-gray-800 dark:text-gray-300">
+                    [{{ book.category }}]
+                  </p>
+                  <p class="font-bold truncate">{{ book.title }}</p>
+                  <p class="text-sm text-gray-600 dark:text-gray-500 truncate">
+                    {{ book.author }}
+                  </p>
+                  <p class="text-sm text-gray-600 dark:text-gray-500 truncate">
+                    {{ book.price.toLocaleString() }}원
+                  </p>
+                </div>
+              </template>
+            </BookCard>
+          </NuxtLink>
+        </div>
       </div>
     </div>
   </div>
