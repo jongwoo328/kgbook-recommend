@@ -166,7 +166,7 @@ async function refreshPersonalizedBookList() {
                   :alt="book.title"
                   :src="book.coverUrl"
                   class="object-cover w-full h-full"
-                >
+                />
               </template>
 
               <template #info>
@@ -179,7 +179,7 @@ async function refreshPersonalizedBookList() {
                     {{ book.author }}
                   </p>
                   <p class="text-sm text-gray-600 dark:text-gray-500 truncate">
-                    {{ book.price.toLocaleString() }}원
+                    {{ book.price }}원
                   </p>
                 </div>
               </template>
