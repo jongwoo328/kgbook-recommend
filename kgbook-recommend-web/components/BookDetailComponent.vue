@@ -41,6 +41,7 @@ onMounted(async () => {
   });
 });
 
+// TODO issue/7 작업 머지되면 useContextStore에 저장로직 추가하기
 async function getBookDetailInfo(bookId: number) {
   try {
     isBookInfoLoading.value = true;
