@@ -2,26 +2,11 @@
 import BookCard from "~/components/general/BookCard.vue";
 import BookEmptyComponent from "~/components/general/BookEmptyComponent.vue";
 import api from "~/api";
+import type { BookInfo } from "~/types/BookInfo";
+import type { BookListItem } from "~/types/BookListItem";
 
 const route = useRoute();
 const bookId = route.params.id;
-
-type BookInfo = {
-  title: string;
-  author: string;
-  publisher: string;
-  pubDate: string;
-  description: string;
-  category: string;
-  cover: string;
-  price: number;
-  priceSale: number;
-  stockstatus: string;
-  customerReviewRank: number;
-  id: number;
-  isbn: string;
-  link: string;
-};
 
 const bookInfo = ref<BookInfo>({
   title: "",
@@ -40,8 +25,8 @@ const bookInfo = ref<BookInfo>({
   id: 0,
 });
 
-const otherBooksByAuthor = ref<BookInfo[]>([]);
-const aiRecommendedBooks = ref<BookInfo[]>([]);
+const otherBooksByAuthor = ref<BookListItem[]>([]);
+const aiRecommendedBooks = ref<BookListItem[]>([]);
 
 const isBookInfoLoading = ref<boolean>(true);
 const isOtherBooksByAuthorLoading = ref<boolean>(true);
@@ -49,7 +34,10 @@ const isAiRecommendedBooksLoading = ref<boolean>(true);
 
 onMounted(async () => {
   await getBookDetailInfo(Number(bookId)).then(async () => {
-    await Promise.all([getOtherBooksByAuthor(bookInfo.value.author)]);
+    await Promise.all([
+      getOtherBooksByAuthor(bookInfo.value.author),
+      getAiRecommendedBooks(bookInfo.value),
+    ]);
   });
 });
 
@@ -58,7 +46,7 @@ async function getBookDetailInfo(bookId: number) {
     isBookInfoLoading.value = true;
 
     const result = await api.getBookDetail(bookId);
-    const book = result.response.item[0];
+    const book = result.response.item[0] as BookItem;
 
     bookInfo.value = {
       title: book.title,
@@ -87,16 +75,15 @@ async function getOtherBooksByAuthor(author: string) {
     return;
   }
 
+  isOtherBooksByAuthorLoading.value = true;
   try {
-    isOtherBooksByAuthorLoading.value = true;
-
     const result = await api.searchBooks({
       query: author.replace("외", "").replace("지음", "").trim(),
       queryType: "Author",
     });
-    const bookList = await result.response;
+    const bookList = result.response ?? [];
 
-    otherBooksByAuthor.value = bookList.map((book) => ({
+    otherBooksByAuthor.value = bookList.map((book: BookItem) => ({
       id: book.itemId,
       title: book.title,
       author: book.author,
@@ -104,10 +91,35 @@ async function getOtherBooksByAuthor(author: string) {
       price: book.priceStandard,
       cover: book.cover,
     }));
-
-    isOtherBooksByAuthorLoading.value = false;
   } catch (error) {
-    console.error("Failed to fetch book details:", error);
+    console.error("Failed to fetch other books by author:", error);
+    otherBooksByAuthor.value = [];
+  } finally {
+    isOtherBooksByAuthorLoading.value = false;
+  }
+}
+
+async function getAiRecommendedBooks(book: BookInfo) {
+  isAiRecommendedBooksLoading.value = true;
+
+  try {
+    const message = `- 책 제목: ${book.title}\n- 작가: ${book.author}\n-카테고리: ${book.category}\n- 책 설명: ${book.description}`;
+    const result = await api.recommendBooks({ message });
+    const bookList = result.response ?? [];
+
+    aiRecommendedBooks.value = bookList.map((book: RecommendBookItem) => ({
+      id: book.id,
+      title: book.title,
+      author: book.author,
+      category: book.category.split(">").reverse()[0],
+      price: book.price,
+      cover: book.cover,
+    }));
+  } catch (error) {
+    console.error("Failed to fetch AI recommended books:", error);
+    aiRecommendedBooks.value = [];
+  } finally {
+    isAiRecommendedBooksLoading.value = false;
   }
 }
 </script>
@@ -261,7 +273,7 @@ async function getOtherBooksByAuthor(author: string) {
                     {{ book.author }}
                   </p>
                   <p class="text-sm text-gray-600 dark:text-gray-500 truncate">
-                    {{ book.price.toLocaleString() }}원
+                    {{ book.price }}원
                   </p>
                 </div>
               </template>
@@ -315,7 +327,7 @@ async function getOtherBooksByAuthor(author: string) {
                     {{ book.author }}
                   </p>
                   <p class="text-sm text-gray-600 dark:text-gray-500 truncate">
-                    {{ book.price.toLocaleString() }}원
+                    {{ book.price }}원
                   </p>
                 </div>
               </template>

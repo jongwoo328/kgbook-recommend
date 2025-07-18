@@ -3,6 +3,10 @@ type ChatRequest = {
   messagesBefore: { role: string; content: string }[];
 };
 
+type RecommendRequest = {
+  message: string;
+};
+
 type BookDetailRequest = {
   itemId: number;
 };
