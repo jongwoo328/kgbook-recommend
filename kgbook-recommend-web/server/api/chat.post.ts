@@ -1,9 +1,10 @@
-import { agent } from "~/server/ai";
+import { getAgent } from "~/server/ai";
 
 export default defineEventHandler(async (event): Promise<ChatResponse> => {
   const body = await readBody<ChatRequest>(event);
   const messageHistory = body.messagesBefore;
 
+  const agent = await getAgent();
   const r = await agent.invoke({
     messages: messageHistory.concat({
       role: "human",

@@ -1,5 +1,8 @@
 <script lang="ts" setup>
 import IconField from "primevue/iconfield";
+import InputText from "primevue/inputtext";
+import Dropdown from "primevue/dropdown";
+import Button from "primevue/button";
 
 import { ref } from "vue";
 
@@ -61,36 +64,34 @@ function searchBook() {
         주목할 만한 신간
       </NuxtLink>
     </div>
-    <div class="flex items-center justify-center w-[70%] my-2 gap-0">
+    <div class="flex items-center w-[70%] my-2 border-2 border-gray-300 dark:border-gray-600 rounded-full overflow-hidden">
       <Dropdown
         v-model="selectedCategory"
         :options="categoryOptions"
-        class="border-2 border-black dark:border-white rounded-l-full"
-        style="min-width: 150px"
+        class="border-none outline-none"
+        style="min-width: 140px"
         :pt="{
-          root: { class: 'rounded-l-full border-r-0' },
-          trigger: { class: 'rounded-l-full px-4 py-4' },
-          dropdown: { class: 'rounded-l-full' }
+          root: { class: 'border-none rounded-none' },
+          trigger: { class: 'px-4 py-3 border-none rounded-none' },
+          panel: { class: 'rounded-lg' }
         }"
       />
-      <IconField class="flex-1 relative">
+      <div class="h-8 w-px bg-gray-300 dark:bg-gray-600"></div>
+      <IconField class="flex-1">
         <InputText
           v-model="searchValue"
-          class="w-full px-8 py-4 border-2 border-l-0 border-r-0 border-black dark:border-white"
+          class="w-full px-4 py-3 border-none outline-none"
           placeholder="검색하여 책을 찾아보세요."
-          style="border-radius: 0"
+          style="border: none; box-shadow: none"
           @keydown.enter="searchBook"
         />
       </IconField>
       <Button
-        class="rounded-r-full px-4 py-4 min-w-[60px] border-2 border-black dark:border-white border-l-0"
+        class="px-4 py-3 bg-transparent border-none hover:bg-gray-50 dark:hover:bg-gray-800"
         :disabled="!searchValue.trim()"
-        :pt="{
-          root: { class: 'rounded-r-full' }
-        }"
         @click="searchBook"
       >
-        <Icon class="text-xl" name="mdi-light:magnify" />
+        <Icon class="text-xl text-gray-600 dark:text-gray-400" name="mdi-light:magnify" />
       </Button>
     </div>
   </div>
