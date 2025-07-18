@@ -21,6 +21,7 @@
     "@vavt/cm-extension": "^1.10.1",
     "@vueuse/core": "^13.4.0",
     "@vueuse/nuxt": "^13.4.0",
+    "aladin-client": "^1.0.4",
     "eslint": "^9.28.0",
     "langchain": "^0.3.29",
     "markdown-it-link-attributes": "^4.0.1",
