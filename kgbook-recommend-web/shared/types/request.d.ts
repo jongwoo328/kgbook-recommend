@@ -23,3 +23,5 @@ type BookSearchRequest = {
     | "CustomerRating"
     | "MyReviewCount";
 };
+
+type BookListQueryType = "ItemNewSpecial" | "Bestseller";

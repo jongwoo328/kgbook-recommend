@@ -1,5 +1,5 @@
 export const SectionCategory = {
   Personalized: "personalized",
-  Bestseller: "bestseller",
-  Remarkable: "remarkable",
+  Bestseller: "Bestseller",
+  Remarkable: "ItemNewSpecial",
 } as const;
