@@ -170,13 +170,14 @@ const templateDataList = ref([
         :pt="{
           body: { class: 'flex-1 flex flex-col min-h-0' },
           content: { class: 'flex-1 min-h-0' },
+          header: {class: 'bg-[#0d948821]'}
         }"
         class="fixed bottom-28 right-10 w-[60vw] max-w-[55rem] h-[55rem] max-h-[85vh] border border-slate-400 shadow-lg shadow-slate-300"
       >
         <template #header>
           <div class="p-2 flex justify-between items-center">
             <Button
-              rounded
+              class="rounded-md"
               severity="primary"
               size="small"
               variant="outlined"
