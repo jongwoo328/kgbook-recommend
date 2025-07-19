@@ -110,7 +110,7 @@ async function refreshPersonalizedBookList() {
           {{ section.title }}
           <Icon
             v-if="section.category === SectionCategory.Personalized"
-            class="text-3xl cursor-pointer"
+            class="text-3xl cursor-pointer text-teal-700"
             name="line-md:cog-filled"
             @click="showPreferenceModal = true"
           />
