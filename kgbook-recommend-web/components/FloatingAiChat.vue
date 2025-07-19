@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import FloatingAiChatAiMessage from "~/components/FloatingAiChatAiMessage.vue";
 import FloatingAiChatTemplateButton from "~/components/FloatingAiChatTemplateButton.vue";
-import GradientButton from "~/components/GradientButton.vue";
+import GradientButton from "~/components/general/GradientButton.vue";
 import api from "~/api";
 
 const { userPreference } = usePreference();
