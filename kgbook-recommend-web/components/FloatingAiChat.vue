@@ -132,22 +132,19 @@ const templateDataList = ref([
     id: 1,
     iconLeft: "tabler:book",
     label: "최근 읽은책으로 추천받기",
-    content: () => `최근 읽은 책을 보고 새로운 책을 추천해 주세요.
-최근 읽은 책: ${userPreference.value.user.recentBook}`,
+    content: () => "최근 읽은 책을 보고 새로운 책을 추천해 주세요.",
   },
   {
     id: 2,
     iconLeft: "hugeicons:job-search",
     label: "나의 직무 기반으로 추천받기",
-    content: () => `제 직무에 맞는 책을 추천받고 싶어요.
-직무: ${userPreference.value.user.job}`,
+    content: () => "제 직무에 맞는 책을 추천받고 싶어요.",
   },
   {
     id: 3,
     iconLeft: "uil:favorite",
     label: "나의 관심사 기반으로 추천받기",
-    content: () => `제 관심사에 맞는 책을 추천해 주세요.
-관심사: ${userPreference.value.user.interests.join(", ")}`,
+    content: () => "제 관심사에 맞는 책을 추천해 주세요.",
   },
 ]);
 </script>
@@ -170,7 +167,7 @@ const templateDataList = ref([
         :pt="{
           body: { class: 'flex-1 flex flex-col min-h-0' },
           content: { class: 'flex-1 min-h-0' },
-          header: {class: 'bg-[#0d948821]'}
+          header: { class: 'bg-[#0d948821]' },
         }"
         class="fixed bottom-28 right-10 w-[60vw] max-w-[55rem] h-[55rem] max-h-[85vh] border border-slate-400 shadow-lg shadow-slate-300"
       >
