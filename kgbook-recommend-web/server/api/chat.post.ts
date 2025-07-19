@@ -1,5 +1,4 @@
 import { agent } from "~/server/ai";
-import type { ChatRequest } from "#shared/types/request";
 
 export default defineEventHandler(async (event): Promise<ChatResponse> => {
   const body = await readBody<ChatRequest>(event);

@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import type { UserPreference } from "~/types/Preference";
 import {
   bookInterestOptions,
   bookStylePreferenceOptions,

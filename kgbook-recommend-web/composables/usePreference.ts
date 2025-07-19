@@ -1,4 +1,3 @@
-import type { Preference } from "~/types/Preference";
 import { useLocalStorage } from "@vueuse/core";
 
 export const userContextOptions = [

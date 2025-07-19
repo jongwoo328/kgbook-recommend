@@ -1,5 +1,3 @@
-import type { ChatRequest } from "#shared/types/request";
-
 const commonHeaders = {
   "Content-Type": "application/json",
   Accept: "application/json",
