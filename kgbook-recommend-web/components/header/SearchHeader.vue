@@ -84,7 +84,7 @@ function searchBook() {
         @keydown.enter="searchBook"
       />
       <button
-        class="h-12 w-12 flex justify-center items-center rounded-3xl border-black dark:border-white"
+        class="h-12 w-12 flex justify-center items-center rounded-3xl border-2 border-solid border-black dark:border-white"
         @click="searchBook"
       >
         <Icon name="mdi-light:magnify" size="32" />
