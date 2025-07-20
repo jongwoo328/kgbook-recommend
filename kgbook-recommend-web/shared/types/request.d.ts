@@ -8,7 +8,11 @@ type ChatRequest = {
 };
 
 type RecommendRequest = {
-  message: string;
+  title?: string;
+  author?: string;
+  category?: string;
+  description?: string;
+  userPreferences?: UserPreference;
 };
 
 type BookSearchRequest = {

@@ -4,6 +4,7 @@ import BookEmptyComponent from "~/components/general/BookEmptyComponent.vue";
 import api from "~/api";
 import type { BookInfo } from "~/types/BookInfo";
 import type { BookListItem } from "~/types/BookListItem";
+import type { RecommendRequest } from "#shared/types/request";
 
 const route = useRoute();
 const bookId = route.params.id;
@@ -104,8 +105,13 @@ async function getAiRecommendedBooks(book: BookInfo) {
   isAiRecommendedBooksLoading.value = true;
 
   try {
-    const message = `- 책 제목: ${book.title}\n- 작가: ${book.author}\n-카테고리: ${book.category}\n- 책 설명: ${book.description}`;
-    const result = await api.recommendBooks({ message });
+    const request: RecommendRequest = {
+      title: book.title,
+      author: book.author,
+      category: book.category,
+      description: book.description,
+    };
+    const result = await api.recommendBooks(request);
     const bookList = result.response ?? [];
 
     aiRecommendedBooks.value = bookList.map((book: RecommendBookItem) => ({

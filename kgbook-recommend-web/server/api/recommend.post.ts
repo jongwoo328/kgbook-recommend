@@ -3,14 +3,16 @@ import { bookSchemaParser, jsonOutputParserAgent } from "~/server/ai";
 export default defineEventHandler(
   async (event): Promise<RecommendBookResponse> => {
     const body = await readBody<RecommendRequest>(event);
-    const { message } = body;
-    if (!message) {
+    const { title, author, category, description } = body;
+
+    if (!title || !author || !category || !description) {
       throw createError({
         statusCode: 400,
-        statusMessage: "message is required.",
+        statusMessage: "title, author, category, description are required.",
       });
     }
 
+    const message = `- 책 제목: ${title}\n- 작가: ${author}\n-카테고리: ${category}\n- 책 설명: ${description};`;
     const r = await jsonOutputParserAgent.invoke({
       messages: [
         {
