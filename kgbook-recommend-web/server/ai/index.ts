@@ -22,5 +22,5 @@ export const agent = createReactAgent({
 export const jsonOutputParserAgent = createReactAgent({
   llm: model,
   tools: await client.getTools(),
-  prompt: `당신은 책 추천 AI 입니다. 책 정보를 바탕으로 유사한 책을 추천해주세요. 반드시 아래 형식을 따라 JSON 배열로 출력하세요.\n${bookSchemaParser.getFormatInstructions()}`,
+  prompt: `당신은 책 추천 AI 입니다. 책 정보를 바탕으로 유사한 책을 추천해주세요. 반드시 아래 형식을 따라 JSON 배열로 출력하세요. 만약 추천할 책이 없는 경우 빈 배열('[]')을 반환하세요. \n${bookSchemaParser.getFormatInstructions()}`,
 });
