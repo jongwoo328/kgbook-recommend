@@ -23,11 +23,35 @@ function onCloseClick() {
 
 const messages = ref<{ role: string; content: string }[]>([]);
 function resetMessages() {
+  let startMessage =
+    "안녕하세요! 책 추천을 도와드릴게요. 어떤 종류의 책을 찾고 계신가요?";
+  let availableDataList = "";
+  if (userPreference.value.isSubmitted) {
+    if (userPreference.value.user.job) {
+      availableDataList += "- 직무\n";
+    }
+    if (userPreference.value.user.interests.length > 0) {
+      availableDataList += "- 관심사\n";
+    }
+    if (userPreference.value.user.readTime) {
+      availableDataList += "- 독서 시간\n";
+    }
+    if (userPreference.value.user.style.length > 0) {
+      availableDataList += "- 독서 스타일\n";
+    }
+    if (userPreference.value.user.recentBook) {
+      availableDataList += "- 최근 읽은 책\n";
+    }
+  }
+  if (availableDataList) {
+    startMessage +=
+      "\n\n제가 현재 참고할 수 있는 정보는 아래와 같습니다.\n" +
+      availableDataList;
+  }
   messages.value = [
     {
       role: "ai",
-      content:
-        "안녕하세요! 책 추천을 도와드릴게요. 어떤 종류의 책을 찾고 계신가요?",
+      content: startMessage,
     },
   ];
 }
