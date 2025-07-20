@@ -1,8 +1,11 @@
 <script lang="ts" setup>
 import FloatingAiChatAiMessage from "~/components/FloatingAiChatAiMessage.vue";
 import FloatingAiChatTemplateButton from "~/components/FloatingAiChatTemplateButton.vue";
-import GradientButton from "~/components/GradientButton.vue";
+import GradientButton from "~/components/general/GradientButton.vue";
 import api from "~/api";
+
+const { userPreference } = usePreference();
+const contextStore = useContextStore();
 
 const showCard = ref(false);
 function toggleChatCard() {
@@ -18,13 +21,42 @@ function onCloseClick() {
   showCard.value = false;
 }
 
-const messages = ref([
-  {
-    role: "ai",
-    content:
-      "안녕하세요! 책 추천을 도와드릴게요. 어떤 종류의 책을 찾고 계신가요?",
-  },
-]);
+const messages = ref<{ role: string; content: string }[]>([]);
+function resetMessages() {
+  let startMessage =
+    "안녕하세요! 책 추천을 도와드릴게요. 어떤 종류의 책을 찾고 계신가요?";
+  let availableDataList = "";
+  if (userPreference.value.isSubmitted) {
+    if (userPreference.value.user.job) {
+      availableDataList += "- 직무\n";
+    }
+    if (userPreference.value.user.interests.length > 0) {
+      availableDataList += "- 관심사\n";
+    }
+    if (userPreference.value.user.readTime) {
+      availableDataList += "- 독서 시간\n";
+    }
+    if (userPreference.value.user.style.length > 0) {
+      availableDataList += "- 독서 스타일\n";
+    }
+    if (userPreference.value.user.recentBook) {
+      availableDataList += "- 최근 읽은 책\n";
+    }
+  }
+  if (availableDataList) {
+    startMessage +=
+      "\n\n제가 현재 참고할 수 있는 정보는 아래와 같습니다.\n" +
+      availableDataList;
+  }
+  messages.value = [
+    {
+      role: "ai",
+      content: startMessage,
+    },
+  ];
+}
+
+resetMessages();
 const inputMessage = ref("");
 const messagesContainer = ref<HTMLElement | null>(null);
 const spacer = ref<HTMLElement | null>(null);
@@ -55,6 +87,10 @@ function submit() {
     .chat({
       message: inputMessage.value,
       messagesBefore: messages.value,
+      context: {
+        ...contextStore.context,
+        userPreferences: userPreference.value.user,
+      },
     })
     .then((r) => {
       messages.value.push({
@@ -108,6 +144,33 @@ function scrollToBottom() {
 function onClickTemplate(content: string) {
   inputMessage.value = content;
 }
+
+function startNewChat() {
+  resetMessages();
+  inputMessage.value = "";
+  loading.value = false;
+}
+
+const templateDataList = ref([
+  {
+    id: 1,
+    iconLeft: "tabler:book",
+    label: "최근 읽은책으로 추천받기",
+    content: () => "최근 읽은 책을 보고 새로운 책을 추천해 주세요.",
+  },
+  {
+    id: 2,
+    iconLeft: "hugeicons:job-search",
+    label: "나의 직무 기반으로 추천받기",
+    content: () => "제 직무에 맞는 책을 추천받고 싶어요.",
+  },
+  {
+    id: 3,
+    iconLeft: "uil:favorite",
+    label: "나의 관심사 기반으로 추천받기",
+    content: () => "제 관심사에 맞는 책을 추천해 주세요.",
+  },
+]);
 </script>
 
 <template>
@@ -128,11 +191,21 @@ function onClickTemplate(content: string) {
         :pt="{
           body: { class: 'flex-1 flex flex-col min-h-0' },
           content: { class: 'flex-1 min-h-0' },
+          header: { class: 'bg-[#0d948821]' },
         }"
         class="fixed bottom-28 right-10 w-[60vw] max-w-[55rem] h-[55rem] max-h-[85vh] border border-slate-400 shadow-lg shadow-slate-300"
       >
         <template #header>
-          <div class="p-2 flex justify-end">
+          <div class="p-2 flex justify-between items-center">
+            <Button
+              class="rounded-md"
+              severity="primary"
+              size="small"
+              variant="outlined"
+              @click="startNewChat"
+            >
+              새 채팅 시작
+            </Button>
             <Button
               aria-label="Close"
               class="border-none"
@@ -180,21 +253,18 @@ function onClickTemplate(content: string) {
                 @keydown.enter="onEnter"
               />
               <div class="flex justify-between items-center">
-                <div class="flex gap-2">
+                <div class="flex gap-2 flex-wrap">
                   <FloatingAiChatTemplateButton
-                    icon-left="tabler:book"
-                    label="최근 읽은책으로 추천받기"
-                    @click="onClickTemplate('예시 내용')"
-                  />
-                  <FloatingAiChatTemplateButton
-                    icon-left="hugeicons:job-search"
-                    label="나의 직무 기반으로 추천받기"
-                    @click="onClickTemplate('예시 내용2')"
+                    v-for="templateData in templateDataList"
+                    :key="templateData.id"
+                    :icon-left="templateData.iconLeft"
+                    :label="templateData.label"
+                    @click="onClickTemplate(templateData.content())"
                   />
                 </div>
                 <Button
                   :disabled="loading"
-                  class="p-0"
+                  class="p-0 flex-shrink-0 self-start"
                   rounded
                   size="small"
                   @click="submit"

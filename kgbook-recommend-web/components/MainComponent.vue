@@ -6,7 +6,6 @@ import { SectionCategory } from "~/types/SectionCategory";
 import { mainPageChangeDummy, mainPageDummy } from "~/data/dummy";
 
 import BookPreferenceModal from "~/components/modal/BookPreferenceModal.vue";
-import type { Preference } from "~/types/Preference";
 import { useLocalStorage } from "@vueuse/core";
 
 const defaultPreference: Preference = {
@@ -111,7 +110,7 @@ async function refreshPersonalizedBookList() {
           {{ section.title }}
           <Icon
             v-if="section.category === SectionCategory.Personalized"
-            class="text-3xl cursor-pointer"
+            class="text-3xl cursor-pointer text-teal-700"
             name="line-md:cog-filled"
             @click="showPreferenceModal = true"
           />
@@ -166,7 +165,7 @@ async function refreshPersonalizedBookList() {
                   :alt="book.title"
                   :src="book.coverUrl"
                   class="object-cover w-full h-full"
-                >
+                />
               </template>
 
               <template #info>
