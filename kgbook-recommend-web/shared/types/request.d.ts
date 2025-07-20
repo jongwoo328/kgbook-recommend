@@ -11,10 +11,6 @@ type RecommendRequest = {
   message: string;
 };
 
-type BookDetailRequest = {
-  itemId: number;
-};
-
 type BookSearchRequest = {
   query: string;
   queryType: "Keyword" | "Title" | "Author" | "Publisher";
