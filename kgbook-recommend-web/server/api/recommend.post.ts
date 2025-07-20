@@ -11,7 +11,6 @@ export default defineEventHandler(
       });
     }
 
-    // TODO 응답이 좀 느려서 캐시를 추가하면 좋을 듯 한데 의견 여쭤보기!
     const r = await jsonOutputParserAgent.invoke({
       messages: [
         {
