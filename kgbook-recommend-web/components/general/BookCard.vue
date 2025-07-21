@@ -3,7 +3,7 @@
 <template>
   <div class="flex flex-col items-center w-full">
     <!-- 이미지 영역 -->
-    <div class="w-full flex items-center justify-center">
+    <div class="w-[150px] h-[150px] flex items-center justify-center">
       <slot name="image" />
     </div>
 
