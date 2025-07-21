@@ -82,7 +82,7 @@ function searchBook() {
             trigger: { class: 'px-4 py-3 border-none rounded-none' },
             panel: { class: 'rounded-lg' },
           }"
-          class="border-none !outline-none"
+          class="border-none !outline-0"
           option-label="label"
           option-value="value"
           style="min-width: 140px"
