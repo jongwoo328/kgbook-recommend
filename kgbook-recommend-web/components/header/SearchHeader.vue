@@ -64,7 +64,7 @@ function searchBook() {
         주목할 만한 신간
       </NuxtLink>
     </div>
-    <div class="flex items-center w-[70%] my-2 border-2 border-gray-300 dark:border-gray-600 rounded-full overflow-hidden">
+    <div class="flex items-center w-[70%] my-2 border-2 border-black dark:border-white rounded-full overflow-hidden">
       <Dropdown
         v-model="selectedCategory"
         :options="categoryOptions"
@@ -76,7 +76,7 @@ function searchBook() {
           panel: { class: 'rounded-lg' }
         }"
       />
-      <div class="h-8 w-px bg-gray-300 dark:bg-gray-600"></div>
+      <div class="h-8 w-px bg-black dark:bg-white"></div>
       <IconField class="flex-1">
         <InputText
           v-model="searchValue"
