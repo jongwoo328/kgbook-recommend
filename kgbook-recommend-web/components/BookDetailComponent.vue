@@ -4,10 +4,11 @@ import BookEmptyComponent from "~/components/general/BookEmptyComponent.vue";
 import api from "~/api";
 import type { BookInfo } from "~/types/BookInfo";
 import type { BookListItem } from "~/types/BookListItem";
-import type { RecommendRequest } from "#shared/types/request";
 
 const route = useRoute();
 const bookId = route.params.id;
+
+const store = useContextStore();
 
 const bookInfo = ref<BookInfo>({
   title: "",
@@ -42,6 +43,12 @@ onMounted(async () => {
   });
 });
 
+onUnmounted(() => {
+  delete store.context.dataInDisplay.bookInfo;
+  delete store.context.dataInDisplay.otherBooksByAuthor;
+  delete store.context.dataInDisplay.aiRecommendedBooks;
+});
+
 // TODO issue/7 작업 머지되면 useContextStore에 저장로직 추가하기
 async function getBookDetailInfo(bookId: number) {
   try {
@@ -66,6 +73,7 @@ async function getBookDetailInfo(bookId: number) {
       isbn: book.isbn,
       link: book.link,
     };
+    store.context.dataInDisplay.bookInfo = bookInfo.value;
     isBookInfoLoading.value = false;
   } catch (error) {
     console.error("Failed to fetch book details:", error);
@@ -93,6 +101,8 @@ async function getOtherBooksByAuthor(author: string) {
       price: book.priceStandard,
       cover: book.cover,
     }));
+
+    store.context.dataInDisplay.otherBooksByAuthor = otherBooksByAuthor.value;
   } catch (error) {
     console.error("Failed to fetch other books by author:", error);
     otherBooksByAuthor.value = [];
@@ -116,6 +126,7 @@ async function getAiRecommendedBooks(itemId: number) {
       price: book.price,
       cover: book.cover,
     }));
+    store.context.dataInDisplay.aiRecommendedBooks = aiRecommendedBooks.value;
   } catch (error) {
     console.error("Failed to fetch AI recommended books:", error);
     aiRecommendedBooks.value = [];
