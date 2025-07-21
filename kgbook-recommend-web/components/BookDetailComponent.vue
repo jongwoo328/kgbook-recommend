@@ -37,7 +37,7 @@ onMounted(async () => {
   await getBookDetailInfo(Number(bookId)).then(async () => {
     await Promise.all([
       getOtherBooksByAuthor(bookInfo.value.author),
-      getAiRecommendedBooks(bookInfo.value),
+      getAiRecommendedBooks(bookInfo.value.id),
     ]);
   });
 });
@@ -101,17 +101,11 @@ async function getOtherBooksByAuthor(author: string) {
   }
 }
 
-async function getAiRecommendedBooks(book: BookInfo) {
+async function getAiRecommendedBooks(itemId: number) {
   isAiRecommendedBooksLoading.value = true;
 
   try {
-    const request: RecommendRequest = {
-      title: book.title,
-      author: book.author,
-      category: book.category,
-      description: book.description,
-    };
-    const result = await api.recommendBooks(request);
+    const result = await api.recommendBooks(itemId);
     const bookList = result.response ?? [];
 
     aiRecommendedBooks.value = bookList.map((book: RecommendBookItem) => ({
