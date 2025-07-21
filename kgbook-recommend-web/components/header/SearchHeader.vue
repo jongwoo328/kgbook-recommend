@@ -80,6 +80,7 @@ function searchBook() {
           :options="categoryOptions"
           :pt="{
             trigger: { class: 'px-4 py-3 border-none rounded-none' },
+            label: { class: 'ml-1.5' },
             panel: { class: 'rounded-lg' },
           }"
           class="border-none !outline-0"
@@ -104,8 +105,8 @@ function searchBook() {
           @click="searchBook"
         >
           <Icon
-            class="text-xl text-gray-950 dark:text-gray-300"
-            name="mdi-light:magnify"
+            class="text-xl text-black dark:text-gray-300"
+            name="mdi:magnify"
           />
         </Button>
       </div>
