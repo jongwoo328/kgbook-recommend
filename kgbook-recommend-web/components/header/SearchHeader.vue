@@ -25,6 +25,9 @@ const categoryOptions = [
 const selectedCategory = ref("Keyword");
 
 function searchBook() {
+  if (!searchValue.value.trim()) {
+    return;
+  }
   router.push({
     path: "/search",
     query: {
@@ -69,26 +72,50 @@ function searchBook() {
       </NuxtLink>
     </div>
     <div class="my-2 w-full flex justify-center items-center gap-2">
-      <Select
-        v-model="selectedCategory"
-        :options="categoryOptions"
-        class="border-2 rounded-3xl border-black dark:border-white flex items-center w-[10rem]"
-        option-label="label"
-        option-value="value"
-        size="large"
-      />
-      <InputText
-        v-model="searchValue"
-        class="w-[30rem] rounded-3xl px-8 py-3 border-2 border-black dark:border-white"
-        placeholder="검색하여 책을 찾아보세요."
-        @keydown.enter="searchBook"
-      />
-      <button
-        class="h-12 w-12 flex justify-center items-center rounded-3xl border-2 border-solid border-black dark:border-white"
-        @click="searchBook"
+      <div
+        class="flex items-center w-[70%] my-2 border-2 border-black dark:border-white rounded-full overflow-hidden"
       >
-        <Icon name="mdi-light:magnify" size="32" />
-      </button>
+        <Select
+          v-model="selectedCategory"
+          :options="categoryOptions"
+          :pt="{
+            trigger: { class: 'px-4 py-3 border-none rounded-none' },
+            panel: { class: 'rounded-lg' },
+          }"
+          class="border-none !outline-none"
+          option-label="label"
+          option-value="value"
+          style="min-width: 140px"
+        />
+        <div class="h-8 w-px bg-black dark:bg-white" />
+        <IconField class="flex-1">
+          <InputText
+            v-model="searchValue"
+            class="w-full px-4 py-3 border-none outline-none"
+            placeholder="검색하여 책을 찾아보세요."
+            style="border: none; box-shadow: none"
+            @keydown.enter="searchBook"
+          />
+        </IconField>
+        <Button
+          id="searchButton"
+          :disabled="!searchValue.trim()"
+          class="px-4 py-3 hover:cursor-pointer bg-transparent border-none"
+          @click="searchBook"
+        >
+          <Icon
+            class="text-xl text-gray-950 dark:text-gray-300"
+            name="mdi-light:magnify"
+          />
+        </Button>
+      </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+#searchButton:hover {
+  background-color: transparent;
+  border: none;
+}
+</style>
