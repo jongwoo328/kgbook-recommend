@@ -60,7 +60,7 @@ async function fetchBookList() {
       id: book.itemId,
       title: book.title,
       author: book.author,
-      category: book.categoryName.split(">").reverse()[0],
+      category: (book.categoryName ?? "").split(">").reverse()[0],
       price: book.priceStandard,
       cover: book.cover,
     }));
