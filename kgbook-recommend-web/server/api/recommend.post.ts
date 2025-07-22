@@ -20,7 +20,7 @@ export default defineEventHandler(
         },
       ],
     });
-    if (r.messages.length == 0) {
+    if (r.messages.length === 0) {
       throw createError({
         statusCode: 500,
         statusMessage: "No response from the agent.",
