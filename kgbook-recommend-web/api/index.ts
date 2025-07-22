@@ -40,8 +40,8 @@ export default {
   },
   getBookList: (
     bookListType: BookListQueryType,
-    page: number,
-    size: number,
+    page: number = 1,
+    size: number = 10,
   ) => {
     return $fetch<BookListResponse>("/api/book/list", {
       method: "GET",
@@ -50,8 +50,8 @@ export default {
       },
       query: {
         type: bookListType,
-        page: page || 1, // Default page
-        size: size || 10, // Default size
+        page: page,
+        size: size,
       },
     });
   },
