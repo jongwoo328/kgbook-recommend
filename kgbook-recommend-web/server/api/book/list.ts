@@ -1,4 +1,4 @@
-import { aladinClient } from "~/server/mcp/client";
+import { aladinClient } from "../../client";
 
 export default defineEventHandler(async (event): Promise<BookListResponse> => {
   const query = getQuery(event);

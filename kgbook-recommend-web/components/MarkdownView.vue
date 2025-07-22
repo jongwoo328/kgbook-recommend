@@ -44,4 +44,10 @@ config({
     list-style: decimal;
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  .md-editor-preview {
+    background-color: #18181b;
+  }
+}
 </style>

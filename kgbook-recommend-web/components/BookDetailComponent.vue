@@ -8,6 +8,8 @@ import type { BookListItem } from "~/types/BookListItem";
 const route = useRoute();
 const bookId = route.params.id;
 
+const store = useContextStore();
+
 const bookInfo = ref<BookInfo>({
   title: "",
   author: "",
@@ -36,9 +38,15 @@ onMounted(async () => {
   await getBookDetailInfo(Number(bookId)).then(async () => {
     await Promise.all([
       getOtherBooksByAuthor(bookInfo.value.author),
-      getAiRecommendedBooks(bookInfo.value),
+      getAiRecommendedBooks(bookInfo.value.id),
     ]);
   });
+});
+
+onUnmounted(() => {
+  delete store.context.dataInDisplay.bookInfo;
+  delete store.context.dataInDisplay.otherBooksByAuthor;
+  delete store.context.dataInDisplay.aiRecommendedBooks;
 });
 
 // TODO issue/7 작업 머지되면 useContextStore에 저장로직 추가하기
@@ -65,6 +73,7 @@ async function getBookDetailInfo(bookId: number) {
       isbn: book.isbn,
       link: book.link,
     };
+    store.context.dataInDisplay.bookInfo = bookInfo.value;
     isBookInfoLoading.value = false;
   } catch (error) {
     console.error("Failed to fetch book details:", error);
@@ -92,6 +101,8 @@ async function getOtherBooksByAuthor(author: string) {
       price: book.priceStandard,
       cover: book.cover,
     }));
+
+    store.context.dataInDisplay.otherBooksByAuthor = otherBooksByAuthor.value;
   } catch (error) {
     console.error("Failed to fetch other books by author:", error);
     otherBooksByAuthor.value = [];
@@ -100,12 +111,11 @@ async function getOtherBooksByAuthor(author: string) {
   }
 }
 
-async function getAiRecommendedBooks(book: BookInfo) {
+async function getAiRecommendedBooks(itemId: number) {
   isAiRecommendedBooksLoading.value = true;
 
   try {
-    const message = `- 책 제목: ${book.title}\n- 작가: ${book.author}\n-카테고리: ${book.category}\n- 책 설명: ${book.description}`;
-    const result = await api.recommendBooks({ message });
+    const result = await api.recommendBooks(itemId);
     const bookList = result.response ?? [];
 
     aiRecommendedBooks.value = bookList.map((book: RecommendBookItem) => ({
@@ -116,6 +126,7 @@ async function getAiRecommendedBooks(book: BookInfo) {
       price: book.price,
       cover: book.cover,
     }));
+    store.context.dataInDisplay.aiRecommendedBooks = aiRecommendedBooks.value;
   } catch (error) {
     console.error("Failed to fetch AI recommended books:", error);
     aiRecommendedBooks.value = [];

@@ -1,12 +1,12 @@
-export interface UserPreference {
+type UserPreference = {
   job: string;
   interests: string[];
   readTime: string;
   style: string[];
   recentBook: string;
-}
+};
 
-export interface Preference {
+type Preference = {
   isSubmitted: boolean;
   user: UserPreference;
-}
+};
