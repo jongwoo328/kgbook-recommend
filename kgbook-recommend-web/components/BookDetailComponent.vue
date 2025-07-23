@@ -277,9 +277,12 @@ async function getAiRecommendedBooks(itemId: number) {
 
               <template #info>
                 <div class="text-center text-sm">
-                  <p class="text text-gray-800 dark:text-gray-300">
+                  <span v-if="book.category !== ''">
                     [{{ book.category }}]
-                  </p>
+                  </span>
+                  <span v-else class="italic text-gray-400 dark:text-gray-600">
+                    [카테고리 없음]
+                  </span>
                   <p class="font-bold truncate">{{ book.title }}</p>
                   <p class="text-sm text-gray-600 dark:text-gray-500 truncate">
                     {{ book.author }}
@@ -332,7 +335,15 @@ async function getAiRecommendedBooks(itemId: number) {
               <template #info>
                 <div class="text-center text-sm">
                   <p class="text text-gray-800 dark:text-gray-300">
-                    [{{ book.category }}]
+                    <span v-if="book.category !== ''">
+                      [{{ book.category }}]
+                    </span>
+                    <span
+                      v-else
+                      class="italic text-gray-400 dark:text-gray-600"
+                    >
+                      [카테고리 없음]
+                    </span>
                   </p>
                   <p class="font-bold truncate">{{ book.title }}</p>
                   <p class="text-sm text-gray-600 dark:text-gray-500 truncate">
