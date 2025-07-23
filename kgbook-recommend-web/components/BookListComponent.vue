@@ -37,12 +37,6 @@ onMounted(async () => {
   await fetchBookList();
 });
 
-function getPage(currentPage: number) {
-  // aladin api 는 Page가 1부터 시작되어야 함
-  if (currentPage <= 1) return 1;
-  return currentPage + 1;
-}
-
 const isBookListLoading = ref<boolean>(true);
 async function fetchBookList() {
   try {
@@ -50,7 +44,7 @@ async function fetchBookList() {
 
     const result = await api.getBookList(
       props.category as BookListQueryType,
-      getPage(currentPage.value),
+      currentPage.value,
       selectedPerPage.value,
     );
     bookTotalRows.value = result.response.totalResults ?? 0;
@@ -76,14 +70,14 @@ async function onPageChange(pageState: PageState) {
   currentPage.value = pageState.page + 1; // PrimeVue는 0부터 시작하므로 +1
   selectedPerPage.value = pageState.rows;
 
-  await fetchBookList();
-  router.replace({
+  router.push({
     query: {
       ...route.query,
-      page: String(pageState.page + 1),
-      size: String(pageState.rows),
+      page: String(currentPage.value),
+      size: String(selectedPerPage.value),
     },
   });
+  await fetchBookList();
 }
 </script>
 
