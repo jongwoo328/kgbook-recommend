@@ -17,17 +17,17 @@ export default defineEventHandler(
         queryType,
         categoryId,
         sort,
-        page,
-        size,
+        start: page,
+        maxResults: size,
+        cover: "Big",
       };
       const result = await aladinClient.searchItems(request);
-      console.log(result);
       if (!result.success) {
         throw Error(result.error.message);
       }
 
       return {
-        response: result.data.item,
+        response: result.data,
       };
     } catch (error) {
       const message =
