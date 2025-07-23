@@ -30,6 +30,15 @@ export default {
       },
     });
   },
+  recommendPersonalBooks: (body: PersonalRecommendRequest) => {
+    return $fetch<RecommendBookResponse>("/api/recommend", {
+      method: "POST",
+      body: body,
+      headers: {
+        ...commonHeaders,
+      },
+    });
+  },
   recommendBooks: (itemId: number) => {
     return $fetch<RecommendBookResponse>(`/api/recommend/${itemId}`, {
       method: "GET",

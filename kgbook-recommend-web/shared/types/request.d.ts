@@ -7,29 +7,8 @@ type ChatRequest = {
   };
 };
 
-type RecommendRequest = {
-  title?: string;
-  author?: string;
-  category?: string;
-  description?: string;
-  userPreferences?: UserPreference;
-};
-
-type BookSearchRequest = {
-  query: string;
-  queryType: "Keyword" | "Title" | "Author" | "Publisher";
-  categoryId?: number;
-  sort?:
-    | "Accuracy"
-    | "PublishTime"
-    | "Title"
-    | "SalesPoint"
-    | "CustomerRating"
-    | "MyReviewCount";
-};
-
-type RecommendRequest = {
-  message: string;
+type PersonalRecommendRequest = {
+  userPreference: UserPreference;
 };
 
 type BookDetailRequest = {

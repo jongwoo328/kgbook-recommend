@@ -2,168 +2,145 @@
 import SectionHeader from "~/components/general/SectionHeader.vue";
 import BookCard from "~/components/general/BookCard.vue";
 import BookEmptyComponent from "~/components/general/BookEmptyComponent.vue";
-import { SectionCategory } from "~/types/SectionCategory";
-import { mainPageChangeDummy, mainPageDummy } from "~/data/dummy";
 
 import BookPreferenceModal from "~/components/modal/BookPreferenceModal.vue";
-import { useLocalStorage } from "@vueuse/core";
+import api from "~/api";
+import type { BookListItem } from "~/types/BookListItem";
 
-const defaultPreference: Preference = {
-  isSubmitted: false,
-  user: {
-    job: "",
-    interests: [],
-    readTime: "",
-    style: [],
-    recentBook: "",
-  },
-};
-
-const userPreference = useLocalStorage<Preference>(
-  "userPreference",
-  defaultPreference,
-);
+const { userPreference } = usePreference();
 const showPreferenceModal = ref(false);
 
-onMounted(() => {
-  if (!userPreference.value.isSubmitted) {
-    showPreferenceModal.value = true;
-  }
-});
-
-interface Book {
-  id: number;
-  title: string;
-  category: string;
-  author: string;
-  price: number;
-  coverUrl: string;
-}
-
-interface TooltipInfo {
-  message: string;
-  icon: string;
-}
-
-type MainSectionCategory =
-  (typeof SectionCategory)[keyof typeof SectionCategory];
-
-interface MainPageBookCardSection {
-  category: MainSectionCategory;
-  showTooltip: boolean;
-  tooltipInfo?: TooltipInfo;
-  title: string;
-  icon: string;
-  books: Book[];
-}
-
-// TODO 현재는 더미데이터. 추후 통신으로 가져오게 변경
-const dummyData = ref(mainPageDummy);
-const personalizedSectionData = ref<MainPageBookCardSection>(
-  dummyData.value.personalized,
-);
-const etcSectionData = ref<MainPageBookCardSection[]>(dummyData.value.etcList);
-
-const bookCardSection = computed(() => [
-  personalizedSectionData.value,
-  ...etcSectionData.value,
-]);
-
-function getCategoryRoute(category: MainSectionCategory) {
-  switch (category) {
-    case "Bestseller":
-      return "/best-sellers";
-    case "ItemNewSpecial":
-      return "/remakerable-new-books";
-    default:
-      console.error(`unknown category. category=(${category})`);
-      return "";
-  }
-}
-
 const isLoadingPersonalized = ref(false);
+const recommendedBooks = ref<BookListItem[]>([]);
 async function refreshPersonalizedBookList() {
+  if (isLoadingPersonalized.value) {
+    return;
+  }
   isLoadingPersonalized.value = true;
   try {
-    // 3초 대기 (테스트용)
-    await new Promise((resolve) => setTimeout(resolve, 3000));
+    const response = await api.recommendPersonalBooks({
+      userPreference: userPreference.value.user,
+    });
 
-    // TODO 실제 API로 교체
-    const newBooks = mainPageChangeDummy.personalized.books;
-    personalizedSectionData.value = {
-      ...personalizedSectionData.value,
-      books: newBooks,
-    };
+    recommendedBooks.value = response.response;
   } catch (e) {
     console.error(e);
   } finally {
     isLoadingPersonalized.value = false;
   }
 }
+
+const bestSellers = ref<BookItem[]>([]);
+const remarkableNewBooks = ref<BookItem[]>([]);
+
+useAsyncData("BestSellersPreview", () => {
+  return api.getBookList("Bestseller", 1, 6);
+}).then((response) => {
+  bestSellers.value = response.data.value.response.item;
+});
+useAsyncData("RemarkableNewBooksPreview", () => {
+  return api.getBookList("ItemNewSpecial", 1, 6);
+}).then((response) => {
+  remarkableNewBooks.value = response.data.value.response.item;
+});
+
+onMounted(() => {
+  if (!userPreference.value.isSubmitted) {
+    showPreferenceModal.value = true;
+  }
+  refreshPersonalizedBookList();
+});
 </script>
 
 <template>
   <div>
-    <div v-for="(section, idx) in bookCardSection" :key="idx" class="mb-8">
+    <div class="mb-8">
       <SectionHeader>
         <template #title>
-          {{ section.title }}
+          개인 맞춤 추천 책
           <Icon
-            v-if="section.category === SectionCategory.Personalized"
             class="text-3xl cursor-pointer text-teal-700"
             name="line-md:cog-filled"
             @click="showPreferenceModal = true"
           />
         </template>
-
         <template #icon>
           <Icon
-            v-if="section.category === SectionCategory.Personalized"
-            :name="section.icon"
             class="text-4xl cursor-pointer"
+            name="line-md:rotate-270"
             @click="refreshPersonalizedBookList"
           />
-          <NuxtLink
-            v-else
-            :to="getCategoryRoute(section.category)"
-            class="text-4xl cursor-pointer"
-          >
-            <Icon :name="section.icon" />
-          </NuxtLink>
         </template>
       </SectionHeader>
-
-      <!-- 로딩 중일 때 스켈레톤 표시 -->
-      <div
-        v-if="
-          section.category === SectionCategory.Personalized &&
-          isLoadingPersonalized
-        "
-        class="mt-4"
-      >
+      <div v-if="isLoadingPersonalized" class="mt-4">
         <Skeleton height="15rem" width="100%" />
       </div>
+      <BookEmptyComponent
+        v-else-if="recommendedBooks.length === 0"
+        text="현재 추천가능한 책 목록이 없습니다. 개인설정 후 다시 시도해 주세요."
+      />
+      <div
+        v-else
+        class="max-w-full min-h-[20rem] flex flex-wrap gap-3 mt-4 items-center justify-around"
+      >
+        <NuxtLink
+          v-for="(book, bookIdx) in recommendedBooks"
+          :key="bookIdx"
+          :to="`/book/${book.id}`"
+          class="cursor-pointer max-w-[180px] min-w-[140px] h-[270px] no-underline"
+        >
+          <BookCard>
+            <template #image>
+              <img
+                :alt="book.title"
+                :src="book.cover"
+                class="object-cover w-full h-full"
+              />
+            </template>
 
-      <!-- 로딩 중이 아닐 때 또는 다른 섹션일 때 BookCard 표시 -->
-      <div v-else>
-        <div v-if="section.books.length === 0">
-          <BookEmptyComponent />
-        </div>
+            <template #info>
+              <div class="text-center text-sm">
+                <p class="text text-gray-800 dark:text-gray-300">
+                  [{{ book.category.split(">").at(-1) }}]
+                </p>
+                <p class="font-bold truncate">{{ book.title }}</p>
+                <p class="text-sm text-gray-600 dark:text-gray-500 truncate">
+                  {{ book.author }}
+                </p>
+                <p class="text-sm text-gray-600 dark:text-gray-500 truncate">
+                  {{ book.price.toLocaleString() }}원
+                </p>
+              </div>
+            </template>
+          </BookCard>
+        </NuxtLink>
+      </div>
+
+      <div class="mb-8">
+        <SectionHeader>
+          <template #title> 베스트셀러 </template>
+          <template #icon>
+            <NuxtLink class="text-4xl cursor-pointer" to="/best-sellers?page=1">
+              <Icon name="line-md:chevron-small-right" />
+            </NuxtLink>
+          </template>
+        </SectionHeader>
+        <BookEmptyComponent v-if="bestSellers.length === 0" />
         <div
           v-else
           class="max-w-full min-h-[20rem] flex flex-wrap gap-3 mt-4 items-center justify-around"
         >
           <NuxtLink
-            v-for="(book, bookIdx) in section.books"
+            v-for="(book, bookIdx) in bestSellers"
             :key="bookIdx"
-            :to="`/book/${book.id}`"
+            :to="`/book/${book.itemId}`"
             class="cursor-pointer max-w-[180px] min-w-[140px] h-[270px] no-underline"
           >
             <BookCard>
               <template #image>
                 <img
                   :alt="book.title"
-                  :src="book.coverUrl"
+                  :src="book.cover"
                   class="object-cover w-full h-full"
                 />
               </template>
@@ -171,14 +148,14 @@ async function refreshPersonalizedBookList() {
               <template #info>
                 <div class="text-center text-sm">
                   <p class="text text-gray-800 dark:text-gray-300">
-                    [{{ book.category }}]
+                    [{{ book.categoryName.split(">").at(-1) }}]
                   </p>
                   <p class="font-bold truncate">{{ book.title }}</p>
                   <p class="text-sm text-gray-600 dark:text-gray-500 truncate">
                     {{ book.author }}
                   </p>
                   <p class="text-sm text-gray-600 dark:text-gray-500 truncate">
-                    {{ book.price }}원
+                    {{ book.priceSales.toLocaleString() }}원
                   </p>
                 </div>
               </template>
@@ -186,8 +163,61 @@ async function refreshPersonalizedBookList() {
           </NuxtLink>
         </div>
       </div>
+
+      <div class="mb-8">
+        <SectionHeader>
+          <template #title> 주목할 만한 신간 </template>
+          <template #icon>
+            <NuxtLink
+              class="text-4xl cursor-pointer"
+              to="/remakerable-new-books?page=1"
+            >
+              <Icon name="line-md:chevron-small-right" />
+            </NuxtLink>
+          </template>
+        </SectionHeader>
+
+        <BookEmptyComponent v-if="remarkableNewBooks.length === 0" />
+        <div
+          v-else
+          class="max-w-full min-h-[20rem] flex flex-wrap gap-3 mt-4 items-center justify-around"
+        >
+          <NuxtLink
+            v-for="(book, bookIdx) in remarkableNewBooks"
+            :key="bookIdx"
+            :to="`/book/${book.itemId}`"
+            class="cursor-pointer max-w-[180px] min-w-[140px] h-[270px] no-underline"
+          >
+            <BookCard>
+              <template #image>
+                <img
+                  :alt="book.title"
+                  :src="book.cover"
+                  class="object-cover w-full h-full"
+                />
+              </template>
+
+              <template #info>
+                <div class="text-center text-sm">
+                  <p class="text text-gray-800 dark:text-gray-300">
+                    [{{ book.categoryName.split(">").at(-1) }}]
+                  </p>
+                  <p class="font-bold truncate">{{ book.title }}</p>
+                  <p class="text-sm text-gray-600 dark:text-gray-500 truncate">
+                    {{ book.author }}
+                  </p>
+                  <p class="text-sm text-gray-600 dark:text-gray-500 truncate">
+                    {{ book.priceSales.toLocaleString() }}원
+                  </p>
+                </div>
+              </template>
+            </BookCard>
+          </NuxtLink>
+        </div>
+
+        <BookPreferenceModal v-model:visible="showPreferenceModal" />
+      </div>
     </div>
-    <BookPreferenceModal v-model:visible="showPreferenceModal" />
   </div>
 </template>
 
