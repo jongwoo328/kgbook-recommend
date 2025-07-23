@@ -2,9 +2,10 @@
 import SectionHeader from "~/components/general/SectionHeader.vue";
 import BookCard from "~/components/general/BookCard.vue";
 import SearchEmptyComponent from "~/components/general/SearchEmptyComponent.vue";
-import type { PageState } from "primevue";
+import type { PageState } from "primevue/paginator";
 import type { BookInfo } from "~/types/BookInfo";
 import api from "~/api";
+import BookSearchFilter from "~/components/BookSearchFilter.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -41,10 +42,7 @@ onMounted(async () => {
 
 const bookTotalRows = ref<number>(0);
 const searchResult = ref<BookInfo[]>([]);
-const filteredResult = computed<BookInfo[]>(() => {
-  // TODO 구현 필요
-  return searchResult.value;
-});
+const filteredBooks = ref<BookInfo[]>([]);
 
 const isSearchBookLoading = ref<boolean>(true);
 async function searchBook(
@@ -72,15 +70,16 @@ async function searchBook(
     bookTotalRows.value = result.response.totalResults ?? 0;
     const bookList = result.response.item ?? [];
 
-    console.log(bookList);
-
     searchResult.value = bookList.map((book: BookItem) => ({
       id: book.itemId,
       title: book.title,
       author: book.author,
-      category: book.categoryName.split(">").reverse()[0],
+      category: book.categoryName.split(">").reverse()[0] || "기타",
       price: book.priceStandard,
       cover: book.cover,
+      publisher: book.publisher,
+      pubDate: book.pubDate,
+      customerReviewRank: book.customerReviewRank,
     }));
   } catch (error) {
     console.error("Failed to fetch search books: ", error);
@@ -118,6 +117,12 @@ async function onPageChange(pageState: PageState) {
       </template>
     </SectionHeader>
 
+    <BookSearchFilter v-model="filteredBooks" :books="searchResult" />
+
+    <div class="mt-4 text-right text-gray-600">
+      <p>현재 페이지 기준 선택 결과: {{ filteredBooks.length }}건</p>
+    </div>
+
     <div v-if="isSearchBookLoading" class="mt-4">
       <Skeleton height="25rem" width="100%" />
     </div>
@@ -130,7 +135,7 @@ async function onPageChange(pageState: PageState) {
           class="max-w-full min-h-[20rem] flex flex-wrap gap-3 mt-4 items-center justify-around"
         >
           <NuxtLink
-            v-for="(book, idx) in filteredResult"
+            v-for="(book, idx) in filteredBooks"
             :key="idx"
             :to="`/book/${book.id}`"
             class="cursor-pointer max-w-[180px] min-w-[140px] h-[270px]"
