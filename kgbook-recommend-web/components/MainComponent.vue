@@ -8,6 +8,7 @@ import api from "~/api";
 import type { BookListItem } from "~/types/BookListItem";
 
 const { userPreference } = usePreference();
+const contextStore = useContextStore();
 const showPreferenceModal = ref(false);
 
 const isLoadingPersonalized = ref(false);
@@ -23,6 +24,8 @@ async function refreshPersonalizedBookList() {
     });
 
     recommendedBooks.value = response.response;
+    contextStore.context.dataInDisplay.recommendedBooks =
+      recommendedBooks.value;
   } catch (e) {
     console.error(e);
   } finally {
@@ -48,7 +51,16 @@ onMounted(() => {
   if (!userPreference.value.isSubmitted) {
     showPreferenceModal.value = true;
   }
+  contextStore.context.dataInDisplay = {
+    bestSellers: bestSellers.value,
+    remarkableNewBooks: remarkableNewBooks.value,
+    recommendedBooks: recommendedBooks.value,
+  };
   refreshPersonalizedBookList();
+});
+
+onUnmounted(() => {
+  contextStore.context.dataInDisplay = {};
 });
 </script>
 
