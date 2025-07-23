@@ -71,10 +71,10 @@ const bookCardSection = computed(() => [
 
 function getCategoryRoute(category: MainSectionCategory) {
   switch (category) {
-    case "bestseller":
-      return "/best-sellers?page=1";
-    case "remarkable":
-      return "/remakerable-new-books?page=1";
+    case "Bestseller":
+      return "/best-sellers";
+    case "ItemNewSpecial":
+      return "/remakerable-new-books";
     default:
       console.error(`unknown category. category=(${category})`);
       return "";

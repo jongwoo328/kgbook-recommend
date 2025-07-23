@@ -25,3 +25,4 @@ type BookSearchResponse = SearchItemResponse<BookItem>;
 type RecommendBookResponse = {
   response: RecommendBookItem[];
 };
+type BookListResponse = ListItemResponse<BookItem>;

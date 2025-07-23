@@ -1,5 +1,6 @@
 import { MultiServerMCPClient } from "@langchain/mcp-adapters";
 import AladinMcpServerConfig from "~/server/mcp/servers/aladin";
+import { Aladin } from "aladin-client";
 
 export const client = new MultiServerMCPClient({
   throwOnLoadError: true,
@@ -19,3 +20,5 @@ export const client = new MultiServerMCPClient({
     resource: "artifact",
   },
 });
+
+export const aladinClient = new Aladin({ ttbKey: process.env.TTB_KEY });

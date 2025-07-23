@@ -38,4 +38,21 @@ export default {
       },
     });
   },
+  getBookList: (
+    bookListType: BookListQueryType,
+    page: number = 1,
+    size: number = 10,
+  ) => {
+    return $fetch<BookListResponse>("/api/book/list", {
+      method: "GET",
+      headers: {
+        ...commonHeaders,
+      },
+      query: {
+        type: bookListType,
+        page: page,
+        size: size,
+      },
+    });
+  },
 };
