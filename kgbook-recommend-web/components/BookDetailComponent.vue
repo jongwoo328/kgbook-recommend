@@ -90,6 +90,8 @@ async function getOtherBooksByAuthor(author: string) {
     const result = await api.searchBooks({
       query: author.replace("외", "").replace("지음", "").trim(),
       queryType: "Author",
+      page: 1,
+      size: 10,
     });
     const bookList = result.response ?? [];
 

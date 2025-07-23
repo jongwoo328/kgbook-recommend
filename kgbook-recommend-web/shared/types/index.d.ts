@@ -10,3 +10,5 @@ type Preference = {
   isSubmitted: boolean;
   user: UserPreference;
 };
+
+type BookSearchType = "Keyword" | "Title" | "Author" | "Publisher";

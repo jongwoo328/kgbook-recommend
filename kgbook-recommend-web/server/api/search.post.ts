@@ -3,7 +3,7 @@ import { aladinClient } from "../client";
 export default defineEventHandler(
   async (event): Promise<BookSearchResponse> => {
     const body = await readBody<BookSearchRequest>(event);
-    const { query, queryType, categoryId, sort } = body;
+    const { query, queryType, categoryId, sort, page, size } = body;
     if (!query || !queryType) {
       throw createError({
         statusCode: 400,
@@ -17,8 +17,11 @@ export default defineEventHandler(
         queryType,
         categoryId,
         sort,
+        page,
+        size,
       };
       const result = await aladinClient.searchItems(request);
+      console.log(result);
       if (!result.success) {
         throw Error(result.error.message);
       }
