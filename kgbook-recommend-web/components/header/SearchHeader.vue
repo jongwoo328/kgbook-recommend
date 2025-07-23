@@ -4,7 +4,11 @@ import { ref } from "vue";
 const router = useRouter();
 const searchValue = ref<string>("");
 
-const categoryOptions = [
+interface SearchTypeOption {
+  label: string;
+  value: BookSearchType;
+}
+const searchTypeOptions: SearchTypeOption[] = [
   {
     label: "제목+저자",
     value: "Keyword",
@@ -22,7 +26,7 @@ const categoryOptions = [
     value: "Publisher",
   },
 ];
-const selectedCategory = ref("Keyword");
+const selectedSearchType = ref("Keyword");
 
 function searchBook() {
   if (!searchValue.value.trim()) {
@@ -32,10 +36,10 @@ function searchBook() {
     path: "/search",
     query: {
       text: searchValue.value,
-      category: selectedCategory.value,
+      type: selectedSearchType.value,
     },
   });
-  console.log(`@@ searchBook search value=(${searchValue.value})`);
+  searchValue.value = "";
 }
 </script>
 
@@ -76,8 +80,8 @@ function searchBook() {
         class="flex items-center w-[70%] my-2 border-2 border-black dark:border-white rounded-full overflow-hidden"
       >
         <Select
-          v-model="selectedCategory"
-          :options="categoryOptions"
+          v-model="selectedSearchType"
+          :options="searchTypeOptions"
           :pt="{
             trigger: { class: 'px-4 py-3 border-none rounded-none' },
             label: { class: 'ml-1.5' },
