@@ -99,7 +99,7 @@ function searchBook() {
             class="w-full px-4 py-3 border-none outline-none"
             placeholder="검색하여 책을 찾아보세요."
             style="border: none; box-shadow: none"
-            @keydown.enter="searchBook"
+            @keyup.enter.prevent="searchBook"
           />
         </IconField>
         <Button
