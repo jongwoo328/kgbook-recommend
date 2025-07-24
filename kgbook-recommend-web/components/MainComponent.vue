@@ -47,7 +47,7 @@ async function refreshBestSellers() {
   isLoadingBestSellers.value = true;
   try {
     const response = await api.getBookList("Bestseller", 1, 6);
-    bestSellers.value = response.response.item;
+    bestSellers.value = response.item;
     contextStore.context.dataInDisplay.bestSellers = bestSellers.value;
   } catch (e) {
     console.error(e);
@@ -65,7 +65,7 @@ async function refreshRemarkableNewBooks() {
   isLoadingRemarkableNewBooks.value = true;
   try {
     const response = await api.getBookList("ItemNewSpecial", 1, 6);
-    remarkableNewBooks.value = response.response.item;
+    remarkableNewBooks.value = response.item;
     contextStore.context.dataInDisplay.remarkableNewBooks =
       remarkableNewBooks.value;
   } catch (e) {

@@ -47,8 +47,8 @@ async function fetchBookList() {
       currentPage.value,
       selectedPerPage.value,
     );
-    bookTotalRows.value = result.response.totalResults ?? 0;
-    const bookList = result.response.item ?? [];
+    bookTotalRows.value = result.totalResults ?? 0;
+    const bookList = result.item ?? [];
 
     books.value = bookList.map((book: BookItem) => ({
       id: book.itemId,

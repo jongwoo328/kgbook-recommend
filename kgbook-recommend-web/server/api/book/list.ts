@@ -2,7 +2,7 @@ import { aladinClient } from "../../client";
 import type { ListItem, ListItemResponse } from "aladin-client";
 
 export default defineEventHandler(
-  async (event): Promise<{ response: ListItemResponse<ListItem> }> => {
+  async (event): Promise<ListItemResponse<ListItem>> => {
     const query = getQuery(event);
 
     const allowedTypes: BookListQueryType[] = ["ItemNewSpecial", "Bestseller"];
@@ -26,9 +26,7 @@ export default defineEventHandler(
         throw Error(result.error.message);
       }
 
-      return {
-        response: result.data,
-      };
+      return result.data;
     } catch (error) {
       const message =
         error instanceof Error

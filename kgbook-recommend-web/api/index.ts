@@ -59,7 +59,7 @@ export default {
     page: number = 1,
     size: number = 10,
   ) => {
-    return $fetch<{ response: ListItemResponse<ListItem> }>("/api/book/list", {
+    return $fetch<ListItemResponse<ListItem>>("/api/book/list", {
       method: "GET",
       headers: {
         ...commonHeaders,
