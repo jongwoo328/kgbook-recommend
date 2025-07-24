@@ -7,7 +7,7 @@ import BookPreferenceModal from "~/components/modal/BookPreferenceModal.vue";
 import api from "~/api";
 import type { BookListItem } from "~/types/BookListItem";
 
-const { userPreference } = usePreference();
+const { userPreference, userPreferenceWithSplitInterest } = usePreference();
 const contextStore = useContextStore();
 const showPreferenceModal = ref(false);
 
@@ -20,12 +20,7 @@ async function refreshPersonalizedBookList() {
   isLoadingPersonalized.value = true;
   try {
     const response = await api.recommendPersonalBooks({
-      userPreference: {
-        ...userPreference.value.user,
-        interests: userPreference.value.user.interests
-          .map((interest) => interest.split("/"))
-          .flat(),
-      },
+      userPreference: userPreferenceWithSplitInterest.value,
     });
 
     recommendedBooks.value = response.response;

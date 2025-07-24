@@ -64,5 +64,20 @@ export const usePreference = () => {
     createDefaultPreference(),
   );
 
-  return { createDefaultPreference, userPreference };
+  const userPreferenceWithSplitInterest = computed<UserPreference>(() => {
+    return {
+      ...userPreference.value.user,
+      interests: userPreference.value.user.interests
+        .map((interest) => {
+          return interest.split("/");
+        })
+        .flat(),
+    };
+  });
+
+  return {
+    createDefaultPreference,
+    userPreference,
+    userPreferenceWithSplitInterest,
+  };
 };
