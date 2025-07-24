@@ -55,7 +55,7 @@ async function getBookDetailInfo(bookId: number) {
     isBookInfoLoading.value = true;
 
     const result = await api.getBookDetail(bookId);
-    const book = result.response.item[0] as BookItem;
+    const book = result.item[0] as unknown as BookItem;
 
     bookInfo.value = {
       title: book.title,
