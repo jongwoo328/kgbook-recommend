@@ -21,4 +21,4 @@ export const client = new MultiServerMCPClient({
   },
 });
 
-export const aladinClient = new Aladin({ ttbKey: process.env.TTB_KEY });
+export const aladinClient = new Aladin({ ttbKey: process.env.TTB_KEY ?? "" });
