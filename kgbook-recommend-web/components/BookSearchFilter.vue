@@ -158,7 +158,9 @@ function resetFilters() {
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <!-- 카테고리 필터 -->
       <div class="flex flex-col gap-2 md:col-span-2">
-        <label class="font-semibold text-gray-700"> 카테고리 </label>
+        <label class="font-semibold text-gray-700 dark:text-gray-300">
+          카테고리
+        </label>
         <div class="flex flex-wrap gap-2">
           <Button
             v-for="category in availableCategories"
@@ -177,14 +179,17 @@ function resetFilters() {
 
       <!-- 출판사 필터 -->
       <div class="flex flex-col gap-2">
-        <label class="font-semibold text-gray-700" for="publisher-filter">
+        <label
+          class="font-semibold text-gray-700 dark:text-gray-300"
+          for="publisher-filter"
+        >
           출판사
         </label>
         <MultiSelect
           v-model="filterState.publisher"
           :max-selected-labels="5"
           :options="availablePublishers"
-          class="w-full"
+          class="w-full text-gray-600 dark:text-gray-400"
           filter
           placeholder="출판사 선택 (다중 선택 가능)"
         />
@@ -192,13 +197,16 @@ function resetFilters() {
 
       <!-- 정렬 옵션 -->
       <div class="flex flex-col gap-2">
-        <label class="font-semibold text-gray-700" for="sort-filter">
+        <label
+          class="font-semibold text-gray-700 dark:text-gray-300"
+          for="sort-filter"
+        >
           정렬
         </label>
         <Dropdown
           v-model="filterState.sortOption"
           :options="sortOptions"
-          class="w-full"
+          class="w-full text-gray-600 dark:text-gray-400"
           option-label="name"
           placeholder="정렬 기준 선택"
         />
@@ -206,13 +214,15 @@ function resetFilters() {
 
       <!-- 가격 범위 -->
       <div class="flex flex-col gap-2">
-        <label class="font-semibold text-gray-700">가격 범위</label>
+        <label class="font-semibold text-gray-700 dark:text-gray-300"
+          >가격 범위</label
+        >
         <div class="flex items-center gap-2">
           <InputNumber
             v-model="filterState.priceRange[0]"
             :max="maxAvailablePrice"
             :min="minAvailablePrice"
-            class="w-full"
+            class="w-full text-gray-600 dark:text-gray-400"
             currency="KRW"
             locale="ko-KR"
             mode="currency"
@@ -222,7 +232,7 @@ function resetFilters() {
             v-model="filterState.priceRange[1]"
             :max="maxAvailablePrice"
             :min="minAvailablePrice"
-            class="w-full"
+            class="w-full text-gray-600 dark:text-gray-400"
             currency="KRW"
             locale="ko-KR"
             mode="currency"
@@ -237,9 +247,12 @@ function resetFilters() {
         />
       </div>
     </div>
-    <div class="mt-4 flex justify-end">
+    <div class="mt-4 flex justify-between items-center">
+      <div class="mt-4 text-right text-gray-600 dark:text-gray-400">
+        <p>현재 페이지 기준 선택 결과: {{ filteredBooks.length }}건</p>
+      </div>
       <Button
-        class="p-button-secondary"
+        class="p-button-secondary rounded"
         icon="pi pi-refresh"
         label="필터 초기화"
         @click="resetFilters"

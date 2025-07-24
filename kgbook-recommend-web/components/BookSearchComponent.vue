@@ -117,11 +117,30 @@ async function onPageChange(pageState: PageState) {
       </template>
     </SectionHeader>
 
-    <BookSearchFilter v-model="filteredBooks" :books="searchResult" />
-
-    <div class="mt-4 text-right text-gray-600">
-      <p>현재 페이지 기준 선택 결과: {{ filteredBooks.length }}건</p>
-    </div>
+    <Accordion class="m-4" value="0">
+      <AccordionPanel value="0">
+        <AccordionHeader
+          :pt="{
+            root: {
+              class:
+                '!border-t-1 !border-l-0 !border-r-0 !border-b-1 !border-gray-300 hover:!bg-[#0d948821]',
+            },
+          }"
+        >
+          상세 검색
+        </AccordionHeader>
+        <AccordionContent
+          :pt="{
+            content: {
+              class:
+                'p-1 !border-t-0 !border-l-0 !border-r-0 !border-b-1 !border-gray-300',
+            },
+          }"
+        >
+          <BookSearchFilter v-model="filteredBooks" :books="searchResult" />
+        </AccordionContent>
+      </AccordionPanel>
+    </Accordion>
 
     <div v-if="isSearchBookLoading" class="mt-4">
       <Skeleton height="25rem" width="100%" />
