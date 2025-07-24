@@ -33,34 +33,57 @@ async function refreshPersonalizedBookList() {
   }
 }
 
+const isLoadingBestSellers = ref(false);
 const bestSellers = ref<BookItem[]>([]);
-const remarkableNewBooks = ref<BookItem[]>([]);
+async function refreshBestSellers() {
+  if (isLoadingBestSellers.value) {
+    return;
+  }
+  isLoadingBestSellers.value = true;
+  try {
+    const response = await api.getBookList("Bestseller", 1, 6);
+    bestSellers.value = response.response.item;
+    contextStore.context.dataInDisplay.bestSellers = bestSellers.value;
+  } catch (e) {
+    console.error(e);
+  } finally {
+    isLoadingBestSellers.value = false;
+  }
+}
 
-useAsyncData("BestSellersPreview", () => {
-  return api.getBookList("Bestseller", 1, 6);
-}).then((response) => {
-  bestSellers.value = response.data.value.response.item;
-});
-useAsyncData("RemarkableNewBooksPreview", () => {
-  return api.getBookList("ItemNewSpecial", 1, 6);
-}).then((response) => {
-  remarkableNewBooks.value = response.data.value.response.item;
-});
+const isLoadingRemarkableNewBooks = ref(false);
+const remarkableNewBooks = ref<BookItem[]>([]);
+async function refreshRemarkableNewBooks() {
+  if (isLoadingRemarkableNewBooks.value) {
+    return;
+  }
+  isLoadingRemarkableNewBooks.value = true;
+  try {
+    const response = await api.getBookList("ItemNewSpecial", 1, 6);
+    remarkableNewBooks.value = response.response.item;
+    contextStore.context.dataInDisplay.remarkableNewBooks =
+      remarkableNewBooks.value;
+  } catch (e) {
+    console.error(e);
+  } finally {
+    isLoadingRemarkableNewBooks.value = false;
+  }
+}
 
 onMounted(() => {
   if (!userPreference.value.isSubmitted) {
     showPreferenceModal.value = true;
   }
-  contextStore.context.dataInDisplay = {
-    bestSellers: bestSellers.value,
-    remarkableNewBooks: remarkableNewBooks.value,
-    recommendedBooks: recommendedBooks.value,
-  };
   refreshPersonalizedBookList();
+  refreshBestSellers();
+  refreshRemarkableNewBooks();
+  console.log(contextStore.context);
+  console.log(bestSellers.value);
+  console.log(remarkableNewBooks.value);
 });
 
 onUnmounted(() => {
-  contextStore.context.dataInDisplay = {};
+  contextStore.context.dataInDisplay = null;
 });
 </script>
 
@@ -137,7 +160,10 @@ onUnmounted(() => {
             </NuxtLink>
           </template>
         </SectionHeader>
-        <BookEmptyComponent v-if="bestSellers.length === 0" />
+        <div v-if="isLoadingBestSellers" class="mt-4">
+          <Skeleton height="15rem" width="100%" />
+        </div>
+        <BookEmptyComponent v-else-if="bestSellers.length === 0" />
         <div
           v-else
           class="max-w-full min-h-[20rem] flex flex-wrap gap-3 mt-4 items-center justify-around"
@@ -188,8 +214,10 @@ onUnmounted(() => {
             </NuxtLink>
           </template>
         </SectionHeader>
-
-        <BookEmptyComponent v-if="remarkableNewBooks.length === 0" />
+        <div v-if="isLoadingRemarkableNewBooks" class="mt-4">
+          <Skeleton height="15rem" width="100%" />
+        </div>
+        <BookEmptyComponent v-else-if="remarkableNewBooks.length === 0" />
         <div
           v-else
           class="max-w-full min-h-[20rem] flex flex-wrap gap-3 mt-4 items-center justify-around"

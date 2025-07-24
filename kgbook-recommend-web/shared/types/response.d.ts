@@ -20,9 +20,6 @@ type BookItem = {
 };
 type RecommendBookItem = z.infer<typeof BookSchema>;
 
-type BookDetailResponse = LookupItemResponse<BookItem>;
-type BookSearchResponse = SearchItemResponse<BookItem>;
 type RecommendBookResponse = {
   response: RecommendBookItem[];
 };
-type BookListResponse = ListItemResponse<BookItem>;
