@@ -62,7 +62,7 @@ async function searchBook(
   try {
     const result = await api.searchBooks({
       query: text.trim(),
-      queryType: searchSearchType.value,
+      queryType: type,
       sort: "Accuracy",
       page: page,
       size: size,
