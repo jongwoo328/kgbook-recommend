@@ -89,7 +89,12 @@ function submit() {
       messagesBefore: messages.value,
       context: {
         ...contextStore.context,
-        userPreferences: userPreference.value.user,
+        userPreferences: {
+          ...userPreference.value.user,
+          interests: userPreference.value.user.interests
+            .map((interest) => interest.split("/"))
+            .flat(),
+        },
       },
     })
     .then((r) => {
