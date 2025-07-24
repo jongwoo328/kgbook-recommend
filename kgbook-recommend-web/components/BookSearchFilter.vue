@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { computed, ref, watch } from "vue";
 import type { BookInfo } from "~/types/BookInfo";
-import Dropdown from "primevue/dropdown";
 import InputNumber from "primevue/inputnumber";
 import Slider from "primevue/slider";
 import Button from "primevue/button";
