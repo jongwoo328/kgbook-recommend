@@ -19,11 +19,9 @@ async function refreshPersonalizedBookList() {
   }
   isLoadingPersonalized.value = true;
   try {
-    const response = await api.recommendPersonalBooks({
+    recommendedBooks.value = await api.recommendPersonalBooks({
       userPreference: userPreference.value.user,
     });
-
-    recommendedBooks.value = response.response;
     contextStore.context.dataInDisplay.recommendedBooks =
       recommendedBooks.value;
   } catch (e) {
@@ -77,13 +75,10 @@ onMounted(() => {
   refreshPersonalizedBookList();
   refreshBestSellers();
   refreshRemarkableNewBooks();
-  console.log(contextStore.context);
-  console.log(bestSellers.value);
-  console.log(remarkableNewBooks.value);
 });
 
 onUnmounted(() => {
-  contextStore.context.dataInDisplay = null;
+  contextStore.context.dataInDisplay = {};
 });
 </script>
 

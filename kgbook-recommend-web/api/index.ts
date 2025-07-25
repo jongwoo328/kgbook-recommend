@@ -38,7 +38,7 @@ export default {
     });
   },
   recommendPersonalBooks: (body: PersonalRecommendRequest) => {
-    return $fetch<RecommendBookResponse>("/api/recommend", {
+    return $fetch<RecommendBookItem[]>("/api/recommend", {
       method: "POST",
       body: body,
       headers: {
@@ -47,7 +47,7 @@ export default {
     });
   },
   recommendBooks: (itemId: number) => {
-    return $fetch<RecommendBookResponse>(`/api/recommend/${itemId}`, {
+    return $fetch<RecommendBookItem[]>(`/api/recommend/${itemId}`, {
       method: "GET",
       headers: {
         ...commonHeaders,

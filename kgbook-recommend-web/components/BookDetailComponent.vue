@@ -116,7 +116,7 @@ async function getAiRecommendedBooks(itemId: number) {
 
   try {
     const result = await api.recommendBooks(itemId);
-    const bookList = result.response ?? [];
+    const bookList = result ?? [];
 
     aiRecommendedBooks.value = bookList.map((book: RecommendBookItem) => ({
       id: book.id,

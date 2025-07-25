@@ -1,7 +1,7 @@
 import { bookSchemaParser, jsonOutputParserAgent } from "~/server/ai";
 
 export default defineEventHandler(
-  async (event): Promise<RecommendBookResponse> => {
+  async (event): Promise<RecommendBookItem[]> => {
     const body = await readBody<PersonalRecommendRequest>(event);
 
     const { userPreference } = body;
@@ -31,8 +31,6 @@ export default defineEventHandler(
     const responseMessage = r.messages[r.messages.length - 1];
     const parsed = await bookSchemaParser.parse(responseMessage.text);
 
-    return {
-      response: parsed.books,
-    };
+    return parsed.books;
   },
 );
