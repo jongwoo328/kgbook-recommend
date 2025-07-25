@@ -11,13 +11,9 @@ type PersonalRecommendRequest = {
   userPreference: UserPreference;
 };
 
-type BookDetailRequest = {
-  itemId: number;
-};
-
 type BookSearchRequest = {
   query: string;
-  queryType: "Keyword" | "Title" | "Author" | "Publisher";
+  queryType: BookSearchType;
   categoryId?: number;
   sort?:
     | "Accuracy"
@@ -26,6 +22,12 @@ type BookSearchRequest = {
     | "SalesPoint"
     | "CustomerRating"
     | "MyReviewCount";
+  page: number;
+  size: number;
+};
+
+type RecommendRequest = {
+  message: string;
 };
 
 type BookListQueryType = "ItemNewSpecial" | "Bestseller";

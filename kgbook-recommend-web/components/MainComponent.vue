@@ -250,11 +250,16 @@ onUnmounted(() => {
 
               <template #info>
                 <div class="text-center text-sm">
-                  <p
-                    v-if="book.categoryName.length > 0"
-                    class="text text-gray-800 dark:text-gray-300"
-                  >
-                    [{{ book.categoryName }}]
+                  <p class="text text-gray-800 dark:text-gray-300">
+                    <span v-if="book.categoryName !== ''">
+                      [{{ book.categoryName }}]
+                    </span>
+                    <span
+                      v-else
+                      class="italic text-gray-400 dark:text-gray-600"
+                    >
+                      [카테고리 없음]
+                    </span>
                   </p>
                   <p class="font-bold truncate">{{ book.title }}</p>
                   <p class="text-sm text-gray-600 dark:text-gray-500 truncate">

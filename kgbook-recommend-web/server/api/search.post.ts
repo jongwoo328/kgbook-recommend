@@ -1,10 +1,10 @@
 import { aladinClient } from "../client";
-import type { SearchItem } from "aladin-client";
+import type { SearchItemResponse } from "aladin-client";
 
 export default defineEventHandler(
-  async (event): Promise<{ response: SearchItem[] }> => {
+  async (event): Promise<{ response: SearchItemResponse }> => {
     const body = await readBody<BookSearchRequest>(event);
-    const { query, queryType, categoryId, sort } = body;
+    const { query, queryType, categoryId, sort, page, size } = body;
     if (!query || !queryType) {
       throw createError({
         statusCode: 400,
@@ -13,19 +13,21 @@ export default defineEventHandler(
     }
 
     try {
-      const request = {
+      const result = await aladinClient.searchItems({
         query,
         queryType,
         categoryId,
         sort,
-      };
-      const result = await aladinClient.searchItems(request);
+        start: page,
+        maxResults: size,
+        cover: "Big",
+      });
       if (!result.success) {
         throw Error(result.error.message);
       }
 
       return {
-        response: result.data.item,
+        response: result.data,
       };
     } catch (error) {
       const message =
