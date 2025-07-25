@@ -43,7 +43,7 @@ function searchBook() {
   <div class="my-5 flex flex-col justify-center items-center">
     <NuxtLink to="/">
       <h1 class="page-title cursor-pointer font-bold py-5 my-2 text-4xl">
-        사이트 이름 뭐하징
+        Book Scouter
       </h1>
     </NuxtLink>
     <div class="nav-bar-links text mb-2">
