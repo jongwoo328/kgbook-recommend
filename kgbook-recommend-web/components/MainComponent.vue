@@ -7,7 +7,7 @@ import BookPreferenceModal from "~/components/modal/BookPreferenceModal.vue";
 import api from "~/api";
 import type { BookListItem } from "~/types/BookListItem";
 
-const { userPreference } = usePreference();
+const { userPreference, userPreferenceWithSplitInterest } = usePreference();
 const contextStore = useContextStore();
 const showPreferenceModal = ref(false);
 
@@ -20,7 +20,7 @@ async function refreshPersonalizedBookList() {
   isLoadingPersonalized.value = true;
   try {
     recommendedBooks.value = await api.recommendPersonalBooks({
-      userPreference: userPreference.value.user,
+      userPreference: userPreferenceWithSplitInterest.value,
     });
     contextStore.context.dataInDisplay.recommendedBooks =
       recommendedBooks.value;
@@ -40,7 +40,12 @@ async function refreshBestSellers() {
   isLoadingBestSellers.value = true;
   try {
     const response = await api.getBookList("Bestseller", 1, 6);
-    bestSellers.value = response.response.item;
+    bestSellers.value = response.item.map((book) => {
+      return {
+        ...book,
+        categoryName: book.categoryName.split(">").at(-1) ?? "",
+      };
+    });
     contextStore.context.dataInDisplay.bestSellers = bestSellers.value;
   } catch (e) {
     console.error(e);
@@ -58,7 +63,12 @@ async function refreshRemarkableNewBooks() {
   isLoadingRemarkableNewBooks.value = true;
   try {
     const response = await api.getBookList("ItemNewSpecial", 1, 6);
-    remarkableNewBooks.value = response.response.item;
+    remarkableNewBooks.value = response.item.map((book) => {
+      return {
+        ...book,
+        categoryName: book.categoryName.split(">").at(-1) ?? "",
+      };
+    });
     contextStore.context.dataInDisplay.remarkableNewBooks =
       remarkableNewBooks.value;
   } catch (e) {
@@ -130,8 +140,11 @@ onUnmounted(() => {
 
             <template #info>
               <div class="text-center text-sm">
-                <p class="text text-gray-800 dark:text-gray-300">
-                  [{{ book.category.split(">").at(-1) }}]
+                <p
+                  v-if="book.category.length > 0"
+                  class="text text-gray-800 dark:text-gray-300"
+                >
+                  [{{ book.category }}]
                 </p>
                 <p class="font-bold truncate">{{ book.title }}</p>
                 <p class="text-sm text-gray-600 dark:text-gray-500 truncate">
@@ -180,8 +193,11 @@ onUnmounted(() => {
 
               <template #info>
                 <div class="text-center text-sm">
-                  <p class="text text-gray-800 dark:text-gray-300">
-                    [{{ book.categoryName.split(">").at(-1) }}]
+                  <p
+                    v-if="book.categoryName.length > 0"
+                    class="text text-gray-800 dark:text-gray-300"
+                  >
+                    [{{ book.categoryName }}]
                   </p>
                   <p class="font-bold truncate">{{ book.title }}</p>
                   <p class="text-sm text-gray-600 dark:text-gray-500 truncate">
@@ -234,8 +250,11 @@ onUnmounted(() => {
 
               <template #info>
                 <div class="text-center text-sm">
-                  <p class="text text-gray-800 dark:text-gray-300">
-                    [{{ book.categoryName.split(">").at(-1) }}]
+                  <p
+                    v-if="book.categoryName.length > 0"
+                    class="text text-gray-800 dark:text-gray-300"
+                  >
+                    [{{ book.categoryName }}]
                   </p>
                   <p class="font-bold truncate">{{ book.title }}</p>
                   <p class="text-sm text-gray-600 dark:text-gray-500 truncate">
