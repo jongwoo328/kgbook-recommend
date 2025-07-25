@@ -198,13 +198,13 @@ async function getAiRecommendedBooks(itemId: number) {
             <div class="flex items-baseline gap-2">
               <div class="w-20 text-gray-500">정가</div>
               <div class="line-through dark:text-gray-200">
-                {{ bookInfo.price }}
+                {{ bookInfo.price.toLocaleString() }}
               </div>
             </div>
             <div class="flex items-baseline gap-2">
               <div class="w-20 text-gray-500">판매가</div>
               <div class="text-teal-600 text-xl font-semibold">
-                {{ bookInfo.priceSale }}
+                {{ bookInfo.priceSale.toLocaleString() }}
               </div>
             </div>
           </div>
@@ -285,7 +285,7 @@ async function getAiRecommendedBooks(itemId: number) {
                     {{ book.author }}
                   </p>
                   <p class="text-sm text-gray-600 dark:text-gray-500 truncate">
-                    {{ book.price }}원
+                    {{ book.price.toLocaleString() }}원
                   </p>
                 </div>
               </template>
@@ -339,7 +339,7 @@ async function getAiRecommendedBooks(itemId: number) {
                     {{ book.author }}
                   </p>
                   <p class="text-sm text-gray-600 dark:text-gray-500 truncate">
-                    {{ book.price }}원
+                    {{ book.price.toLocaleString() }}원
                   </p>
                 </div>
               </template>

@@ -70,7 +70,7 @@ const perPageOptions = ref<number[]>([10, 20, 30, 50, 100]);
                   {{ book.author }}
                 </p>
                 <p class="text-sm text-gray-600 dark:text-gray-500 truncate">
-                  {{ book.price }}원
+                  {{ book.price.toLocaleString() }}원
                 </p>
               </div>
             </template>
