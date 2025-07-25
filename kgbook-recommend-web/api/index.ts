@@ -2,7 +2,7 @@ import type {
   ListItem,
   ListItemResponse,
   LookupItemResponse,
-  SearchItemResponse,
+  SearchItem,
 } from "aladin-client";
 
 const commonHeaders = {
@@ -29,7 +29,7 @@ export default {
     });
   },
   searchBooks: (body: BookSearchRequest) => {
-    return $fetch<SearchItemResponse>("/api/search", {
+    return $fetch<{ response: SearchItem[] }>("/api/search", {
       method: "POST",
       body: body,
       headers: {
