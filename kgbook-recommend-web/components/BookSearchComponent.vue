@@ -47,7 +47,7 @@ const filteredBooks = ref<BookInfo[]>([]);
 const isSearchBookLoading = ref<boolean>(true);
 async function searchBook(
   text: string,
-  type: string,
+  type: BookSearchType,
   page: number,
   size: number,
 ) {
@@ -67,8 +67,8 @@ async function searchBook(
       page: page,
       size: size,
     });
-    bookTotalRows.value = result.response.totalResults ?? 0;
-    const bookList = result.response.item ?? [];
+    bookTotalRows.value = result.totalResults ?? 0;
+    const bookList = result.item ?? [];
 
     searchResult.value = bookList.map((book: BookItem) => ({
       id: book.itemId,
@@ -77,6 +77,11 @@ async function searchBook(
       category: book.categoryName.split(">").reverse()[0] || "기타",
       price: book.priceStandard,
       cover: book.cover,
+      priceSale: book.priceSales,
+      stockstatus: book.stockStatus,
+      description: book.description,
+      isbn: book.isbn,
+      link: book.link,
       publisher: book.publisher,
       pubDate: book.pubDate,
       customerReviewRank: book.customerReviewRank,
@@ -186,7 +191,7 @@ async function onPageChange(pageState: PageState) {
                     {{ book.author }}
                   </p>
                   <p class="text-sm text-gray-600 dark:text-gray-500 truncate">
-                    {{ book.price }}원
+                    {{ book.price.toLocaleString() }}원
                   </p>
                 </div>
               </template>

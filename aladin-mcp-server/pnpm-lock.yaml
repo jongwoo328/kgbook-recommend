@@ -12,8 +12,8 @@ importers:
         specifier: ^1.12.1
         version: 1.12.1
       aladin-client:
-        specifier: ^1.0.4
-        version: 1.0.4
+        specifier: ^1.0.6
+        version: 1.0.6
       dotenv:
         specifier: ^16.5.0
         version: 16.5.0
@@ -438,8 +438,8 @@ packages:
   ajv@6.12.6:
     resolution: {integrity: sha512-j3fVLgvTo527anyYyJOGTYJbG+vnnQYvE0m5mmkc1TK+nxAppkCLMIL0aZ4dblVCNoGShhm+kzE4ZUykBoMg4g==}
 
-  aladin-client@1.0.4:
-    resolution: {integrity: sha512-zZG8pp+xFpLc6lKwnsqsL/ISrb6idrW8XvZ2ZbukBER0rqfLQFUXHbrrIxBBwi12aXLy/VdG24mmLRjqfyDkKA==}
+  aladin-client@1.0.6:
+    resolution: {integrity: sha512-sUZ9J80r0Gt6jPz8BE+XRjjC/PKiqPuGke/mufirwutRixvUPYu5G4iOIQfc7Z/9bHFU9D+5LM8dNAcusM7J5w==}
     engines: {node: '>=18.0.0'}
 
   ansi-regex@5.0.1:
@@ -1539,7 +1539,7 @@ snapshots:
       json-schema-traverse: 0.4.1
       uri-js: 4.4.1
 
-  aladin-client@1.0.4: {}
+  aladin-client@1.0.6: {}
 
   ansi-regex@5.0.1: {}
 

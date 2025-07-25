@@ -55,7 +55,7 @@ async function getBookDetailInfo(bookId: number) {
     isBookInfoLoading.value = true;
 
     const result = await api.getBookDetail(bookId);
-    const book = result.response.item[0] as BookItem;
+    const book = result.item[0] as unknown as BookItem;
 
     bookInfo.value = {
       title: book.title,
@@ -93,7 +93,7 @@ async function getOtherBooksByAuthor(author: string) {
       page: 1,
       size: 10,
     });
-    const bookList = result.response.item ?? [];
+    const bookList = result.item ?? [];
 
     otherBooksByAuthor.value = bookList.map((book: BookItem) => ({
       id: book.itemId,
@@ -118,7 +118,7 @@ async function getAiRecommendedBooks(itemId: number) {
 
   try {
     const result = await api.recommendBooks(itemId);
-    const bookList = result.response ?? [];
+    const bookList = result ?? [];
 
     aiRecommendedBooks.value = bookList.map((book: RecommendBookItem) => ({
       id: book.id,
@@ -200,13 +200,13 @@ async function getAiRecommendedBooks(itemId: number) {
             <div class="flex items-baseline gap-2">
               <div class="w-20 text-gray-500">정가</div>
               <div class="line-through dark:text-gray-200">
-                {{ bookInfo.price }}
+                {{ bookInfo.price.toLocaleString() }}
               </div>
             </div>
             <div class="flex items-baseline gap-2">
               <div class="w-20 text-gray-500">판매가</div>
               <div class="text-teal-600 text-xl font-semibold">
-                {{ bookInfo.priceSale }}
+                {{ bookInfo.priceSale.toLocaleString() }}
               </div>
             </div>
           </div>
@@ -290,7 +290,7 @@ async function getAiRecommendedBooks(itemId: number) {
                     {{ book.author }}
                   </p>
                   <p class="text-sm text-gray-600 dark:text-gray-500 truncate">
-                    {{ book.price }}원
+                    {{ book.price.toLocaleString() }}원
                   </p>
                 </div>
               </template>
@@ -352,7 +352,7 @@ async function getAiRecommendedBooks(itemId: number) {
                     {{ book.author }}
                   </p>
                   <p class="text-sm text-gray-600 dark:text-gray-500 truncate">
-                    {{ book.price }}원
+                    {{ book.price.toLocaleString() }}원
                   </p>
                 </div>
               </template>

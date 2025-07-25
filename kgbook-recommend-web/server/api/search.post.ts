@@ -1,7 +1,8 @@
 import { aladinClient } from "../client";
+import type { SearchItemResponse } from "aladin-client";
 
 export default defineEventHandler(
-  async (event): Promise<BookSearchResponse> => {
+  async (event): Promise<SearchItemResponse> => {
     const body = await readBody<BookSearchRequest>(event);
     const { query, queryType, categoryId, sort, page, size } = body;
     if (!query || !queryType) {
@@ -12,7 +13,7 @@ export default defineEventHandler(
     }
 
     try {
-      const request = {
+      const result = await aladinClient.searchItems({
         query,
         queryType,
         categoryId,
@@ -20,15 +21,12 @@ export default defineEventHandler(
         start: page,
         maxResults: size,
         cover: "Big",
-      };
-      const result = await aladinClient.searchItems(request);
+      });
       if (!result.success) {
         throw Error(result.error.message);
       }
 
-      return {
-        response: result.data,
-      };
+      return result.data;
     } catch (error) {
       const message =
         error instanceof Error

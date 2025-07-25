@@ -4,7 +4,7 @@ import FloatingAiChatTemplateButton from "~/components/FloatingAiChatTemplateBut
 import GradientButton from "~/components/general/GradientButton.vue";
 import api from "~/api";
 
-const { userPreference } = usePreference();
+const { userPreference, userPreferenceWithSplitInterest } = usePreference();
 const contextStore = useContextStore();
 
 const showCard = ref(false);
@@ -89,7 +89,7 @@ function submit() {
       messagesBefore: messages.value,
       context: {
         ...contextStore.context,
-        userPreferences: userPreference.value.user,
+        userPreferences: userPreferenceWithSplitInterest.value,
       },
     })
     .then((r) => {

@@ -7,6 +7,10 @@ type ChatRequest = {
   };
 };
 
+type PersonalRecommendRequest = {
+  userPreference: UserPreference;
+};
+
 type BookSearchRequest = {
   query: string;
   queryType: BookSearchType;

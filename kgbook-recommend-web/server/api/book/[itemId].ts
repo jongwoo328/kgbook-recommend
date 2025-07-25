@@ -1,7 +1,8 @@
 import { aladinClient } from "../../client";
+import type { LookupItemResponse } from "aladin-client";
 
 export default defineEventHandler(
-  async (event): Promise<BookDetailResponse> => {
+  async (event): Promise<LookupItemResponse> => {
     const itemId = getRouterParam(event, "itemId");
     if (!itemId) {
       throw createError({
@@ -20,9 +21,7 @@ export default defineEventHandler(
         throw Error(result.error.message);
       }
 
-      return {
-        response: result.data,
-      };
+      return result.data;
     } catch (error) {
       const message =
         error instanceof Error
