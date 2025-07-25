@@ -2,7 +2,7 @@ import { aladinClient } from "../client";
 import type { SearchItemResponse } from "aladin-client";
 
 export default defineEventHandler(
-  async (event): Promise<{ response: SearchItemResponse }> => {
+  async (event): Promise<SearchItemResponse> => {
     const body = await readBody<BookSearchRequest>(event);
     const { query, queryType, categoryId, sort, page, size } = body;
     if (!query || !queryType) {
@@ -26,9 +26,7 @@ export default defineEventHandler(
         throw Error(result.error.message);
       }
 
-      return {
-        response: result.data,
-      };
+      return result.data;
     } catch (error) {
       const message =
         error instanceof Error

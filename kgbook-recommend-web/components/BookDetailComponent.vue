@@ -93,7 +93,7 @@ async function getOtherBooksByAuthor(author: string) {
       page: 1,
       size: 10,
     });
-    const bookList = result.response.item ?? [];
+    const bookList = result.item ?? [];
 
     otherBooksByAuthor.value = bookList.map((book: BookItem) => ({
       id: book.itemId,

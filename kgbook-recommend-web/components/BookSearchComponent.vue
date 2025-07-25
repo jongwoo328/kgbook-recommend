@@ -67,8 +67,8 @@ async function searchBook(
       page: page,
       size: size,
     });
-    bookTotalRows.value = result.response.totalResults ?? 0;
-    const bookList = result.response.item ?? [];
+    bookTotalRows.value = result.totalResults ?? 0;
+    const bookList = result.item ?? [];
 
     searchResult.value = bookList.map((book: BookItem) => ({
       id: book.itemId,
