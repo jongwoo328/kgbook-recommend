@@ -230,6 +230,7 @@ const templateDataList = ref([
               <FloatingAiChatAiMessage
                 v-if="message.role === 'ai'"
                 ref="messageElements"
+                :loading="loading && idx === messages.length - 1"
                 :message="message"
               />
               <FloatingAiChatHumanMessage
