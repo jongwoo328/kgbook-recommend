@@ -50,7 +50,7 @@ ${JSON.stringify(body.context?.dataInDisplay)};
         break;
       }
 
-      if (isAIMessage(message) && message.tool_call_chunks.length > 0) {
+      if (isAIMessage(message) && Array.isArray(message.tool_call_chunks) && message.tool_call_chunks.length > 0) {
         event.node.res.write(
           `data: ${JSON.stringify({
             type: "chunk",
