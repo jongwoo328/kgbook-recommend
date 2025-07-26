@@ -71,8 +71,11 @@ function onEnter(e: KeyboardEvent) {
   submit();
 }
 
+const submitted = ref(false);
 const loading = ref(false);
 function submit() {
+  submitted.value = true;
+
   if (!inputMessage.value.trim()) {
     return;
   } // 빈값 방지
@@ -82,9 +85,25 @@ function submit() {
     content: inputMessage.value,
   };
 
+  // 사용자 메시지를 먼저 추가
+  messages.value.push(userMessage);
+  inputMessage.value = "";
+  scheduleScroll();
+
+  // AI 응답을 위한 빈 메시지 추가
+  messages.value.push({
+    role: "ai",
+    content: "",
+  });
+
   loading.value = true;
+
+  // SSE 요청 생성
+  const messageHistory = [...messages.value];
+  messageHistory.pop(); // 마지막 빈 AI 메시지 제거
+
   api
-    .chat({
+    .chatStream({
       message: inputMessage.value,
       messagesBefore: messages.value,
       context: {
@@ -92,52 +111,85 @@ function submit() {
         userPreferences: userPreferenceWithSplitInterest.value,
       },
     })
-    .then((r) => {
-      messages.value.push({
-        role: "ai",
-        content: r.response,
-      });
-      loading.value = false;
-    })
-    .catch((e) => {
-      console.error("Error during chat API call:", e);
-      messages.value.push({
-        role: "ai",
-        content:
-          "죄송합니다. 책 추천 기능에 문제가 발생했어요. 나중에 다시 시도해주세요.",
-      });
-      loading.value = false;
-    });
-  messages.value.push(userMessage);
-  inputMessage.value = "";
-
-  requestAnimationFrame(() => {
-    if (messagesContainer.value) {
-      if (spacer.value) {
-        spacer.value.style.minHeight = `${messagesContainer.value.clientHeight}px`;
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error ${response.status}`);
       }
 
-      scrollToBottom();
-    }
-  });
+      if (!response.body) {
+        throw new Error("Response body is not available");
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+
+      function readStream(): Promise<void> {
+        return reader.read().then(({ done, value }) => {
+          if (done) {
+            loading.value = false;
+            return;
+          }
+
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split("\n");
+          buffer = lines.pop() || "";
+
+          for (const line of lines) {
+            if (!line.startsWith("data: ")) continue;
+            const data = JSON.parse(line.slice(6));
+
+            switch (data.type) {
+              case "chunk":
+                if (data.content === "") {
+                  continue; // 빈 내용은 무시
+                }
+                loading.value = false;
+                messages.value[messages.value.length - 1].content +=
+                  data.content;
+                scheduleScroll();
+                break;
+              case "done":
+                loading.value = false;
+                break;
+              case "error":
+                throw new Error(data.message);
+            }
+          }
+          return readStream();
+        });
+      }
+      return readStream();
+    })
+    .catch((error) => {
+      console.error("Error during chat API call:", error);
+      messages.value[messages.value.length - 1].content =
+        "죄송합니다. 책 추천 기능에 문제가 발생했어요. 나중에 다시 시도해주세요.";
+      loading.value = false;
+    })
+    .finally(() => (submitted.value = false));
+}
+
+let scrollTimer: number | undefined;
+function scheduleScroll() {
+  if (scrollTimer) cancelAnimationFrame(scrollTimer);
+  scrollTimer = requestAnimationFrame(() => nextTick(scrollToBottom));
 }
 
 function scrollToBottom() {
-  const lastHumanIdx = messages.value.map((m) => m.role).lastIndexOf("human");
+  const lastIdx = messages.value.length - 1;
+  const el = messageElements.value[lastIdx]?.$el;
 
-  if (lastHumanIdx !== -1 && messageElements.value[lastHumanIdx]?.$el) {
-    // 사용자 메시지가 있으면 거기로 스크롤
-    messageElements.value[lastHumanIdx].$el.scrollIntoView({
+  if (el) {
+    el.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+    });
+  } else if (messagesContainer.value) {
+    messagesContainer.value.scrollTo({
+      top: messagesContainer.value.scrollHeight,
       behavior: "smooth",
     });
-  } else {
-    // 사용자 메시지가 없으면 전체 컨테이너의 맨 아래로 스크롤
-    if (messagesContainer.value) {
-      messagesContainer.value.scrollTo({
-        top: messagesContainer.value.scrollHeight,
-        behavior: "smooth",
-      });
-    }
   }
 }
 
@@ -239,7 +291,6 @@ const templateDataList = ref([
                 :message="message"
               />
             </template>
-            <FloatingAiChatAiLoading v-if="loading" />
             <div ref="spacer" />
           </div>
         </template>
@@ -264,7 +315,7 @@ const templateDataList = ref([
                   />
                 </div>
                 <Button
-                  :disabled="loading"
+                  :disabled="submitted"
                   class="p-0 flex-shrink-0 self-start"
                   rounded
                   size="small"
