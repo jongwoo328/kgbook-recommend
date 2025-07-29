@@ -5,7 +5,7 @@
   "main": "src/index.ts",
   "scripts": {
     "build": "tsup",
-    "dev": "tsx src/index.ts",
+    "dev": "NODE_ENV=local tsx src/index.ts",
     "format": "biome format --write .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -4,6 +4,10 @@ import { z } from 'zod';
 import { db } from './db';
 import { createEmbedding } from './service/openAiService';
 
+function log(message: string) {
+  console.log(`${new Date().toISOString()}: ${message}`);
+}
+
 export function createServer() {
   const server = new McpServer({
     name: 'Aladin MCP Server',
@@ -12,6 +16,7 @@ export function createServer() {
   const aladin = new Aladin({ ttbKey: process.env.TTB_KEY ?? '' });
 
   server.tool('get_new_books', async () => {
+    log('get_new_books called');
     const results = await aladin.listItems({
       queryType: 'ItemNewAll',
       searchTarget: 'Book',
@@ -44,6 +49,7 @@ export function createServer() {
     'get_new_books_by_category_id',
     { cid: z.number() },
     async ({ cid }) => {
+      log(`get_new_books_by_category_id called with cid: ${cid}`);
       const results = await aladin.listItems({
         queryType: 'ItemNewAll',
         categoryId: cid,
@@ -74,6 +80,7 @@ export function createServer() {
   );
 
   server.tool('get_new_books_special', async () => {
+    log('get_new_books_special called');
     const results = await aladin.listItems({
       queryType: 'ItemNewSpecial',
       searchTarget: 'Book',
@@ -103,6 +110,7 @@ export function createServer() {
   });
 
   server.tool('get_bestsellers_by_latest', async () => {
+    log('get_bestsellers_by_latest called');
     const results = await aladin.listItems({
       queryType: 'Bestseller',
       searchTarget: 'Book',
@@ -135,6 +143,7 @@ export function createServer() {
     'get_bestsellers_by_category_id',
     { cid: z.number() },
     async ({ cid }) => {
+      log(`get_bestsellers_by_category_id called with cid: ${cid}`);
       const results = await aladin.listItems({
         queryType: 'Bestseller',
         categoryId: cid,
@@ -172,6 +181,9 @@ export function createServer() {
       size: z.number().optional(),
     },
     async ({ query, page = 1, size = 20 }) => {
+      log(
+        `search_book_categories called with query: ${query}, page: ${page}, size: ${size}`,
+      );
       try {
         const sortField = 'category_vector';
         const sortOrder = 'desc';
@@ -222,6 +234,7 @@ export function createServer() {
     'search_books_by_title_and_author',
     { query: z.string() },
     async ({ query }) => {
+      log(`search_books_by_title_and_author called with query: ${query}`);
       const results = await aladin.searchItems({
         query: query,
         queryType: 'Keyword',
@@ -252,6 +265,7 @@ export function createServer() {
   );
 
   server.tool('get_book_by_item_id', { id: z.number() }, async ({ id }) => {
+    log(`get_book_by_item_id called with id: ${id}`);
     const results = await aladin.lookupItem({
       itemId: id,
       itemIdType: 'ItemId',
@@ -281,6 +295,7 @@ export function createServer() {
   });
 
   server.tool('get_book_by_isbn', { isbn: z.string() }, async ({ isbn }) => {
+    log(`get_book_by_isbn called with isbn: ${isbn}`);
     const results = await aladin.lookupItem({
       itemId: isbn,
     });
