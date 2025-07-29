@@ -1,4 +1,4 @@
-import { agent } from "~/server/ai";
+import { chatAgent } from "~/server/ai";
 
 export default defineEventHandler(async (event): Promise<ChatResponse> => {
   const body = await readBody<ChatRequest>(event);
@@ -13,7 +13,7 @@ ${JSON.stringify(body.context?.dataInDisplay)};
 \t독서 시간: ${body.context?.userPreferences?.readTime ?? "설정하지 않음"}
 \t독서 스타일: ${body.context?.userPreferences?.style?.toString() ?? "설정하지 않음"}
 \t최근 읽은 책: ${body.context?.userPreferences?.recentBook ?? "설정하지 않음"}`;
-  const r = await agent.invoke({
+  const r = await chatAgent.invoke({
     messages: messageHistory.concat([
       {
         role: "system",

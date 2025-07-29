@@ -1,4 +1,4 @@
-import { bookSchemaParser, jsonOutputParserAgent } from "~/server/ai";
+import { bookSchemaParser, bookRecommendAgent } from "~/server/ai";
 import { aladinClient } from "~/server/client";
 
 export default defineEventHandler(
@@ -25,7 +25,7 @@ export default defineEventHandler(
       const bookInfo = getBookItem.data.item[0];
 
       const message = `- 책 제목: ${bookInfo.title}\n- 작가: ${bookInfo.author}\n-카테고리: ${bookInfo.categoryName}\n- 책 설명: ${bookInfo.description};`;
-      const result = await jsonOutputParserAgent.invoke({
+      const result = await bookRecommendAgent.invoke({
         messages: [
           {
             role: "human",
