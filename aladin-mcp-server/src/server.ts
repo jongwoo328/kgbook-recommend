@@ -2,11 +2,8 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { Aladin } from 'aladin-client';
 import { z } from 'zod';
 import { db } from './db';
+import { log } from './log';
 import { createEmbedding } from './service/openAiService';
-
-function log(message: string) {
-  console.log(`${new Date().toISOString()}: ${message}`);
-}
 
 export function createServer() {
   const server = new McpServer({
@@ -321,6 +318,140 @@ export function createServer() {
       }),
     };
   });
+
+  server.tool('get_editors_choice_books', async () => {
+    log('get_editors_choice_books called');
+    const results = await aladin.listItems({
+      queryType: 'ItemEditorChoice',
+      searchTarget: 'Book',
+      cover: 'Big',
+    });
+
+    if (!results.success) {
+      return {
+        content: [
+          {
+            type: 'text',
+            text: results.error.message,
+          },
+        ],
+        isError: true,
+      };
+    }
+
+    return {
+      content: results.data.item.map((item) => {
+        return {
+          type: 'text',
+          text: JSON.stringify(item),
+          mimeType: 'application/json',
+        };
+      }),
+    };
+  });
+
+  server.tool(
+    'get_editors_choice_books_by_category_id',
+    { cid: z.number() },
+    async ({ cid }) => {
+      log(`get_editors_choice_books_by_category_id called with cid:) ${cid}`);
+      const results = await aladin.listItems({
+        queryType: 'ItemEditorChoice',
+        categoryId: cid,
+        searchTarget: 'Book',
+        cover: 'Big',
+      });
+
+      if (!results.success) {
+        return {
+          content: [
+            {
+              type: 'text',
+              text: results.error.message,
+            },
+          ],
+          isError: true,
+        };
+      }
+
+      return {
+        content: results.data.item.map((item) => {
+          return {
+            type: 'text',
+            text: JSON.stringify(item),
+            mimeType: 'application/json',
+          };
+        }),
+      };
+    },
+  );
+
+  server.tool('get_blog_bestseller', async () => {
+    log('get_blog_bestseller called');
+    const results = await aladin.listItems({
+      queryType: 'BlogBest',
+      searchTarget: 'Book',
+      cover: 'Big',
+    });
+
+    if (!results.success) {
+      return {
+        content: [
+          {
+            type: 'text',
+            text: results.error.message,
+          },
+        ],
+        isError: true,
+      };
+    }
+
+    return {
+      content: results.data.item.map((item) => {
+        return {
+          type: 'text',
+          text: JSON.stringify(item),
+          mimeType: 'application/json',
+        };
+      }),
+    };
+  });
+
+  server.tool(
+    'get_blog_bestseller_by_category_id',
+    { cid: z.number() },
+    async ({ cid }) => {
+      log(`get_blog_bestseller_by_category_id called with cid: ${cid}`);
+      const results = await aladin.listItems({
+        queryType: 'BlogBest',
+        categoryId: cid,
+        searchTarget: 'Book',
+        cover: 'Big',
+      });
+
+      if (!results.success) {
+        return {
+          content: [
+            {
+              type: 'text',
+              text: results.error.message,
+            },
+          ],
+          isError: true,
+        };
+      }
+
+      return {
+        content: results.data.item.map((item) => {
+          return {
+            type: 'text',
+            text: JSON.stringify(item),
+            mimeType: 'application/json',
+          };
+        }),
+      };
+    },
+  );
 
   return server;
 }
