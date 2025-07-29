@@ -1,5 +1,10 @@
 import { agent } from "~/server/ai";
-import { isAIMessage, isToolMessage } from "@langchain/core/messages";
+import {
+  isAIMessage,
+  isAIMessageChunk,
+  isBaseMessageChunk,
+  isToolMessage,
+} from "@langchain/core/messages";
 
 export default defineEventHandler(async (event): Promise<void> => {
   const body = await readBody<ChatRequest>(event);
@@ -50,7 +55,12 @@ ${JSON.stringify(body.context?.dataInDisplay)};
         break;
       }
 
-      if (isAIMessage(message) && Array.isArray(message.tool_call_chunks) && message.tool_call_chunks.length > 0) {
+      if (
+        isBaseMessageChunk(message) &&
+        isAIMessageChunk(message) &&
+        Array.isArray(message.tool_call_chunks) &&
+        message.tool_call_chunks.length > 0
+      ) {
         event.node.res.write(
           `data: ${JSON.stringify({
             type: "chunk",

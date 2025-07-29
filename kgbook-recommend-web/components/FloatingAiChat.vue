@@ -124,7 +124,7 @@ function submit() {
       const decoder = new TextDecoder();
       let buffer = "";
 
-      function readStream(): Promise<void> {
+      async function readStream(): Promise<void> {
         return reader.read().then(({ done, value }) => {
           if (done) {
             loading.value = false;
