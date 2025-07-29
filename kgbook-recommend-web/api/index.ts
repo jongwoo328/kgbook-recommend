@@ -26,12 +26,13 @@ export default {
     });
   },
   chatStream: (body: ChatRequest) => {
-    return fetch("/api/chat/stream", {
+    return $fetch<ReadableStream>("/api/chat/stream", {
       method: "POST",
       body: JSON.stringify(body),
       headers: {
         ...streamHeaders,
       },
+      responseType: "stream",
     });
   },
   getBookDetail: (itemId: number) => {

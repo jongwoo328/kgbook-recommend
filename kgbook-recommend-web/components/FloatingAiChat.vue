@@ -73,7 +73,7 @@ function onEnter(e: KeyboardEvent) {
 
 const submitted = ref(false);
 const loading = ref(false);
-function submit() {
+async function submit() {
   submitted.value = true;
 
   if (!inputMessage.value.trim()) {
@@ -102,72 +102,54 @@ function submit() {
   const messageHistory = [...messages.value];
   messageHistory.pop(); // 마지막 빈 AI 메시지 제거
 
-  api
-    .chatStream({
+  try {
+    const response = await api.chatStream({
       message: inputMessage.value,
       messagesBefore: messages.value,
       context: {
         ...contextStore.context,
         userPreferences: userPreferenceWithSplitInterest.value,
       },
-    })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(`HTTP error ${response.status}`);
-      }
+    });
 
-      if (!response.body) {
-        throw new Error("Response body is not available");
-      }
+    const reader = response.pipeThrough(new TextDecoderStream()).getReader();
+    let buffer = "";
 
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
-      let buffer = "";
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
 
-      async function readStream(): Promise<void> {
-        return reader.read().then(({ done, value }) => {
-          if (done) {
+      buffer += value;
+      const lines = buffer.split("\n");
+      buffer = lines.pop() ?? ""; // 마지막 줄은 아직 완성되지 않았을 수 있음
+
+      for (const line of lines) {
+        if (!line.startsWith("data: ")) continue;
+        const data = JSON.parse(line.slice(6));
+
+        switch (data.type) {
+          case "done":
             loading.value = false;
-            return;
-          }
-
-          buffer += decoder.decode(value, { stream: true });
-          const lines = buffer.split("\n");
-          buffer = lines.pop() || "";
-
-          for (const line of lines) {
-            if (!line.startsWith("data: ")) continue;
-            const data = JSON.parse(line.slice(6));
-
-            switch (data.type) {
-              case "chunk":
-                if (data.content === "") {
-                  continue; // 빈 내용은 무시
-                }
-                loading.value = false;
-                messages.value[messages.value.length - 1].content +=
-                  data.content;
-                scheduleScroll();
-                break;
-              case "done":
-                loading.value = false;
-                break;
-              case "error":
-                throw new Error(data.message);
-            }
-          }
-          return readStream();
-        });
+            break;
+          case "chunk":
+            if (!data.content) continue;
+            loading.value = false;
+            messages.value[messages.value.length - 1].content += data.content;
+            scheduleScroll();
+            break;
+          case "error":
+            throw new Error(data.message);
+        }
       }
-      return readStream();
-    })
-    .catch((error) => {
-      console.error("Error during chat API call:", error);
-      messages.value[messages.value.length - 1].content =
-        "죄송합니다. 책 추천 기능에 문제가 발생했어요. 나중에 다시 시도해주세요.";
-      loading.value = false;
-    })
-    .finally(() => (submitted.value = false));
+    }
+  } catch (error) {
+    console.error("Error during chat API call:", error);
+    messages.value[messages.value.length - 1].content =
+      "죄송합니다. 책 추천 기능에 문제가 발생했어요. 나중에 다시 시도해주세요.";
+    loading.value = false;
+  } finally {
+    submitted.value = false;
+  }
 }
 
 let scrollTimer: number | undefined;
