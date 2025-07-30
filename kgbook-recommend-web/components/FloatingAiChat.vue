@@ -21,7 +21,9 @@ function onCloseClick() {
   showCard.value = false;
 }
 
-const messages = ref<{ role: string; content: string }[]>([]);
+const messages = ref<{ role: string; content: string; thinking?: string }[]>(
+  [],
+);
 function resetMessages() {
   let startMessage =
     "안녕하세요! 책 추천을 도와드릴게요. 어떤 종류의 책을 찾고 계신가요?";
@@ -128,12 +130,17 @@ async function submit() {
         const data = JSON.parse(line.slice(6));
 
         switch (data.type) {
+          case "thinking":
+            loading.value = false;
+            messages.value[messages.value.length - 1].thinking = data.content;
+            break;
           case "done":
             loading.value = false;
             break;
           case "chunk":
             if (!data.content) continue;
             loading.value = false;
+            messages.value[messages.value.length - 1].thinking = undefined;
             messages.value[messages.value.length - 1].content += data.content;
             scheduleScroll();
             break;

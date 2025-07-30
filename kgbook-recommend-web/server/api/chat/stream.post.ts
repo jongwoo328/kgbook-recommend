@@ -1,8 +1,7 @@
 import { agent } from "~/server/ai";
 import {
   isAIMessage,
-  isAIMessageChunk,
-  isBaseMessageChunk,
+  isBaseMessage,
   isToolMessage,
 } from "@langchain/core/messages";
 
@@ -46,47 +45,100 @@ ${JSON.stringify(body.context?.dataInDisplay)};
           },
         ]),
       },
-      { streamMode: "messages" },
+      { streamMode: "values" },
     );
 
-    let fullText = "";
-    for await (const [message] of stream) {
+    let lastState = null;
+    let toolCallCount = 0;
+
+    for await (const state of stream) {
       if (event.node.res.destroyed) {
         break;
       }
 
-      if (
-        isBaseMessageChunk(message) &&
-        isAIMessageChunk(message) &&
-        Array.isArray(message.tool_call_chunks) &&
-        message.tool_call_chunks.length > 0
-      ) {
-        event.node.res.write(
-          `data: ${JSON.stringify({
-            type: "chunk",
-            content: "",
-            toolCalls: message.tool_call_chunks[0]?.name ?? "",
-          })}\n\n`,
-        );
-      } else if (isAIMessage(message) && !isToolMessage(message)) {
-        fullText += message.content;
-        event.node.res.write(
-          `data: ${JSON.stringify({
-            type: "chunk",
-            content: message.content,
-            toolCalls: "",
-          })}\n\n`,
-        );
-      }
-    }
+      // 새로운 메시지가 추가되었는지 확인
+      if (lastState && state.messages) {
+        const lastMessages = lastState.messages || [];
+        const currentMessages = state.messages;
 
-    // 스트림 완료 신호
-    event.node.res.write(
-      `data: ${JSON.stringify({
-        type: "done",
-        finalText: fullText,
-      })}\n\n`,
-    );
+        if (currentMessages.length > lastMessages.length) {
+          const newMessage = currentMessages[currentMessages.length - 1];
+
+          // 생각 과정 추적
+          if (
+            isBaseMessage(newMessage) &&
+            !isToolMessage(newMessage) &&
+            newMessage.response_metadata?.finish_reason !== "stop"
+          ) {
+            event.node.res.write(
+              `data: ${JSON.stringify({
+                type: "thinking",
+                content:
+                  newMessage.content || "응답을 생성하기 위해 생각 중입니다...",
+              })}\n\n`,
+            );
+          }
+
+          // Tool call 추적
+          if (
+            isBaseMessage(newMessage) &&
+            isAIMessage(newMessage) &&
+            Array.isArray(newMessage.tool_calls) &&
+            newMessage.tool_calls.length > 0
+          ) {
+            toolCallCount++;
+            const message = newMessage.tool_calls[0]?.name
+              ? `${newMessage.tool_calls[0].name} 도구를 사용하여 필요한 정보를 가져오고 있습니다.`
+              : "";
+            event.node.res.write(
+              `data: ${JSON.stringify({
+                type: "thinking",
+                content: message,
+                toolCallCount: toolCallCount,
+              })}\n\n`,
+            );
+          }
+
+          // 최종 응답 감지: finish_reason이 'stop'인 AIMessage
+          if (
+            isAIMessage(newMessage) &&
+            !isToolMessage(newMessage) &&
+            newMessage.response_metadata?.finish_reason === "stop" &&
+            newMessage.content
+          ) {
+            // 스트리밍인 척
+            const content = newMessage.content;
+            const chunkSize = 10;
+
+            for (let i = 0; i < content.length; i += chunkSize) {
+              if (event.node.res.destroyed) break;
+
+              const chunk = content.slice(i, i + chunkSize);
+
+              event.node.res.write(
+                `data: ${JSON.stringify({
+                  type: "chunk",
+                  content: chunk,
+                })}\n\n`,
+              );
+            }
+
+            // 스트림 완료 신호
+            event.node.res.write(
+              `data: ${JSON.stringify({
+                type: "done",
+                finalText: content,
+                toolCallCount: toolCallCount,
+              })}\n\n`,
+            );
+
+            break;
+          }
+        }
+      }
+
+      lastState = state;
+    }
   } catch (error) {
     console.error("SSE Error:", error);
 
