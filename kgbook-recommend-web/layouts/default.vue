@@ -22,7 +22,7 @@ const route = useRoute();
       <TestButton :show-title="true" class="py-14" />
       <TextFooter />
     </footer>
-    <footer class="mt-5">
+    <footer v-else class="mt-5">
       <TextFooter />
     </footer>
   </div>

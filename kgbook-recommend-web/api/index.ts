@@ -10,6 +10,11 @@ const commonHeaders = {
   Accept: "application/json",
 };
 
+const streamHeaders = {
+  "Content-Type": "application/json",
+  Accept: "text/event-stream",
+};
+
 export default {
   chat: (body: ChatRequest) => {
     return $fetch<ChatResponse>("/api/chat", {
@@ -18,6 +23,16 @@ export default {
       headers: {
         ...commonHeaders,
       },
+    });
+  },
+  chatStream: (body: ChatRequest) => {
+    return $fetch<ReadableStream>("/api/chat/stream", {
+      method: "POST",
+      body: JSON.stringify(body),
+      headers: {
+        ...streamHeaders,
+      },
+      responseType: "stream",
     });
   },
   getBookDetail: (itemId: number) => {
