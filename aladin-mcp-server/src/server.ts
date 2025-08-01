@@ -354,7 +354,7 @@ export function createServer() {
     'get_editors_choice_books_by_category_id',
     { cid: z.number() },
     async ({ cid }) => {
-      log(`get_editors_choice_books_by_category_id called with cid:) ${cid}`);
+      log(`get_editors_choice_books_by_category_id called with cid: ${cid}`);
       const results = await aladin.listItems({
         queryType: 'ItemEditorChoice',
         categoryId: cid,
