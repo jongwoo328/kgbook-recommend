@@ -1,4 +1,4 @@
-import { agent } from "~/server/ai";
+import { chatAgent } from "~/server/ai";
 import {
   isAIMessage,
   isBaseMessage,
@@ -32,7 +32,7 @@ ${JSON.stringify(body.context?.dataInDisplay)};
       })}\n\n`,
     );
 
-    const stream = await agent.stream(
+    const stream = await chatAgent.stream(
       {
         messages: messageHistory.concat([
           {
