@@ -80,6 +80,7 @@ function searchBook() {
         class="flex items-center w-[70%] my-2 border-2 border-black dark:border-white rounded-full overflow-hidden"
       >
         <Select
+          id="searchTypeSelect"
           v-model="selectedSearchType"
           :options="searchTypeOptions"
           :pt="{
@@ -105,11 +106,6 @@ function searchBook() {
         <Button
           id="searchButton"
           :disabled="!searchValue.trim()"
-          :pt="{
-            root: {
-              class: '!bg-transparent !border-none',
-            },
-          }"
           class="px-4 py-3"
           @click="searchBook"
         >
@@ -124,8 +120,13 @@ function searchBook() {
 </template>
 
 <style scoped>
-#searchButton:hover {
+#searchButton {
   background-color: transparent;
-  border: none;
+  border-style: none;
+}
+
+#searchTypeSelect {
+  border-style: none;
+  outline-width: 0;
 }
 </style>
