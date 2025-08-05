@@ -83,11 +83,11 @@ function searchBook() {
           v-model="selectedSearchType"
           :options="searchTypeOptions"
           :pt="{
+            root: { class: '!border-none !outline-0' },
             trigger: { class: 'px-4 py-3 border-none rounded-none' },
             label: { class: 'ml-1.5' },
             panel: { class: 'rounded-lg' },
           }"
-          class="border-none !outline-0"
           option-label="label"
           option-value="value"
           style="min-width: 140px"
@@ -105,7 +105,12 @@ function searchBook() {
         <Button
           id="searchButton"
           :disabled="!searchValue.trim()"
-          class="px-4 py-3 hover:cursor-pointer bg-transparent border-none"
+          :pt="{
+            root: {
+              class: '!bg-transparent !border-none',
+            },
+          }"
+          class="px-4 py-3"
           @click="searchBook"
         >
           <Icon
