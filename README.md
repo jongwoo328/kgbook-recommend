@@ -13,7 +13,7 @@
 이 프로젝트는 세 가지 주요 컴포넌트로 구성된 모노레포 구조입니다.
 
 - **`kgbook-recommend-web/`**: Nuxt.js로 구현된 프론트엔드 웹 애플리케이션입니다. 사용자에게 보여지는 모든 화면과 인터페이스를 담당합니다.
-- **`aladin-mcp-server/`**: Hono 기반의 백엔드 서버입니다. 알라딘 API와의 통신, 데이터베이스 연동, 추천 로직 등 핵심 비즈니스 로직을 처리합니다.
+- **`aladin-mcp-server/`**: Express 기반의 백엔드 서버입니다. 알라딘 API와의 통신, 데이터베이스 연동, 추천 로직 등 핵심 비즈니스 로직을 처리합니다.
 - **`infra/`**: Docker Compose를 이용한 인프라 관리 디렉터리입니다. PostgreSQL 데이터베이스 설정, 전체 서비스 빌드 및 배포 스크립트를 포함합니다.
 
 ## 🚀 시작하기
@@ -34,7 +34,7 @@ docker compose -f infra.yaml up --build -d
 ## 💻 기술 스택
 
 - **Frontend**: Nuxt.js, Vue.js, Tailwind CSS
-- **Backend**: Hono, TypeScript, Node.js
+- **Backend**: Express, TypeScript, Node.js
 - **Database**: PostgreSQL with `pgvector`
 - **Infrastructure**: Docker, Docker Compose
 - **Package Manager**: pnpm
