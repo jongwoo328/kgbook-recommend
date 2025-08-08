@@ -1,15 +1,43 @@
-# aladin mcp server
+# 백엔드 (aladin-mcp-server)
 
-node v22 이상
+이 디렉터리는 @modelcontextprotocol/sdk 를 사용하여 구축된 알라딘 API 기반 MCP 서버입니다.
 
-## 실행
-```bash
-pnpm install
+## 🚀 주요 역할
 
-# local 실행
-pnpm run dev
-```
-- mcp 서버 테스트
-```bash
-npx @modelcontextprotocol/inspector # 연결 url 은 http://localhost:3000/mcp
-```
+- 알라딘 클라이언트(알라딘 Open API) 기반의 다양한 책 데이터 조회 도구 제공
+- `pgvector`를 활용한 임베딩 벡터 검색 및 유사도 기반 책 카테고리 조회 도구 제공
+
+## 🛠️ 로컬 개발 환경 설정
+
+Docker를 사용하지 않고 백엔드 서버만 단독으로 실행할 경우 아래의 절차를 따릅니다.
+
+1.  **의존성 설치**
+    pnpm을 사용하여 필요한 패키지를 설치합니다.
+
+    ```bash
+    pnpm install
+    ```
+
+2.  **환경 변수 설정**
+    `.env.template` 파일을 복사하여 `.env` 파일을 생성하고, 필요한 환경 변수(데이터베이스 접속 정보, 알라딘 API 키 등)를 설정합니다.
+
+    ```bash
+    cp .env.template .env
+    ```
+
+3.  **개발 서버 실행**
+    아래 명령어를 실행하면 mcp 개발 서버가 시작됩니다.
+
+    ```bash
+    pnpm dev
+    ```
+    서버가 실행되면 `http://localhost:3000` 에서 요청을 처리합니다.
+
+## 📜 스크립트
+
+이 디렉터리는 일회성 스크립트들이 작성되어 있습니다.
+
+- **`scripts/migration.js`**: 데이터베이스 스키마를 마이그레이션하는 스크립트입니다.
+- **`scripts/embedding.js`**: 책 카테고리 정보를 벡터로 변환하여 데이터베이스에 저장하는 스크립트입니다.
+
+빌드 결과물은 `dist` 디렉터리에 생성됩니다.
