@@ -80,14 +80,15 @@ function searchBook() {
         class="flex items-center w-[70%] my-2 border-2 border-black dark:border-white rounded-full overflow-hidden"
       >
         <Select
+          id="searchTypeSelect"
           v-model="selectedSearchType"
           :options="searchTypeOptions"
           :pt="{
+            root: { class: '!border-none !outline-0' },
             trigger: { class: 'px-4 py-3 border-none rounded-none' },
             label: { class: 'ml-1.5' },
             panel: { class: 'rounded-lg' },
           }"
-          class="border-none !outline-0"
           option-label="label"
           option-value="value"
           style="min-width: 140px"
@@ -105,7 +106,7 @@ function searchBook() {
         <Button
           id="searchButton"
           :disabled="!searchValue.trim()"
-          class="px-4 py-3 hover:cursor-pointer bg-transparent border-none"
+          class="px-4 py-3"
           @click="searchBook"
         >
           <Icon
@@ -119,8 +120,13 @@ function searchBook() {
 </template>
 
 <style scoped>
-#searchButton:hover {
+#searchButton {
   background-color: transparent;
-  border: none;
+  border-style: none;
+}
+
+#searchTypeSelect {
+  border-style: none;
+  outline-width: 0;
 }
 </style>
